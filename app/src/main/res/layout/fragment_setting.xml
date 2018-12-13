@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <cn.elevator.widget.ToolBar
+        android:id="@+id/titlebar"
+        style="@style/match2wrap"
+        app:showLeftView="false"
+        app:title="个人中心" />
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="310dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="310dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:scaleType="fitXY"
+            android:src="@drawable/bg" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="34dp"
+            android:text="下午好，赵俊强"
+            android:textColor="@color/colorContentText"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorLine"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:drawableRight="@drawable/right"
+        android:drawableLeft="@drawable/about_us"
+        android:drawablePadding="18dp"
+        android:paddingLeft="18dp"
+        android:paddingRight="18dp"
+        android:text="关于我们"
+        android:textColor="@color/colorContentText"
+        android:textSize="20sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorLine"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/clear_cache"
+        android:drawablePadding="18dp"
+        android:paddingLeft="18dp"
+        android:text="清除缓存"
+        android:textColor="@color/colorContentText"
+        android:textSize="20sp"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:background="@color/colorLine"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="54dp"
+        android:background="@color/colorWhite"
+        android:gravity="center_vertical"
+        android:drawableLeft="@drawable/version"
+        android:drawablePadding="18dp"
+        android:paddingLeft="18dp"
+        android:text="版本号V.0"
+        android:textColor="@color/colorContentText"
+        android:textSize="20sp"/>
+
+    <Button
+        android:id="@+id/btn_exit"
+        android:layout_width="252dp"
+        android:layout_height="42dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="64dp"
+        android:background="@drawable/btn_blue_radius"
+        android:text="退   出"
+        android:textColor="@color/colorWhite"
+        android:textSize="14sp" />
+</LinearLayout>

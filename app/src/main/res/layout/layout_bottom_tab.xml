@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/match2parent"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/contentView"
+        style="@style/match2parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/gray_light" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_gravity="bottom"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="#e8e8e8" />
+
+        <com.qmuiteam.qmui.widget.QMUITabSegment
+            android:id="@+id/tabLayout"
+            style="@style/match2parent"
+            android:layout_gravity="bottom"
+            android:background="@android:color/white" />
+    </LinearLayout>
+
+</LinearLayout>

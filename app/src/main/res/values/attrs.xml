@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--自定义titlebar-->
+    <declare-styleable name="TitleBar">
+
+        <attr name="title" format="string" />
+        <attr name="titleSize" format="dimension" />
+        <attr name="titleColor" format="color" />
+        <attr name="backResource" format="reference" />
+        <attr name="rightResource" format="reference" />
+        <attr name="showLeftView" format="boolean" />
+        <attr name="showRightView" format="boolean" />
+        <attr name="showRightText" format="boolean" />
+        <attr name="rightText" format="string" />
+        <attr name="rightTextSize" format="dimension" />
+
+    </declare-styleable>
+</resources>

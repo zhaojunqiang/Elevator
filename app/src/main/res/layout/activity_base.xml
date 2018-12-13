@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:titlebar="http://schemas.android.com/apk/res-auto"
+    style="@style/match2parent"
+    android:orientation="vertical">
+
+    <!--标题处理区域-->
+
+    <com.wuhenzhizao.titlebar.widget.CommonTitleBar
+        android:id="@+id/commonTitleBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        titlebar:bottomShadowHeight="1dp"
+        titlebar:centerText="标题栏"
+        titlebar:centerType="textView"
+        titlebar:fillStatusBar="false"
+        titlebar:leftType="imageButton"
+        titlebar:rightText="确定"
+        titlebar:rightType="textView"
+        titlebar:showBottomLine="false" />
+
+
+    <!--内容区域，后续操作无需关心,正常使用即可-->
+    <LinearLayout
+        android:id="@+id/contentPanel"
+        style="@style/match2parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+    </LinearLayout>
+</LinearLayout>

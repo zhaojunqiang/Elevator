@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">Elevator_New</string>
+    <string name="http_error">网络错误，请检查您的网络</string>
+</resources>

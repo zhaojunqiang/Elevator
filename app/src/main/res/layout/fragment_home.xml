@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/match2parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
+
+    <cn.elevator.widget.ToolBar
+        android:id="@+id/titlebar"
+        style="@style/match2wrap"
+        app:showLeftView="false"
+        app:title="特种设备检测系统" />
+
+   <android.support.v7.widget.RecyclerView
+       android:id="@+id/id_rv"
+       style="@style/match2wrap">
+   </android.support.v7.widget.RecyclerView>
+
+</LinearLayout>
