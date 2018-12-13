@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private SearchFragment mSearchFragment = new SearchFragment();
     private SettingFrament mSettingFrament = new SettingFrament();
 
-
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
