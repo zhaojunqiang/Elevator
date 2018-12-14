@@ -26,15 +26,15 @@ android {
     }
 }
 ext {
-    retrofitVersion             = '2.2.0'
-    rxjavaVersion               = '2.0.1'
-    circleimageviewVersion      = '2.1.0'
-    banner                      = '1.4.10'
-    glide                       = '3.7.0'
-    okhttp                      = '3.1.2'
-    rxandroid                   = '1.2.0'
-    titlebar                    = '1.0.7'
-    qmui                        = '1.0.6'
+    retrofitVersion = '2.2.0'
+    rxjavaVersion = '2.0.1'
+    circleimageviewVersion = '2.1.0'
+    banner = '1.4.10'
+    glide = '3.7.0'
+    okhttp = '3.1.2'
+    rxandroid = '1.2.0'
+    titlebar = '1.0.7'
+    qmui = '1.0.6'
 }
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
@@ -69,4 +69,6 @@ dependencies {
     implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.30'
     // superTextView
     implementation 'com.github.lygttpod:SuperTextView:2.1.7'
+    //badgeview
+    implementation 'q.rorbin:badgeview:1.1.3'
 }

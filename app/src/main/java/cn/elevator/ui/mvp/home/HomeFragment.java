@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.elevator.R;
+import cn.elevator.bean.MenuData;
 import cn.elevator.helper.GlideLoaderHelper;
 import cn.elevator.ui.adapter.HomeMenuAdapter;
 import cn.elevator.utils.ToastUtil;
@@ -35,13 +36,13 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     private RecyclerView mRecycleView;
     private HomeMenuAdapter menuAdapter;
 
-    private Pair<String, Integer>[] menus = new Pair[]{
-            new Pair("检验任务", R.drawable.test),
-            new Pair("报告审核", R.drawable.report),
-            new Pair("报告批准", R.drawable.approve),
-            new Pair("数据查询", R.drawable.data),
-            new Pair("检验配置", R.drawable.configuration),
-            new Pair("系统配置", R.drawable.system)};
+    private Pair<String, MenuData>[] menus = new Pair[]{
+            new Pair("检验任务", new MenuData(R.drawable.test,1)),
+            new Pair("报告审核", new MenuData(R.drawable.report,0)),
+            new Pair("报告批准", new MenuData(R.drawable.approve,3)),
+            new Pair("数据查询", new MenuData(R.drawable.data,0)),
+            new Pair("检验配置", new MenuData(R.drawable.configuration,2)),
+            new Pair("系统配置", new MenuData(R.drawable.system,0))};
 
     private String[] bannerUrls = new String[]{
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",

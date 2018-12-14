@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical">
 
     <cn.elevator.widget.ToolBar
@@ -39,6 +40,7 @@
         android:layout_height="1px"
         android:background="@color/colorLine"/>
     <TextView
+        android:id="@+id/id_tv_about"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="@color/colorWhite"
@@ -71,6 +73,7 @@
         android:layout_height="1px"
         android:background="@color/colorLine"/>
     <TextView
+        android:id="@+id/id_tv_version"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="@color/colorWhite"
@@ -78,7 +81,7 @@
         android:drawableLeft="@drawable/version"
         android:drawablePadding="18dp"
         android:paddingLeft="18dp"
-        android:text="版本号V.0"
+        tools:text="版本号V.0"
         android:textColor="@color/colorContentText"
         android:textSize="20sp"/>
 
