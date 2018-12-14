@@ -4,7 +4,6 @@
     android:layout_height="match_parent"
     android:background="@color/colorMain"
     android:orientation="vertical">
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -55,7 +54,7 @@
             android:hint="请输入用户名"
             android:maxLines="1"
             android:textColor="#CDF2FF"
-            android:textColorHint="#818181"
+            android:textColorHint="#CDF2FF"
             android:textSize="22sp" />
 
         <View
@@ -94,19 +93,19 @@
             android:inputType="textPassword"
             android:maxLines="1"
             android:textColor="#CDF2FF"
-            android:textColorHint="#818181"
+            android:textColorHint="#CDF2FF"
             android:textSize="22sp" />
 
         <ImageView
+            android:layout_marginBottom="12dp"
             android:id="@+id/iv_see_password"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="18dp"
-            android:layout_marginRight="8dp"
+            android:padding="@dimen/dp_10"
             android:scaleType="fitXY"
-            android:src="@drawable/image_password_bg" />
+            android:src="@drawable/close_eye" />
 
         <View
             android:layout_width="match_parent"

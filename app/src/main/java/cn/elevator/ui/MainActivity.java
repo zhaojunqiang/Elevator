@@ -9,6 +9,8 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -34,6 +36,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        QMUIStatusBarHelper.translucent(this);
         mBottomNavigationView = findViewById(R.id.bottomNavigationView);
         mBottomNavigationView.setItemIconTintList(null);
         mBottomNavigationView.setOnNavigationItemSelectedListener(this);

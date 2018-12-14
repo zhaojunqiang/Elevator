@@ -36,13 +36,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     private RecyclerView mRecycleView;
     private HomeMenuAdapter menuAdapter;
 
-    private Pair<String, MenuData>[] menus = new Pair[]{
-            new Pair("检验任务", new MenuData(R.drawable.test,1)),
-            new Pair("报告审核", new MenuData(R.drawable.report,0)),
-            new Pair("报告批准", new MenuData(R.drawable.approve,3)),
-            new Pair("数据查询", new MenuData(R.drawable.data,0)),
-            new Pair("检验配置", new MenuData(R.drawable.configuration,2)),
-            new Pair("系统配置", new MenuData(R.drawable.system,0))};
+    private Pair<String, MenuData>[] menus = new Pair[6];
 
     private String[] bannerUrls = new String[]{
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic21363tj30ci08ct96.jpg",
@@ -70,7 +64,19 @@ public class HomeFragment extends Fragment implements HomeContact.View {
                 getContext().getResources().getDisplayMetrics().heightPixels / 4));
         mRecycleView = view.findViewById(R.id.id_rv);
         initMenuRecycler();
+        initDatas();
         initBanners();
+    }
+
+    private void initDatas() {
+        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, 1));
+        menus[1] = new Pair("报告审核", new MenuData(R.drawable.report, 0));
+        menus[2] = new Pair("报告批准", new MenuData(R.drawable.approve, 3));
+        menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, 0));
+        menus[4] = new Pair("检验配置", new MenuData(R.drawable.configuration, 2));
+        menus[5] = new Pair("系统配置", new MenuData(R.drawable.system, 0));
+
+        menuAdapter.notifyDataSetChanged();
     }
 
     /**

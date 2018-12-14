@@ -5,13 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.mvp.setting.about.AboutActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:fitsSystemWindows="true"
+    android:background="@color/colorPrimary">
     <cn.elevator.widget.ToolBar
         android:id="@+id/titlebar"
         style="@style/match2wrap"
         app:showLeftView="true"
         app:title="关于我们" />
     <LinearLayout
+        android:background="#fff"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:orientation="vertical"
@@ -31,6 +34,7 @@
             android:layout_gravity="center_horizontal" />
     </LinearLayout>
     <LinearLayout
+        android:background="#fff"
         android:padding="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

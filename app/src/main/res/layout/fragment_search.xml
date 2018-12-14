@@ -2,9 +2,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical">
 
+    <cn.elevator.widget.ToolBar
+        android:id="@+id/titlebar"
+        style="@style/match2wrap"
+        app:showLeftView="false"
+        app:title="查询" />
     <TextView
+        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="28sp"

@@ -6,6 +6,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,9 +14,12 @@ import android.view.Window;
 import android.widget.Button;
 import android.widget.EdgeEffect;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Switch;
 
+
+import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import cn.elevator.R;
 import cn.elevator.bean.LoginData;
@@ -37,10 +41,11 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
     private String mUserName, mPassword;
     // 记录当前 activity 是否是显示状态
     private boolean activityState = false;
-
+    private ImageView mSeePass;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        QMUIStatusBarHelper.translucent(this);
         LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_login, null);
         setContentView(view);
         initViews(view);
@@ -60,6 +65,8 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
         mPassWordView = findViewById(R.id.et_password);
         mLogin = findViewById(R.id.btn_login);
         mLogin.setOnClickListener(this);
+        mSeePass = findViewById(R.id.iv_see_password);
+        mSeePass.setOnClickListener(this);
 
     }
 
@@ -135,7 +142,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
         activityState = false;
         presenter.unSubscribe();
     }
-
+    boolean show = false;
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -144,6 +151,21 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
 //                     presenter.login("李明", "123", "ZX09XNS0819");
                     presenter.login(mUserName, mPassword, "ZX09XNS0819");
                 }
+                break;
+            case R.id.iv_see_password:
+                if (!show) {
+                    // 显示密码
+                    mPassWordView.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                    mSeePass.setImageDrawable(this.getResources().getDrawable(R.drawable.open_eye));
+                    show = true;
+                } else {
+                    // 隐藏密码
+                    mPassWordView.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                    mSeePass.setImageDrawable(this.getResources().getDrawable(R.drawable.close_eye));
+                    show = false;
+                }
+                //设置光标位置
+                mPassWordView.setSelection(mPassWordView.getText().toString().length());
                 break;
             default:
                 break;
