@@ -80,7 +80,6 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, 0));
         menus[4] = new Pair("检验配置", new MenuData(R.drawable.configuration, 2));
         menus[5] = new Pair("系统配置", new MenuData(R.drawable.system, 7));
-
         menuAdapter.notifyDataSetChanged();
     }
 
