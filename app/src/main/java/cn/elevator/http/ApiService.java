@@ -32,7 +32,7 @@ public interface ApiService {
      *  获取检验任务数据数据
      * @return
      */
-    @GET(Api.TESK_LIST)
+    @POST(Api.TESK_LIST)
     Observable<TaskData> getTaskData(@Body RequestBody body);
 
 }

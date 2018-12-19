@@ -20,8 +20,10 @@ import java.util.List;
 
 import cn.elevator.R;
 import cn.elevator.bean.MenuData;
+import cn.elevator.config.Constant;
 import cn.elevator.helper.GlideLoaderHelper;
 import cn.elevator.ui.adapter.HomeMenuAdapter;
+import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.utils.ToastUtil;
 
 /**
@@ -43,7 +45,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic259ohaj30ci08c74r.jpg",
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg"
     };
-
+    private String mUid;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -66,6 +68,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         initMenuRecycler();
         initDatas();
         initBanners();
+        initTaskCount();
     }
 
     private void initDatas() {
@@ -119,7 +122,8 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      */
     @Override
     public void initTaskCount() {
-//        presenter.getTaskData();
+        mUid = SharedPrefUtils.getObj(Constant.USERID);
+        presenter.getTaskData(mUid);
     }
 
     /**

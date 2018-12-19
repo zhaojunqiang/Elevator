@@ -17,6 +17,7 @@ import cn.elevator.BuildConfig;
 import cn.elevator.R;
 import cn.elevator.ui.mvp.account.LoginActivity;
 import cn.elevator.ui.mvp.setting.about.AboutActivity;
+import cn.elevator.utils.SharedPrefUtils;
 
 /**
  * author: DamonJiang
@@ -50,6 +51,7 @@ public class SettingFrament extends Fragment implements View.OnClickListener {
                         .addAction("取消", (dialog, index) -> dialog.dismiss())
                         .addAction("确定", (dialog, index) -> {
                             dialog.dismiss();
+                            SharedPrefUtils.clear();
                             startActivity(new Intent(getActivity(), LoginActivity.class));
                             getActivity().finish();
                         }).show();
