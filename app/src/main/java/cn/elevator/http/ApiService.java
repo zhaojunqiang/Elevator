@@ -1,5 +1,7 @@
 package cn.elevator.http;
 
+import java.util.List;
+
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.LoginData;
 import cn.elevator.bean.TaskData;
@@ -33,6 +35,6 @@ public interface ApiService {
      * @return
      */
     @POST(Api.TESK_LIST)
-    Observable<TaskData> getTaskData(@Body RequestBody body);
+    Observable<List<TaskData>> getTaskData(@Body RequestBody body);
 
 }

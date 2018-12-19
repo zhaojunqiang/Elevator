@@ -1,5 +1,7 @@
 package cn.elevator.ui.mvp.home;
 
+import java.util.List;
+
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -55,14 +57,16 @@ public class HomePresenter implements HomeContact.Presenter {
     }
 
     @Override
-    public void getTaskData(String userId) {
-        Disposable disposableTask = mModle.getHttpTaskData(userId)
+    public void getTaskData(String userId,String dataFields) {
+        Disposable disposableTask = mModle.getHttpTaskData(userId,dataFields)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<TaskData>() {
+                .subscribeWith(new DisposableObserver<List<TaskData>>() {
                     @Override
-                    public void onNext(TaskData value) {
-
+                    public void onNext(List<TaskData> values) {
+                        if (mView.isActive()){
+                            mView.showTaskCount(values);
+                        }
                     }
 
                     @Override

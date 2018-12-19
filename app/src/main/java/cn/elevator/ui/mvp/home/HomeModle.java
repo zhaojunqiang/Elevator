@@ -3,6 +3,8 @@ package cn.elevator.ui.mvp.home;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.List;
+
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.http.ApiService;
@@ -32,10 +34,11 @@ public class HomeModle implements HomeContact.Modle{
      * @return
      */
     @Override
-    public Observable<TaskData> getHttpTaskData(String userId) {
+    public Observable<List<TaskData>> getHttpTaskData(String userId, String dataFields) {
         JSONObject result = new JSONObject();
         try {
             result.put("UserId", userId);
+            result.put("DataFields",dataFields);
         } catch (JSONException e) {
             e.printStackTrace();
         }

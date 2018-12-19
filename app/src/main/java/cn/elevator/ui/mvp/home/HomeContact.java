@@ -1,5 +1,7 @@
 package cn.elevator.ui.mvp.home;
 
+import java.util.List;
+
 import cn.elevator.base.BasePresenter;
 import cn.elevator.base.BaseView;
 import cn.elevator.bean.BannerData;
@@ -15,13 +17,13 @@ public class HomeContact {
     interface Modle {
         Observable<BannerData> getHttpBannersData();
 
-        Observable<TaskData> getHttpTaskData(String userId);
+        Observable<List<TaskData>> getHttpTaskData(String userId, String dataFields);
     }
 
     interface Presenter extends BasePresenter {
         void getBannersData();
 
-        void getTaskData(String userId);
+        void getTaskData(String userId,String dataFields);
     }
 
     interface View extends BaseView{
@@ -34,7 +36,7 @@ public class HomeContact {
 
         void showBanners();
 
-        void showTaskCount();
+        void showTaskCount(List<TaskData> dataList);
 
         void showNetWorkError();
     }

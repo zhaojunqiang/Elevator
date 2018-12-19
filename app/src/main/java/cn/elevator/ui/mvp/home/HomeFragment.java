@@ -20,6 +20,7 @@ import java.util.List;
 
 import cn.elevator.R;
 import cn.elevator.bean.MenuData;
+import cn.elevator.bean.TaskData;
 import cn.elevator.config.Constant;
 import cn.elevator.helper.GlideLoaderHelper;
 import cn.elevator.ui.adapter.HomeMenuAdapter;
@@ -46,6 +47,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
             "http://ww4.sinaimg.cn/large/006uZZy8jw1faic2b16zuj30ci08cwf4.jpg"
     };
     private String mUid;
+    private String dataFields;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -123,7 +125,8 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     @Override
     public void initTaskCount() {
         mUid = SharedPrefUtils.getObj(Constant.USERID);
-        presenter.getTaskData(mUid);
+        dataFields = "CraneRecordListID,UseOrganize,MadeCode";
+        presenter.getTaskData(mUid,dataFields);
     }
 
     /**
@@ -146,8 +149,9 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      * 显示检验任务红点 个数
      */
     @Override
-    public void showTaskCount() {
-
+    public void showTaskCount(List<TaskData> dataList) {
+        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, dataList.size()));
+        menuAdapter.notifyDataSetChanged();
     }
 
     @Override
