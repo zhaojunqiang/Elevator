@@ -22,7 +22,7 @@ import cn.elevator.R;
 
 public class ToolBar extends RelativeLayout {
 
-    private ImageView ivBack;
+    private TextView ivBack;
     private ImageView ivRight;
     private TextView tvTitle;
     private TextView tvRight;
@@ -84,7 +84,7 @@ public class ToolBar extends RelativeLayout {
                 isShowRightView = false;
             }
             //设置值
-            setLeftViewResource(backResource);
+//            setLeftViewResource(backResource);
             setRightViewResource(rightResource);
             setTitleText(title);
             setTitleColor(titleColor);
@@ -100,9 +100,9 @@ public class ToolBar extends RelativeLayout {
         }
     }
 
-    public void setLeftViewResource(int res) {
-        ivBack.setImageResource(res);
-    }
+//    public void setLeftViewResource(int res) {
+//        ivBack.setImageResource(res);
+//    }
 
     public void setRightViewResource(int res) {
         ivRight.setImageResource(res);
@@ -195,9 +195,9 @@ public class ToolBar extends RelativeLayout {
         return ivRight;
     }
 
-    public ImageView getLeftView() {
-        return ivBack;
-    }
+//    public ImageView getLeftView() {
+//        return ivBack;
+//    }
 
     public TextView getTitleView() {
         return tvTitle;
