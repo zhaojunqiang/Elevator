@@ -12,10 +12,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 
 import java.util.Arrays;
 import java.util.List;
@@ -98,14 +96,11 @@ public class HomeFragment extends Fragment implements HomeContact.View {
 
         mRecycleView.setAdapter(menuAdapter);
 
-        menuAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                switch (position){
-                    case 0:
-                        startActivity(new Intent(getActivity(),CheckActivity.class));
-                        break;
-                }
+        menuAdapter.setOnItemClickListener((adapter, view, position) -> {
+            switch (position){
+                case 0:
+                    startActivity(new Intent(getActivity(),CheckActivity.class));
+                    break;
             }
         });
     }
