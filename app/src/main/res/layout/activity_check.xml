@@ -115,6 +115,8 @@
             android:layout_height="1px"
             android:background="@color/colorLine"/>
         <LinearLayout
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
@@ -176,6 +178,33 @@
                 android:textSize="@dimen/sp_12"
                 android:text="检验日期"
                 android:gravity="center"/>
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#808080"
+                android:textSize="@dimen/sp_12"
+                android:text="状态"
+                android:gravity="center"/>
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="#808080"
+                android:textSize="@dimen/sp_12"
+                android:text="操作"
+                android:gravity="center"/>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/colorLine"/>
+        <android.support.v7.widget.RecyclerView
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:id="@+id/id_rv"
+            style="@style/match2wrap"
+            android:scrollbars="none">
+        </android.support.v7.widget.RecyclerView>
     </LinearLayout>
 </LinearLayout>

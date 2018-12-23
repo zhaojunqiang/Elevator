@@ -1,14 +1,13 @@
-package cn.elevator.ui.mvp.home;
+package cn.elevator.ui.mvp.home.check;
 
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.util.List;
 
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.http.ApiService;
 import cn.elevator.http.HttpClient;
+import cn.elevator.ui.mvp.home.HomeContact;
 import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -18,17 +17,12 @@ import okhttp3.RequestBody;
  * date:   2018/8/13 0013
  * description: 首页获取网络数据
  */
-public class HomeModle implements HomeContact.Modle{
+public class CheckModle implements CheckContact.Modle{
     /**
      * 获取广告轮播数据
      * @return
      */
-    @Override
-    public Observable<BannerData> getHttpBannersData() {
-        return HttpClient.getInstance()
-                .create(ApiService.class)
-                .getBannerData();
-    }
+
     /**
      * 获取检验任务列表数据（计算待检验任务个数，显示红点）
      * @return

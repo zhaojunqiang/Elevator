@@ -121,7 +121,8 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      */
     @Override
     public void initBanners() {
-        presenter.getBannersData();
+//        presenter.getBannersData();
+        showBanners();
     }
 
     /**
@@ -130,9 +131,9 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     @Override
     public void initTaskCount() {
         mUid = SharedPrefUtils.getObj(Constant.USERID);
-        dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize," +
-                "MadeCode,RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType," +
-                "APPRecordState,RecordTime,SurveyConclusions,SurveyDate";
+        dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
+                "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
+                "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode";
         presenter.getTaskData(mUid,dataFields);
     }
 
@@ -153,12 +154,20 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     }
 
     /**
-     * 显示检验任务红点 个数
+     * 显示检验任务红点个数
      */
     @Override
-    public void showTaskCount(List<TaskData> dataList) {
-        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, dataList.size()));
-        menuAdapter.notifyDataSetChanged();
+    public void showTaskCount(TaskData taskData) {
+        int count = 0;
+        if(taskData.getData() != null && taskData.getData().size()>0){
+            for (TaskData.DataBean bean:taskData.getData()){
+                if (bean.getAPPRecordState() ==1 || bean.getAPPRecordState()==2){
+                    count++;
+                }
+            }
+            menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, count));
+            menuAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override

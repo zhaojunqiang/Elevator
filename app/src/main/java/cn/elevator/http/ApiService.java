@@ -35,6 +35,6 @@ public interface ApiService {
      * @return
      */
     @POST(Api.TESK_LIST)
-    Observable<List<TaskData>> getTaskData(@Body RequestBody body);
+    Observable<TaskData> getTaskData(@Body RequestBody body);
 
 }

@@ -15,7 +15,7 @@ public class Api {
     public static final String Banner = BASE_URL + "";
 
     // 检验任务列表
-    public static final String TESK_LIST = BASE_URL + "Task/GetCheckProject";
+    public static final String TESK_LIST = BASE_URL + "Task/GetCheckTaskList";
 
     // 检验项目数据
     public static final String PROJECT_DATA = BASE_URL + "Task/GetCheckProject";
