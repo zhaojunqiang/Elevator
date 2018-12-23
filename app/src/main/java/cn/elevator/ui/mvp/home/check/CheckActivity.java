@@ -20,6 +20,7 @@ import cn.elevator.config.Constant;
 import cn.elevator.ui.adapter.CheckListAdapter;
 import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.utils.ToastUtil;
+import cn.elevator.widget.ExpendRecycleView;
 import cn.elevator.widget.ToolBar;
 
 public class CheckActivity extends AppCompatActivity implements CheckContact.View {
@@ -28,7 +29,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private CheckPresenter presenter;
     private String mUid;
     private String dataFields;
-    private RecyclerView mRecycleView;
+    private ExpendRecycleView mRecycleView;
     private List<TaskData.DataBean> dataBeans;
     private CheckListAdapter mAdapter;
     @Override
