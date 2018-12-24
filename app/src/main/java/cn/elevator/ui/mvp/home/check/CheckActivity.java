@@ -16,6 +16,7 @@ import java.util.List;
 
 import cn.elevator.R;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
 import cn.elevator.ui.adapter.CheckListAdapter;
 import cn.elevator.utils.SharedPrefUtils;
@@ -30,7 +31,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private String mUid;
     private String dataFields;
     private ExpendRecycleView mRecycleView;
-    private List<TaskData.DataBean> dataBeans;
+    private List<TaskListData> dataBeans;
     private CheckListAdapter mAdapter;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,7 +73,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     public void showTaskData(TaskData taskData) {
         dataBeans.clear();
         dataBeans.addAll(taskData.getData());
-        mAdapter.notifyDataSetChanged();
+        mRecycleView.getAdapter().notifyDataSetChanged();
     }
 
     @Override

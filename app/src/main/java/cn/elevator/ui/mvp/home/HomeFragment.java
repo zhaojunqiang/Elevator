@@ -21,6 +21,7 @@ import java.util.List;
 import cn.elevator.R;
 import cn.elevator.bean.MenuData;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
 import cn.elevator.helper.GlideLoaderHelper;
 import cn.elevator.ui.adapter.HomeMenuAdapter;
@@ -160,7 +161,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     public void showTaskCount(TaskData taskData) {
         int count = 0;
         if(taskData.getData() != null && taskData.getData().size()>0){
-            for (TaskData.DataBean bean:taskData.getData()){
+            for (TaskListData bean:taskData.getData()){
                 if (bean.getAPPRecordState() ==1 || bean.getAPPRecordState()==2){
                     count++;
                 }

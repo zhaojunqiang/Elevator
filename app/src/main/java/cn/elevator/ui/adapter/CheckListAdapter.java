@@ -13,6 +13,7 @@ import java.util.List;
 import cn.elevator.R;
 import cn.elevator.bean.MenuData;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.TaskListData;
 import q.rorbin.badgeview.QBadgeView;
 
 /**
@@ -21,13 +22,13 @@ import q.rorbin.badgeview.QBadgeView;
  * @describe 首页菜单
  *
  **/
-public class CheckListAdapter extends BaseQuickAdapter<TaskData.DataBean, BaseViewHolder> {
-    public CheckListAdapter(@Nullable List<TaskData.DataBean> data) {
+public class CheckListAdapter extends BaseQuickAdapter<TaskListData, BaseViewHolder> {
+    public CheckListAdapter(@Nullable List<TaskListData> data) {
         super(R.layout.item_check_list, data);
     }
 
     @Override
-    protected void convert(BaseViewHolder helper, TaskData.DataBean item) {
+    protected void convert(BaseViewHolder helper, TaskListData item) {
        helper.setText(R.id.id_tv_num,item.getCraneRecordListID())
                .setText(R.id.id_tv_type,getTypeStr(item.getCheckType()))
                .setText(R.id.id_tv_report_num,item.getReportID())
