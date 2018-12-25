@@ -24,6 +24,7 @@ public class CheckContact {
 
         void getTaskData(String userId,String dataFields);
         void getTaskFromDataBase();
+        void getTaskByParam(String param,int type);
     }
 
     interface View extends BaseView{
@@ -33,6 +34,7 @@ public class CheckContact {
         void showTaskData(TaskData taskData);
 
         void showTaskList(List<TaskListData> taskListData);
+        void showSelectList(List<TaskListData> taskListData);
 
         void showNetWorkError();
     }

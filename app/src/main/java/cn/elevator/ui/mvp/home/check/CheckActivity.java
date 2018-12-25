@@ -1,5 +1,6 @@
 package cn.elevator.ui.mvp.home.check;
 
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -8,9 +9,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +30,7 @@ import cn.elevator.widget.ExpendRecycleView;
 import cn.elevator.widget.ToolBar;
 import io.objectbox.Box;
 
-public class CheckActivity extends AppCompatActivity implements CheckContact.View {
+public class CheckActivity extends AppCompatActivity implements CheckContact.View,View.OnClickListener {
     // 记录当前 activity 是否是显示状态
     private boolean activityState = false;
     private CheckPresenter presenter;
@@ -36,6 +39,11 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private ExpendRecycleView mRecycleView;
     private List<TaskListData> dataBeans;
     private CheckListAdapter mAdapter;
+    private List<String> mYears;
+    private String[] years;
+    private String[] types = {"首检","定检","监检"};
+    private List<String> mUsers;
+    private String[] users;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,6 +93,27 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataBeans.clear();
         dataBeans.addAll(taskListData);
         mRecycleView.getAdapter().notifyDataSetChanged();
+        mYears.clear();
+        mUsers.clear();
+        for (TaskListData data:taskListData){
+            if(!mYears.contains(String.valueOf(data.getCheckYear()))){
+                mYears.add(String.valueOf(data.getCheckYear()));
+            }
+            if(!mUsers.contains(data.getUseOrganize())){
+                mUsers.add(data.getUseOrganize());
+            }
+        }
+        String[] arrayYear = new String[mYears.size()];
+        years = mYears.toArray(arrayYear);
+        String[] arrayUser = new String[mUsers.size()];
+        users = mUsers.toArray(arrayUser);
+    }
+
+    @Override
+    public void showSelectList(List<TaskListData> taskListData) {
+        dataBeans.clear();
+        dataBeans.addAll(taskListData);
+        mRecycleView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -97,25 +126,53 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         presenter = new CheckPresenter(this);
         ToolBar toolBar = findViewById(R.id.titlebar);
         toolBar.setLeftButtonOnClick(v -> finish());
-        mRecycleView = findViewById(R.id.id_rv);
+        view.findViewById(R.id.id_ll_time).setOnClickListener(this);
+        view.findViewById(R.id.id_ll_type).setOnClickListener(this);
+        view.findViewById(R.id.id_ll_company).setOnClickListener(this);
 
+        mRecycleView = findViewById(R.id.id_rv);
         //创建布局管理
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
 
         dataBeans = new ArrayList<>();
+        mYears = new ArrayList<>();
+        mUsers = new ArrayList<>();
         mAdapter = new CheckListAdapter(dataBeans);
         mRecycleView.setAdapter(mAdapter);
-        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
-                TaskListData data = dataBeans.get(position);
-                data.setAPPRecordState(2);
-                Box<TaskListData> listDataBox = App.getInstance().
-                        getBoxStore().boxFor(TaskListData.class);
-                listDataBox.put(data);
-            }
+        mAdapter.setOnClick(listData -> {
+            listData.setAPPRecordState(2);
+            Box<TaskListData> listDataBox = App.getInstance().
+                    getBoxStore().boxFor(TaskListData.class);
+            listDataBox.put(listData);
         });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.id_ll_time:
+                new QMUIDialog.MenuDialogBuilder(this).addItems(years, (dialog, which) -> {
+//                    Toast.makeText(CheckActivity.this, "你选择了 " +years[which], Toast.LENGTH_SHORT).show();
+                    presenter.getTaskByParam(years[which],1);
+                    dialog.dismiss();
+                }).show();
+                break;
+            case R.id.id_ll_type:
+                new QMUIDialog.MenuDialogBuilder(this).addItems(types, (dialog, which) -> {
+//                    Toast.makeText(CheckActivity.this, "你选择了 " +types[which], Toast.LENGTH_SHORT).show();
+                    presenter.getTaskByParam(String.valueOf(which+1),2);
+                    dialog.dismiss();
+                }).show();
+                break;
+            case R.id.id_ll_company:
+                new QMUIDialog.MenuDialogBuilder(this).addItems(users, (dialog, which) -> {
+//                    Toast.makeText(CheckActivity.this, "你选择了 " +users[which], Toast.LENGTH_SHORT).show();
+                    presenter.getTaskByParam(users[which],3);
+                    dialog.dismiss();
+                }).show();
+                break;
+        }
     }
 }

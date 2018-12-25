@@ -4,9 +4,11 @@ import cn.elevator.app.App;
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
+import cn.elevator.bean.TaskListData_;
 import cn.elevator.ui.mvp.home.HomeContact;
 import cn.elevator.ui.mvp.home.HomeModle;
 import io.objectbox.Box;
+import io.objectbox.Property;
 import io.objectbox.android.AndroidScheduler;
 import io.objectbox.query.Query;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -74,6 +76,25 @@ public class CheckPresenter implements CheckContact.Presenter {
 //        if (mView.isActive()){
 //            mView.showTaskList(listDataBox.getAll());
 //        }
+    }
+
+    @Override
+    public void getTaskByParam(String param, int type) {
+        Box<TaskListData> listDataBox = App.getInstance().
+                getBoxStore().boxFor(TaskListData.class);
+        Query<TaskListData> query = null;
+        if(type==1){//年
+            query = listDataBox.query().equal(TaskListData_.CheckYear,Integer.valueOf(param)).build();
+        }else if(type==2){//检验类别
+            query = listDataBox.query().equal(TaskListData_.CheckType,Integer.valueOf(param)).build();
+        }else if(type==3){//使用单位
+            query = listDataBox.query().equal(TaskListData_.UseOrganize,param).build();
+        }
+        query.subscribe().on(AndroidScheduler.mainThread()).observer(data -> {
+            if (mView.isActive()){
+                mView.showSelectList(data);
+            }
+        });
     }
 
     @Override
