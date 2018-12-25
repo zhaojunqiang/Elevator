@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
@@ -44,6 +45,10 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private String[] types = {"首检","定检","监检"};
     private List<String> mUsers;
     private String[] users;
+
+    private ImageView mTime;
+    private ImageView mType;
+    private ImageView mUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -130,6 +135,9 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         view.findViewById(R.id.id_ll_type).setOnClickListener(this);
         view.findViewById(R.id.id_ll_company).setOnClickListener(this);
 
+        mTime = view.findViewById(R.id.id_img_time);
+        mType = view.findViewById(R.id.id_img_type);
+        mUser = view.findViewById(R.id.id_img_user);
         mRecycleView = findViewById(R.id.id_rv);
         //创建布局管理
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -153,25 +161,41 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.id_ll_time:
-                new QMUIDialog.MenuDialogBuilder(this).addItems(years, (dialog, which) -> {
+                mTime.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
+                QMUIDialog.MenuDialogBuilder timeBuilder = new QMUIDialog.MenuDialogBuilder(this).addItems(years, (dialog, which) -> {
 //                    Toast.makeText(CheckActivity.this, "你选择了 " +years[which], Toast.LENGTH_SHORT).show();
                     presenter.getTaskByParam(years[which],1);
                     dialog.dismiss();
-                }).show();
+                    mTime.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+                });
+                QMUIDialog timeDialog = timeBuilder.create();
+                timeDialog.setOnDismissListener(dialog -> mTime.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
+                timeDialog.show();
                 break;
             case R.id.id_ll_type:
-                new QMUIDialog.MenuDialogBuilder(this).addItems(types, (dialog, which) -> {
+                mType.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
+                QMUIDialog.MenuDialogBuilder typeBuilder = new QMUIDialog.MenuDialogBuilder(this).
+                        addItems(types, (dialog, which) -> {
 //                    Toast.makeText(CheckActivity.this, "你选择了 " +types[which], Toast.LENGTH_SHORT).show();
                     presenter.getTaskByParam(String.valueOf(which+1),2);
                     dialog.dismiss();
-                }).show();
+                    mType.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+                });
+                QMUIDialog typeDialog = typeBuilder.create();
+                typeDialog.setOnDismissListener(dialog -> mType.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
+                typeDialog.show();
                 break;
             case R.id.id_ll_company:
-                new QMUIDialog.MenuDialogBuilder(this).addItems(users, (dialog, which) -> {
+                mUser.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
+                QMUIDialog.MenuDialogBuilder userBuilder =  new QMUIDialog.MenuDialogBuilder(this).addItems(users, (dialog, which) -> {
 //                    Toast.makeText(CheckActivity.this, "你选择了 " +users[which], Toast.LENGTH_SHORT).show();
                     presenter.getTaskByParam(users[which],3);
                     dialog.dismiss();
-                }).show();
+                    mUser.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+                });
+                QMUIDialog userDialog = userBuilder.create();
+                userDialog.setOnDismissListener(dialog -> mUser.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
+                userDialog.show();
                 break;
         }
     }
