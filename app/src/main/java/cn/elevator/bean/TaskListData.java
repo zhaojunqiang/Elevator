@@ -1,10 +1,15 @@
 package cn.elevator.bean;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+import io.objectbox.annotation.Transient;
+
 /**
  * Created by Yangzb on 2018/12/24 09:45
  * E-mail：yangzongbin@si-top.com
  * Describe:
  */
+@Entity
 public class TaskListData {
     /**
      * CraneRecordListID : CCR201812110002
@@ -26,7 +31,8 @@ public class TaskListData {
      * RegistCode : 注册代码
      * InspectionID : null
      */
-
+    @Id(assignable = true)
+    private long id;
     private String CraneRecordListID;
     private String CraneRecordCode;
     private String CheckRecordID;
@@ -44,7 +50,16 @@ public class TaskListData {
     private String MadeCode;
     private String EquipmentCode;
     private String RegistCode;
+    @Transient
     private Object InspectionID;
+
+    public long getId() {
+        return Long.valueOf(this.CraneRecordListID);
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 
     public String getCraneRecordListID() {
         return CraneRecordListID;

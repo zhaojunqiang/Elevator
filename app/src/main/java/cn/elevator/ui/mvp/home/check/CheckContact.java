@@ -1,9 +1,12 @@
 package cn.elevator.ui.mvp.home.check;
 
+import java.util.List;
+
 import cn.elevator.base.BasePresenter;
 import cn.elevator.base.BaseView;
 import cn.elevator.bean.LoginData;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.TaskListData;
 import io.reactivex.Observable;
 
 /**
@@ -20,6 +23,7 @@ public class CheckContact {
     interface Presenter extends BasePresenter {
 
         void getTaskData(String userId,String dataFields);
+        void getTaskFromDataBase();
     }
 
     interface View extends BaseView{
@@ -27,6 +31,8 @@ public class CheckContact {
         boolean isActive();
 
         void showTaskData(TaskData taskData);
+
+        void showTaskList(List<TaskListData> taskListData);
 
         void showNetWorkError();
     }

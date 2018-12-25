@@ -9,12 +9,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import cn.elevator.R;
+import cn.elevator.app.App;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
@@ -23,6 +25,7 @@ import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.utils.ToastUtil;
 import cn.elevator.widget.ExpendRecycleView;
 import cn.elevator.widget.ToolBar;
+import io.objectbox.Box;
 
 public class CheckActivity extends AppCompatActivity implements CheckContact.View {
     // 记录当前 activity 是否是显示状态
@@ -48,7 +51,8 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
                 "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState," +
                 "RecordTime,SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode";
-        presenter.getTaskData(mUid,dataFields);
+//        presenter.getTaskData(mUid,dataFields);
+        presenter.getTaskFromDataBase();
     }
 
     @Override
@@ -77,6 +81,13 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     }
 
     @Override
+    public void showTaskList(List<TaskListData> taskListData) {
+        dataBeans.clear();
+        dataBeans.addAll(taskListData);
+        mRecycleView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
     public void showNetWorkError() {
         ToastUtil.showToast(this, getString(R.string.http_error));
     }
@@ -96,5 +107,15 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataBeans = new ArrayList<>();
         mAdapter = new CheckListAdapter(dataBeans);
         mRecycleView.setAdapter(mAdapter);
+        mAdapter.setOnItemClickListener(new BaseQuickAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseQuickAdapter adapter, View view, int position) {
+                TaskListData data = dataBeans.get(position);
+                data.setAPPRecordState(2);
+                Box<TaskListData> listDataBox = App.getInstance().
+                        getBoxStore().boxFor(TaskListData.class);
+                listDataBox.put(data);
+            }
+        });
     }
 }

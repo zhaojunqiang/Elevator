@@ -2,8 +2,11 @@ package cn.elevator.ui.mvp.home;
 
 import java.util.List;
 
+import cn.elevator.app.App;
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.TaskListData;
+import io.objectbox.Box;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -66,6 +69,8 @@ public class HomePresenter implements HomeContact.Presenter {
                     public void onNext(TaskData taskData) {
                         if (mView.isActive()){
                             mView.showTaskCount(taskData);
+                            Box<TaskListData> listDataBox = App.getInstance().getBoxStore().boxFor(TaskListData.class);
+                            listDataBox.put(taskData.getData());
                         }
                     }
 

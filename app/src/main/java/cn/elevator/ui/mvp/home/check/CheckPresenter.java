@@ -1,9 +1,14 @@
 package cn.elevator.ui.mvp.home.check;
 
+import cn.elevator.app.App;
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.TaskListData;
 import cn.elevator.ui.mvp.home.HomeContact;
 import cn.elevator.ui.mvp.home.HomeModle;
+import io.objectbox.Box;
+import io.objectbox.android.AndroidScheduler;
+import io.objectbox.query.Query;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -50,6 +55,25 @@ public class CheckPresenter implements CheckContact.Presenter {
                     }
                 });
         compositeDisposable.add(disposableTask);
+    }
+
+    @Override
+    public void getTaskFromDataBase() {
+        /**
+         *Query<Task> query = taskBox.query().equal(Task_.complete, false).build();
+         * query.subscribe().on(AndroidScheduler.mainThread()).observer(data -> updateUi(data));
+         */
+        Box<TaskListData> listDataBox = App.getInstance().
+                getBoxStore().boxFor(TaskListData.class);
+        Query<TaskListData> query = listDataBox.query().build();
+        query.subscribe().on(AndroidScheduler.mainThread()).observer(data -> {
+            if (mView.isActive()){
+            mView.showTaskList(data);
+        }
+        });
+//        if (mView.isActive()){
+//            mView.showTaskList(listDataBox.getAll());
+//        }
     }
 
     @Override
