@@ -30,6 +30,7 @@ public class TaskListData {
      * EquipmentCode : 设备代码
      * RegistCode : 注册代码
      * InspectionID : null
+     * UnitNumber : 使用单位设备编号
      */
     @Id(assignable = true)
     private long id;
@@ -50,6 +51,7 @@ public class TaskListData {
     private String MadeCode;
     private String EquipmentCode;
     private String RegistCode;
+    private String UnitNumber;
     @Transient
     private Object InspectionID;
 
@@ -195,6 +197,14 @@ public class TaskListData {
 
     public void setRegistCode(String registCode) {
         RegistCode = registCode;
+    }
+
+    public String getUnitNumber() {
+        return UnitNumber;
+    }
+
+    public void setUnitNumber(String unitNumber) {
+        UnitNumber = unitNumber;
     }
 
     public Object getInspectionID() {

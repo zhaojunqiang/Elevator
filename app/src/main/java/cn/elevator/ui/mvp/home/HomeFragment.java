@@ -134,7 +134,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         mUid = SharedPrefUtils.getObj(Constant.USERID);
         dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
                 "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
-                "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode";
+                "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode,UnitNumber";
         presenter.getTaskData(mUid,dataFields);
     }
 
