@@ -3,6 +3,8 @@ package cn.elevator.ui.mvp.home.check;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Map;
+
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.http.ApiService;
@@ -36,6 +38,18 @@ public class CheckModle implements CheckContact.Modle{
         } catch (JSONException e) {
             e.printStackTrace();
         }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), result.toString());
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .getTaskData(body);
+    }
+    /**
+     * 获取检验任务列表数据 分页（计算待检验任务个数，显示红点）
+     * @return
+     */
+    @Override
+    public Observable<TaskData> getTaskDataList(Map<String,String> params) {
+        JSONObject result = new JSONObject(params);
         RequestBody body = RequestBody.create(MediaType.parse("application/json"), result.toString());
         return HttpClient.getInstance()
                 .create(ApiService.class)

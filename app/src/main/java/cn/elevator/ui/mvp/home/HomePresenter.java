@@ -69,8 +69,8 @@ public class HomePresenter implements HomeContact.Presenter {
                     public void onNext(TaskData taskData) {
                         if (mView.isActive()){
                             mView.showTaskCount(taskData);
-                            Box<TaskListData> listDataBox = App.getInstance().getBoxStore().boxFor(TaskListData.class);
-                            listDataBox.put(taskData.getData());
+//                            Box<TaskListData> listDataBox = App.getInstance().getBoxStore().boxFor(TaskListData.class);
+//                            listDataBox.put(taskData.getData());
                         }
                     }
 

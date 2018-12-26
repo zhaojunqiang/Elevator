@@ -1,5 +1,7 @@
 package cn.elevator.ui.mvp.home.check;
 
+import java.util.Map;
+
 import cn.elevator.app.App;
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
@@ -58,7 +60,71 @@ public class CheckPresenter implements CheckContact.Presenter {
                 });
         compositeDisposable.add(disposableTask);
     }
+    @Override
+    public void getTaskList(Map<String, String> params) {
+        if (mView.isActive()){
+            mView.showLoading();
+        }
+        Disposable disposableTask = mModle.getTaskDataList(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<TaskData>() {
+                    @Override
+                    public void onNext(TaskData taskData) {
+                        if (mView.isActive()){
+                            mView.showTaskData(taskData);
+                        }
+                        Box<TaskListData> listDataBox = App.getInstance().getBoxStore().boxFor(TaskListData.class);
+                        listDataBox.put(taskData.getData());
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+                        if (mView.isActive()){
+                            mView.noData();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()){
+                            mView.hideLoading();
+                        }
+                    }
+                });
+        compositeDisposable.add(disposableTask);
+    }
+    @Override
+    public void getTaskListMore(Map<String, String> params) {
+        Disposable disposableTask = mModle.getTaskDataList(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<TaskData>() {
+                    @Override
+                    public void onNext(TaskData taskData) {
+                        if (mView.isActive()){
+                            mView.showMoreTaskData(taskData);
+                        }
+                        Box<TaskListData> listDataBox = App.getInstance().getBoxStore().boxFor(TaskListData.class);
+                        listDataBox.put(taskData.getData());
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        if (mView.isActive()){
+                            mView.noMoreData();
+                        }
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        if (mView.isActive()){
+                            mView.hideLoadingMore();
+                        }
+                    }
+                });
+        compositeDisposable.add(disposableTask);
+    }
     @Override
     public void getTaskFromDataBase() {
         /**

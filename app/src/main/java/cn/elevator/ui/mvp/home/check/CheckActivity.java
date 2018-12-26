@@ -1,6 +1,7 @@
 package cn.elevator.ui.mvp.home.check;
 
 import android.content.DialogInterface;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -10,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,7 +20,9 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import cn.elevator.R;
 import cn.elevator.app.App;
@@ -29,15 +33,19 @@ import cn.elevator.ui.adapter.CheckListAdapter;
 import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.utils.ToastUtil;
 import cn.elevator.widget.ExpendRecycleView;
+import cn.elevator.widget.RecycleRefreshLoadLayout;
 import cn.elevator.widget.ToolBar;
 import io.objectbox.Box;
 
-public class CheckActivity extends AppCompatActivity implements CheckContact.View,View.OnClickListener {
+public class CheckActivity extends AppCompatActivity implements CheckContact.View,View.OnClickListener,SwipeRefreshLayout.OnRefreshListener, RecycleRefreshLoadLayout.OnLoadListener {
     // 记录当前 activity 是否是显示状态
     private boolean activityState = false;
     private CheckPresenter presenter;
     private String mUid;
     private String dataFields;
+    private boolean isRefresh;
+    private RelativeLayout mNoDataLayout;
+    private RecycleRefreshLoadLayout mRecycleRefreshLoadLayout;
     private ExpendRecycleView mRecycleView;
     private List<TaskListData> dataBeans;
     private CheckListAdapter mAdapter;
@@ -53,10 +61,13 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private TextView mTvTime;
     private TextView mTvType;
     private TextView mTvUser;
+    private int mPage = 1;
+    private int mPageCount = 10;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_check);
+        activityState = true;
         QMUIStatusBarHelper.translucent(this);  LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_check, null);
         setContentView(view);
         initViews(view);
@@ -66,16 +77,21 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private void initTaskData() {
         mUid = SharedPrefUtils.getObj(Constant.USERID);
         dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
-                "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState," +
-                "RecordTime,SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode";
+                "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
+                "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode,UnitNumber";
 //        presenter.getTaskData(mUid,dataFields);
-        presenter.getTaskFromDataBase();
+//        presenter.getTaskFromDataBase();
+        Map<String,String> params = new HashMap<>();
+        params.put("userid",mUid);
+        params.put("DataFields",dataFields);
+        params.put("page",String.valueOf(mPage));
+        params.put("limit",String.valueOf(mPageCount));
+        presenter.getTaskList(params);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        activityState = true;
         presenter.subscribe();
     }
 
@@ -92,7 +108,14 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 
     @Override
     public void showTaskData(TaskData taskData) {
+        mPage=1;
         dataBeans.clear();
+        dataBeans.addAll(taskData.getData());
+        mRecycleView.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void showMoreTaskData(TaskData taskData) {
         dataBeans.addAll(taskData.getData());
         mRecycleView.getAdapter().notifyDataSetChanged();
     }
@@ -120,6 +143,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 
     @Override
     public void showSelectList(List<TaskListData> taskListData) {
+        isRefresh = false;
         dataBeans.clear();
         dataBeans.addAll(taskListData);
         mRecycleView.getAdapter().notifyDataSetChanged();
@@ -128,6 +152,34 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     @Override
     public void showNetWorkError() {
         ToastUtil.showToast(this, getString(R.string.http_error));
+    }
+
+    @Override
+    public void noData() {
+        dataBeans.clear();
+        mRecycleView.getAdapter().notifyDataSetChanged();
+        mNoDataLayout.setVisibility(View.VISIBLE);
+        mRecycleRefreshLoadLayout.setRefreshing(false);
+    }
+
+    @Override
+    public void noMoreData() {
+        mRecycleRefreshLoadLayout.setNoMoreData(true);
+    }
+
+    @Override
+    public void hideLoadingMore() {
+        mRecycleRefreshLoadLayout.loadFinish();
+    }
+
+    @Override
+    public void showLoading() {
+        mRecycleRefreshLoadLayout.setRefreshing(true);
+    }
+
+    @Override
+    public void hideLoading() {
+        mRecycleRefreshLoadLayout.setRefreshing(false);
     }
 
     @Override
@@ -146,7 +198,14 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         mTvType = view.findViewById(R.id.id_tv_type);
         mTvUser = view.findViewById(R.id.id_tv_company);
 
+        mNoDataLayout = view.findViewById(R.id.layout_no_data);
         mRecycleView = findViewById(R.id.id_rv);
+        mRecycleRefreshLoadLayout = view.findViewById(R.id.refreshLoadLayoutId);
+        mRecycleRefreshLoadLayout.setColorSchemeColors(findColorById(R.color.colorPrimary));
+        mRecycleRefreshLoadLayout.setOnLoadListener(this);
+        mRecycleRefreshLoadLayout.setOnRefreshListener(this);
+        View loadFooterView = LayoutInflater.from(this).inflate(R.layout.view_load_more, null);
+        mRecycleRefreshLoadLayout.setViewFooter(loadFooterView);
         //创建布局管理
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -164,7 +223,9 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             listDataBox.put(listData);
         });
     }
-
+    public int findColorById(int color) {
+        return getResources().getColor(color);
+    }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
@@ -208,6 +269,32 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
                 userDialog.setOnDismissListener(dialog -> mUser.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
                 userDialog.show();
                 break;
+        }
+    }
+
+    @Override
+    public void onRefresh() {
+        isRefresh = true;
+        mNoDataLayout.setVisibility(View.GONE);
+        mRecycleRefreshLoadLayout.setNoMoreData(false);
+        Map<String,String> params = new HashMap<>();
+        params.put("userid",mUid);
+        params.put("DataFields",dataFields);
+        params.put("page",String.valueOf(mPage));
+        params.put("limit",String.valueOf(mPageCount));
+        presenter.getTaskList(params);
+    }
+
+    @Override
+    public void onLoadMore() {
+        if(dataBeans.size()>0 && !isRefresh){
+            mPage++;
+            Map<String,String> params = new HashMap<>();
+            params.put("userid",mUid);
+            params.put("DataFields",dataFields);
+            params.put("page",String.valueOf(mPage));
+            params.put("limit",String.valueOf(mPageCount));
+            presenter.getTaskListMore(params);
         }
     }
 }

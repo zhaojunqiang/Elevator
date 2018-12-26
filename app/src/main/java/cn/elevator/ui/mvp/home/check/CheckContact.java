@@ -1,6 +1,7 @@
 package cn.elevator.ui.mvp.home.check;
 
 import java.util.List;
+import java.util.Map;
 
 import cn.elevator.base.BasePresenter;
 import cn.elevator.base.BaseView;
@@ -18,6 +19,7 @@ public class CheckContact {
 
     interface Modle {
         Observable<TaskData> getHttpTaskData(String userId, String dataFields);
+        Observable<TaskData> getTaskDataList(Map<String,String> params);
     }
 
     interface Presenter extends BasePresenter {
@@ -25,6 +27,8 @@ public class CheckContact {
         void getTaskData(String userId,String dataFields);
         void getTaskFromDataBase();
         void getTaskByParam(String param,int type);
+        void getTaskList(Map<String,String> params);
+        void getTaskListMore(Map<String,String> params);
     }
 
     interface View extends BaseView{
@@ -32,11 +36,21 @@ public class CheckContact {
         boolean isActive();
 
         void showTaskData(TaskData taskData);
+        void showMoreTaskData(TaskData taskData);
 
         void showTaskList(List<TaskListData> taskListData);
         void showSelectList(List<TaskListData> taskListData);
 
         void showNetWorkError();
+
+        void noData();
+
+        void noMoreData();
+
+        void hideLoadingMore();
+
+        void showLoading();
+        void hideLoading();
     }
 
 }

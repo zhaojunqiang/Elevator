@@ -92,10 +92,21 @@
                     android:padding="@dimen/dp_4" />
             </LinearLayout>
         </LinearLayout>
-        <cn.elevator.widget.ExpendRecycleView
-            android:id="@+id/id_rv"
-            style="@style/match2wrap"
-            android:scrollbars="none">
-        </cn.elevator.widget.ExpendRecycleView>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <cn.elevator.widget.RecycleRefreshLoadLayout
+                android:id="@+id/refreshLoadLayoutId"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <cn.elevator.widget.ExpendRecycleView
+                    android:id="@+id/id_rv"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scrollbars="none">
+                </cn.elevator.widget.ExpendRecycleView>
+            </cn.elevator.widget.RecycleRefreshLoadLayout>
+            <include layout="@layout/view_nodata"/>
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>
