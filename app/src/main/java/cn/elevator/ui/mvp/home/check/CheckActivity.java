@@ -40,7 +40,7 @@ import cn.elevator.widget.RecycleRefreshLoadLayout;
 import cn.elevator.widget.ToolBar;
 import io.objectbox.Box;
 
-public class CheckActivity extends AppCompatActivity implements CheckContact.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RecycleRefreshLoadLayout.OnLoadListener {
+public class CheckActivity extends AppCompatActivity implements CheckContact.View, View.OnClickListener {
     // 记录当前 activity 是否是显示状态
     private boolean activityState = false;
     private CheckPresenter presenter;
@@ -48,7 +48,6 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private String dataFields;
     private boolean isRefresh;
     private RelativeLayout mNoDataLayout;
-    private RecycleRefreshLoadLayout mRecycleRefreshLoadLayout;
     private ExpendRecycleView mRecycleView;
     private List<TaskListData> dataBeans;
     private CheckListAdapter mAdapter;
@@ -90,22 +89,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
                 "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
                 "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode,UnitNumber";
-
-        Box<TaskListData> listDataBox = App.getInstance().
-                getBoxStore().boxFor(TaskListData.class);
-        if(listDataBox.getAll()!=null && listDataBox.getAll().size()>0){
-            dataBeans.addAll(listDataBox.getAll());
-            mRecycleView.getAdapter().notifyDataSetChanged();
-        }else {
-//        presenter.getTaskData(mUid,dataFields);
-//        presenter.getTaskFromDataBase();
-            Map<String, String> params = new HashMap<>();
-            params.put("UserId", mUid);
-            params.put("DataFields", dataFields);
-            params.put("page", String.valueOf(mPage));
-            params.put("limit", String.valueOf(mPageCount));
-            presenter.getTaskList(params);
-        }
+        presenter.getTaskFromDataBase();
     }
 
     @Override
@@ -148,25 +132,15 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataBeans.clear();
         dataBeans.addAll(taskListData);
         mRecycleView.getAdapter().notifyDataSetChanged();
-//        mYears.clear();
-//        mUsers.clear();
-//        for (TaskListData data : taskListData) {
-//            if (!mYears.contains(String.valueOf(data.getCheckYear()))) {
-//                mYears.add(String.valueOf(data.getCheckYear()));
-//            }
-//            if (!mUsers.contains(data.getUseOrganize())) {
-//                mUsers.add(data.getUseOrganize());
-//            }
-//        }
-//        String[] arrayYear = new String[mYears.size()];
-//        years = mYears.toArray(arrayYear);
-//        String[] arrayUser = new String[mUsers.size()];
-//        users = mUsers.toArray(arrayUser);
     }
 
     @Override
     public void showSelectList(List<TaskListData> taskListData) {
-        isRefresh = false;
+        if (taskListData!=null && taskListData.size()>0){
+            mNoDataLayout.setVisibility(View.GONE);
+        }else {
+            mNoDataLayout.setVisibility(View.VISIBLE);
+        }
         dataBeans.clear();
         dataBeans.addAll(taskListData);
         mRecycleView.getAdapter().notifyDataSetChanged();
@@ -182,27 +156,26 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataBeans.clear();
         mRecycleView.getAdapter().notifyDataSetChanged();
         mNoDataLayout.setVisibility(View.VISIBLE);
-        mRecycleRefreshLoadLayout.setRefreshing(false);
     }
 
     @Override
     public void noMoreData() {
-        mRecycleRefreshLoadLayout.setNoMoreData(true);
+
     }
 
     @Override
     public void hideLoadingMore() {
-        mRecycleRefreshLoadLayout.loadFinish();
+
     }
 
     @Override
     public void showLoading() {
-        mRecycleRefreshLoadLayout.setRefreshing(true);
+
     }
 
     @Override
     public void hideLoading() {
-        mRecycleRefreshLoadLayout.setRefreshing(false);
+
     }
 
     @Override
@@ -226,12 +199,6 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 
         mNoDataLayout = view.findViewById(R.id.layout_no_data);
         mRecycleView = findViewById(R.id.id_rv);
-        mRecycleRefreshLoadLayout = view.findViewById(R.id.refreshLoadLayoutId);
-        mRecycleRefreshLoadLayout.setColorSchemeColors(findColorById(R.color.colorPrimary));
-        mRecycleRefreshLoadLayout.setOnLoadListener(this);
-        mRecycleRefreshLoadLayout.setOnRefreshListener(this);
-        View loadFooterView = LayoutInflater.from(this).inflate(R.layout.view_load_more, null);
-        mRecycleRefreshLoadLayout.setViewFooter(loadFooterView);
         //创建布局管理
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
@@ -247,7 +214,6 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             Box<TaskListData> listDataBox = App.getInstance().
                     getBoxStore().boxFor(TaskListData.class);
             listDataBox.put(listData);
-            mRecycleView.getAdapter().notifyDataSetChanged();
         });
     }
 
@@ -303,14 +269,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
                             dialog.dismiss();
                             mTvType.setText(types[which]);
                             mType.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
-                            mPage=1;
-                            Map<String, String> params = new HashMap<>();
-                            params.put("UserId", mUid);
-                            params.put("DataFields", dataFields);
-                            params.put("page", String.valueOf(mPage));
-                            params.put("limit", String.valueOf(mPageCount));
-                            params.put("CheckType",String.valueOf(which+1));
-                            presenter.getTaskList(params);
+                            presenter.getTaskByParam(String.valueOf(which+1),2);
                         });
                 QMUIDialog typeDialog = typeBuilder.create();
                 typeDialog.setOnDismissListener(dialog -> mType.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
@@ -324,14 +283,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
                             dialog.dismiss();
                             mTvState.setText(status[which]);
                             mState.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
-                            mPage=1;
-                            Map<String, String> params = new HashMap<>();
-                            params.put("UserId", mUid);
-                            params.put("DataFields", dataFields);
-                            params.put("page", String.valueOf(mPage));
-                            params.put("limit", String.valueOf(mPageCount));
-                            params.put("APPRecordState",String.valueOf(which+1));
-                            presenter.getTaskList(params);
+                            presenter.getTaskByParam(String.valueOf(which+1),4);
                         });
                 QMUIDialog stateDialog = stateBuilder.create();
                 stateDialog.setOnDismissListener(dialog -> mState.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
@@ -350,33 +302,6 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 //                userDialog.setOnDismissListener(dialog -> mUser.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
 //                userDialog.show();
                 break;
-        }
-    }
-
-    @Override
-    public void onRefresh() {
-        mPage = 1;
-        isRefresh = true;
-        mNoDataLayout.setVisibility(View.GONE);
-        mRecycleRefreshLoadLayout.setNoMoreData(false);
-        Map<String, String> params = new HashMap<>();
-        params.put("UserId", mUid);
-        params.put("DataFields", dataFields);
-        params.put("page", String.valueOf(mPage));
-        params.put("limit", String.valueOf(mPageCount));
-        presenter.getTaskList(params);
-    }
-
-    @Override
-    public void onLoadMore() {
-        if (dataBeans.size() > 0 && !isRefresh) {
-            mPage++;
-            Map<String, String> params = new HashMap<>();
-            params.put("UserId", mUid);
-            params.put("DataFields", dataFields);
-            params.put("page", String.valueOf(mPage));
-            params.put("limit", String.valueOf(mPageCount));
-            presenter.getTaskListMore(params);
         }
     }
 }

@@ -155,6 +155,8 @@ public class CheckPresenter implements CheckContact.Presenter {
             query = listDataBox.query().equal(TaskListData_.CheckType,Integer.valueOf(param)).build();
         }else if(type==3){//使用单位
             query = listDataBox.query().equal(TaskListData_.UseOrganize,param).build();
+        }else if(type==4){//编制状态
+            query = listDataBox.query().equal(TaskListData_.APPRecordState,param).build();
         }
         query.subscribe().on(AndroidScheduler.mainThread()).observer(data -> {
             if (mView.isActive()){
