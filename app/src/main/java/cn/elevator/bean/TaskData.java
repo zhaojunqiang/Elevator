@@ -15,6 +15,7 @@ public class TaskData {
      */
 
     private String Code;
+    private int Count;
     private List<TaskListData> Data;
 
     public String getCode() {
@@ -23,6 +24,14 @@ public class TaskData {
 
     public void setCode(String Code) {
         this.Code = Code;
+    }
+
+    public int getCount() {
+        return Count;
+    }
+
+    public void setCount(int count) {
+        Count = count;
     }
 
     public List<TaskListData> getData() {

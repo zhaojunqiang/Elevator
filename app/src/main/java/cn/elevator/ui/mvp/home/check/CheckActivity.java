@@ -20,8 +20,10 @@ import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import cn.elevator.R;
@@ -32,12 +34,13 @@ import cn.elevator.config.Constant;
 import cn.elevator.ui.adapter.CheckListAdapter;
 import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.utils.ToastUtil;
+import cn.elevator.widget.DateDialog;
 import cn.elevator.widget.ExpendRecycleView;
 import cn.elevator.widget.RecycleRefreshLoadLayout;
 import cn.elevator.widget.ToolBar;
 import io.objectbox.Box;
 
-public class CheckActivity extends AppCompatActivity implements CheckContact.View,View.OnClickListener,SwipeRefreshLayout.OnRefreshListener, RecycleRefreshLoadLayout.OnLoadListener {
+public class CheckActivity extends AppCompatActivity implements CheckContact.View, View.OnClickListener, SwipeRefreshLayout.OnRefreshListener, RecycleRefreshLoadLayout.OnLoadListener {
     // 记录当前 activity 是否是显示状态
     private boolean activityState = false;
     private CheckPresenter presenter;
@@ -49,27 +52,35 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private ExpendRecycleView mRecycleView;
     private List<TaskListData> dataBeans;
     private CheckListAdapter mAdapter;
+
+    private Calendar mCurrentCalendar;
     private List<String> mYears;
     private String[] years;
-    private String[] types = {"首检","定检","监检"};
+    private String[] types = {"首检", "定检", "监检"};
+    private String[] status = {"未编制","已编制"};
     private List<String> mUsers;
     private String[] users;
 
     private ImageView mTime;
     private ImageView mType;
+    private ImageView mState;
     private ImageView mUser;
     private TextView mTvTime;
     private TextView mTvType;
+    private TextView mTvState;
     private TextView mTvUser;
     private int mPage = 1;
     private int mPageCount = 10;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 //        setContentView(R.layout.activity_check);
         activityState = true;
-        QMUIStatusBarHelper.translucent(this);  LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_check, null);
+        QMUIStatusBarHelper.translucent(this);
+        LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_check, null);
         setContentView(view);
+        mCurrentCalendar = Calendar.getInstance(Locale.CHINA);
         initViews(view);
         initTaskData();
     }
@@ -79,14 +90,22 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
                 "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
                 "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode,UnitNumber";
+
+        Box<TaskListData> listDataBox = App.getInstance().
+                getBoxStore().boxFor(TaskListData.class);
+        if(listDataBox.getAll()!=null && listDataBox.getAll().size()>0){
+            dataBeans.addAll(listDataBox.getAll());
+            mRecycleView.getAdapter().notifyDataSetChanged();
+        }else {
 //        presenter.getTaskData(mUid,dataFields);
 //        presenter.getTaskFromDataBase();
-        Map<String,String> params = new HashMap<>();
-        params.put("userid",mUid);
-        params.put("DataFields",dataFields);
-        params.put("page",String.valueOf(mPage));
-        params.put("limit",String.valueOf(mPageCount));
-        presenter.getTaskList(params);
+            Map<String, String> params = new HashMap<>();
+            params.put("UserId", mUid);
+            params.put("DataFields", dataFields);
+            params.put("page", String.valueOf(mPage));
+            params.put("limit", String.valueOf(mPageCount));
+            presenter.getTaskList(params);
+        }
     }
 
     @Override
@@ -101,6 +120,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         activityState = false;
         presenter.unSubscribe();
     }
+
     @Override
     public boolean isActive() {
         return activityState;
@@ -108,10 +128,13 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 
     @Override
     public void showTaskData(TaskData taskData) {
-        mPage=1;
+        if(mNoDataLayout.getVisibility() == View.VISIBLE){
+            mNoDataLayout.setVisibility(View.GONE);
+        }
         dataBeans.clear();
         dataBeans.addAll(taskData.getData());
         mRecycleView.getAdapter().notifyDataSetChanged();
+
     }
 
     @Override
@@ -125,20 +148,20 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         dataBeans.clear();
         dataBeans.addAll(taskListData);
         mRecycleView.getAdapter().notifyDataSetChanged();
-        mYears.clear();
-        mUsers.clear();
-        for (TaskListData data:taskListData){
-            if(!mYears.contains(String.valueOf(data.getCheckYear()))){
-                mYears.add(String.valueOf(data.getCheckYear()));
-            }
-            if(!mUsers.contains(data.getUseOrganize())){
-                mUsers.add(data.getUseOrganize());
-            }
-        }
-        String[] arrayYear = new String[mYears.size()];
-        years = mYears.toArray(arrayYear);
-        String[] arrayUser = new String[mUsers.size()];
-        users = mUsers.toArray(arrayUser);
+//        mYears.clear();
+//        mUsers.clear();
+//        for (TaskListData data : taskListData) {
+//            if (!mYears.contains(String.valueOf(data.getCheckYear()))) {
+//                mYears.add(String.valueOf(data.getCheckYear()));
+//            }
+//            if (!mUsers.contains(data.getUseOrganize())) {
+//                mUsers.add(data.getUseOrganize());
+//            }
+//        }
+//        String[] arrayYear = new String[mYears.size()];
+//        years = mYears.toArray(arrayYear);
+//        String[] arrayUser = new String[mUsers.size()];
+//        users = mUsers.toArray(arrayUser);
     }
 
     @Override
@@ -189,13 +212,16 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         toolBar.setLeftButtonOnClick(v -> finish());
         view.findViewById(R.id.id_ll_time).setOnClickListener(this);
         view.findViewById(R.id.id_ll_type).setOnClickListener(this);
+        view.findViewById(R.id.id_ll_state).setOnClickListener(this);
         view.findViewById(R.id.id_ll_company).setOnClickListener(this);
 
         mTime = view.findViewById(R.id.id_img_time);
         mType = view.findViewById(R.id.id_img_type);
+        mState = view.findViewById(R.id.id_img_state);
         mUser = view.findViewById(R.id.id_img_user);
         mTvTime = view.findViewById(R.id.id_tv_time);
         mTvType = view.findViewById(R.id.id_tv_type);
+        mTvState = view.findViewById(R.id.id_tv_state);
         mTvUser = view.findViewById(R.id.id_tv_company);
 
         mNoDataLayout = view.findViewById(R.id.layout_no_data);
@@ -221,79 +247,135 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             Box<TaskListData> listDataBox = App.getInstance().
                     getBoxStore().boxFor(TaskListData.class);
             listDataBox.put(listData);
+            mRecycleView.getAdapter().notifyDataSetChanged();
         });
     }
+
     public int findColorById(int color) {
         return getResources().getColor(color);
     }
+
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.id_ll_time:
-                mTime.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
-                QMUIDialog.MenuDialogBuilder timeBuilder = new QMUIDialog.MenuDialogBuilder(this).addItems(years, (dialog, which) -> {
-//                    Toast.makeText(CheckActivity.this, "你选择了 " +years[which], Toast.LENGTH_SHORT).show();
-                    presenter.getTaskByParam(years[which],1);
-                    dialog.dismiss();
-                    mTvTime.setText(years[which]);
-                    mTime.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+//                mTime.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
+//                QMUIDialog.MenuDialogBuilder timeBuilder = new QMUIDialog.MenuDialogBuilder(this).addItems(years, (dialog, which) -> {
+////                    Toast.makeText(CheckActivity.this, "你选择了 " +years[which], Toast.LENGTH_SHORT).show();
+//                    presenter.getTaskByParam(years[which],1);
+//                    dialog.dismiss();
+//                    mTvTime.setText(years[which]);
+//                    mTime.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+//                });
+//                QMUIDialog timeDialog = timeBuilder.create();
+//                timeDialog.setOnDismissListener(dialog -> mTime.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
+//                timeDialog.show();
+                final DateDialog dateDlg = new DateDialog(this, R.style.MyDateDialog, mCurrentCalendar.get(Calendar.YEAR)
+                        , mCurrentCalendar.get(Calendar.MONTH) + 1
+                        , mCurrentCalendar.get(Calendar.DAY_OF_MONTH));
+                dateDlg.pickYear();
+                dateDlg.setConfirmButton(getString(R.string.ok), (dialogInterface, i) -> {
+                    mCurrentCalendar = dateDlg.getDate();
+                    mTvTime.setText(String.valueOf(mCurrentCalendar.get(Calendar.YEAR)));
+                    mTime.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down));
+                    mPage=1;
+                    Map<String, String> params = new HashMap<>();
+                    params.put("UserId", mUid);
+                    params.put("DataFields", dataFields);
+                    params.put("page", String.valueOf(mPage));
+                    params.put("limit", String.valueOf(mPageCount));
+                    params.put("CheckYear",mTvTime.getText().toString());
+                    presenter.getTaskList(params);
                 });
-                QMUIDialog timeDialog = timeBuilder.create();
-                timeDialog.setOnDismissListener(dialog -> mTime.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
-                timeDialog.show();
+                dateDlg.setBackButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dateDlg.cancel();
+                    }
+                });
+                dateDlg.show();
                 break;
             case R.id.id_ll_type:
                 mType.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
                 QMUIDialog.MenuDialogBuilder typeBuilder = new QMUIDialog.MenuDialogBuilder(this).
                         addItems(types, (dialog, which) -> {
 //                    Toast.makeText(CheckActivity.this, "你选择了 " +types[which], Toast.LENGTH_SHORT).show();
-                    presenter.getTaskByParam(String.valueOf(which+1),2);
-                    dialog.dismiss();
-                    mTvType.setText(types[which]);
-                    mType.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
-                });
+                            dialog.dismiss();
+                            mTvType.setText(types[which]);
+                            mType.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+                            mPage=1;
+                            Map<String, String> params = new HashMap<>();
+                            params.put("UserId", mUid);
+                            params.put("DataFields", dataFields);
+                            params.put("page", String.valueOf(mPage));
+                            params.put("limit", String.valueOf(mPageCount));
+                            params.put("CheckType",String.valueOf(which+1));
+                            presenter.getTaskList(params);
+                        });
                 QMUIDialog typeDialog = typeBuilder.create();
                 typeDialog.setOnDismissListener(dialog -> mType.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
                 typeDialog.show();
                 break;
+            case R.id.id_ll_state:
+                mState.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
+                QMUIDialog.MenuDialogBuilder stateBuilder = new QMUIDialog.MenuDialogBuilder(this).
+                        addItems(status, (dialog, which) -> {
+//                    Toast.makeText(CheckActivity.this, "你选择了 " +types[which], Toast.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                            mTvState.setText(status[which]);
+                            mState.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+                            mPage=1;
+                            Map<String, String> params = new HashMap<>();
+                            params.put("UserId", mUid);
+                            params.put("DataFields", dataFields);
+                            params.put("page", String.valueOf(mPage));
+                            params.put("limit", String.valueOf(mPageCount));
+                            params.put("APPRecordState",String.valueOf(which+1));
+                            presenter.getTaskList(params);
+                        });
+                QMUIDialog stateDialog = stateBuilder.create();
+                stateDialog.setOnDismissListener(dialog -> mState.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
+                stateDialog.show();
+                break;
             case R.id.id_ll_company:
-                mUser.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
-                QMUIDialog.MenuDialogBuilder userBuilder =  new QMUIDialog.MenuDialogBuilder(this).addItems(users, (dialog, which) -> {
-//                    Toast.makeText(CheckActivity.this, "你选择了 " +users[which], Toast.LENGTH_SHORT).show();
-                    presenter.getTaskByParam(users[which],3);
-                    dialog.dismiss();
-                    mTvUser.setText(users[which]);
-                    mUser.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
-                });
-                QMUIDialog userDialog = userBuilder.create();
-                userDialog.setOnDismissListener(dialog -> mUser.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
-                userDialog.show();
+//                mUser.setImageDrawable(this.getResources().getDrawable(R.drawable.up));
+//                QMUIDialog.MenuDialogBuilder userBuilder =  new QMUIDialog.MenuDialogBuilder(this).addItems(users, (dialog, which) -> {
+////                    Toast.makeText(CheckActivity.this, "你选择了 " +users[which], Toast.LENGTH_SHORT).show();
+//                    presenter.getTaskByParam(users[which],3);
+//                    dialog.dismiss();
+//                    mTvUser.setText(users[which]);
+//                    mUser.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
+//                });
+//                QMUIDialog userDialog = userBuilder.create();
+//                userDialog.setOnDismissListener(dialog -> mUser.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
+//                userDialog.show();
                 break;
         }
     }
 
     @Override
     public void onRefresh() {
+        mPage = 1;
         isRefresh = true;
         mNoDataLayout.setVisibility(View.GONE);
         mRecycleRefreshLoadLayout.setNoMoreData(false);
-        Map<String,String> params = new HashMap<>();
-        params.put("userid",mUid);
-        params.put("DataFields",dataFields);
-        params.put("page",String.valueOf(mPage));
-        params.put("limit",String.valueOf(mPageCount));
+        Map<String, String> params = new HashMap<>();
+        params.put("UserId", mUid);
+        params.put("DataFields", dataFields);
+        params.put("page", String.valueOf(mPage));
+        params.put("limit", String.valueOf(mPageCount));
         presenter.getTaskList(params);
     }
 
     @Override
     public void onLoadMore() {
-        if(dataBeans.size()>0 && !isRefresh){
+        if (dataBeans.size() > 0 && !isRefresh) {
             mPage++;
-            Map<String,String> params = new HashMap<>();
-            params.put("userid",mUid);
-            params.put("DataFields",dataFields);
-            params.put("page",String.valueOf(mPage));
-            params.put("limit",String.valueOf(mPageCount));
+            Map<String, String> params = new HashMap<>();
+            params.put("UserId", mUid);
+            params.put("DataFields", dataFields);
+            params.put("page", String.valueOf(mPage));
+            params.put("limit", String.valueOf(mPageCount));
             presenter.getTaskListMore(params);
         }
     }

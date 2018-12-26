@@ -50,6 +50,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     };
     private String mUid;
     private String dataFields;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -98,9 +99,9 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         mRecycleView.setAdapter(menuAdapter);
 
         menuAdapter.setOnItemClickListener((adapter, view, position) -> {
-            switch (position){
+            switch (position) {
                 case 0:
-                    startActivity(new Intent(getActivity(),CheckActivity.class));
+                    startActivity(new Intent(getActivity(), CheckActivity.class));
                     break;
             }
         });
@@ -135,7 +136,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
                 "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
                 "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode,UnitNumber";
-        presenter.getTaskData(mUid,dataFields);
+        presenter.getTaskData(mUid, dataFields);
     }
 
     /**
@@ -159,16 +160,8 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      */
     @Override
     public void showTaskCount(TaskData taskData) {
-        int count = 0;
-        if(taskData.getData() != null && taskData.getData().size()>0){
-            for (TaskListData bean:taskData.getData()){
-                if (bean.getAPPRecordState() ==1 || bean.getAPPRecordState()==2){
-                    count++;
-                }
-            }
-            menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, count));
-            menuAdapter.notifyDataSetChanged();
-        }
+        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, taskData.getCount()));
+        menuAdapter.notifyDataSetChanged();
     }
 
     @Override
