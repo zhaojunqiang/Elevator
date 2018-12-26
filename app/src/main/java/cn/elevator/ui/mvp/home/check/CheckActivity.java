@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -49,6 +50,9 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private ImageView mTime;
     private ImageView mType;
     private ImageView mUser;
+    private TextView mTvTime;
+    private TextView mTvType;
+    private TextView mTvUser;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +142,10 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         mTime = view.findViewById(R.id.id_img_time);
         mType = view.findViewById(R.id.id_img_type);
         mUser = view.findViewById(R.id.id_img_user);
+        mTvTime = view.findViewById(R.id.id_tv_time);
+        mTvType = view.findViewById(R.id.id_tv_type);
+        mTvUser = view.findViewById(R.id.id_tv_company);
+
         mRecycleView = findViewById(R.id.id_rv);
         //创建布局管理
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
@@ -166,6 +174,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 //                    Toast.makeText(CheckActivity.this, "你选择了 " +years[which], Toast.LENGTH_SHORT).show();
                     presenter.getTaskByParam(years[which],1);
                     dialog.dismiss();
+                    mTvTime.setText(years[which]);
                     mTime.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
                 });
                 QMUIDialog timeDialog = timeBuilder.create();
@@ -179,6 +188,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 //                    Toast.makeText(CheckActivity.this, "你选择了 " +types[which], Toast.LENGTH_SHORT).show();
                     presenter.getTaskByParam(String.valueOf(which+1),2);
                     dialog.dismiss();
+                    mTvType.setText(types[which]);
                     mType.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
                 });
                 QMUIDialog typeDialog = typeBuilder.create();
@@ -191,6 +201,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 //                    Toast.makeText(CheckActivity.this, "你选择了 " +users[which], Toast.LENGTH_SHORT).show();
                     presenter.getTaskByParam(users[which],3);
                     dialog.dismiss();
+                    mTvUser.setText(users[which]);
                     mUser.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
                 });
                 QMUIDialog userDialog = userBuilder.create();
