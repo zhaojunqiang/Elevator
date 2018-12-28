@@ -1,6 +1,7 @@
 package cn.elevator.ui.mvp.home.check;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -32,6 +33,7 @@ import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
 import cn.elevator.ui.adapter.CheckListAdapter;
+import cn.elevator.ui.mvp.home.check.chekinfo.CheckInfoActivity;
 import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.utils.ToastUtil;
 import cn.elevator.widget.DateDialog;
@@ -214,6 +216,9 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             Box<TaskListData> listDataBox = App.getInstance().
                     getBoxStore().boxFor(TaskListData.class);
             listDataBox.put(listData);
+            Intent intent = new Intent(CheckActivity.this,CheckInfoActivity.class);
+            intent.putExtra("_id",listData.getId());
+            startActivity(intent);
         });
     }
 
