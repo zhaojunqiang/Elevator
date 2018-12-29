@@ -103,8 +103,13 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     @Override
     protected void onPause() {
         super.onPause();
-        activityState = false;
         presenter.unSubscribe();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        activityState = false;
     }
 
     @Override
