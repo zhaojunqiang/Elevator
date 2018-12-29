@@ -33,7 +33,7 @@ import cn.elevator.widget.DateDialog;
 import cn.elevator.widget.ExpendRecycleView;
 import cn.elevator.widget.ToolBar;
 
-public class CheckInfoActivity extends AppCompatActivity implements CheckInfoContact.View,View.OnClickListener {
+public class CheckInfoActivity extends AppCompatActivity implements CheckInfoContact.View, View.OnClickListener {
     // 记录当前 activity 是否是显示状态
     private boolean activityState = false;
     private CheckInfoPresenter presenter;
@@ -134,10 +134,10 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private ExpendRecycleView mRecycleView;
 
     private String[] deviceTypes = {"自动扶梯与自动人行道", "直梯"};
-    private String[] resultTypes = {"合格","不合格","复检合格","复检不合格"};
-    private String[] breedTypes = {"曳引驱动乘客电梯","曳引驱动载客电梯"};
-    private String[] workTypes = {"安装","移装","改造","重大修理"};
-    private String[] controlTypes = {"集选","并联","其他"};
+    private String[] resultTypes = {"合格", "不合格", "复检合格", "复检不合格"};
+    private String[] breedTypes = {"曳引驱动乘客电梯", "曳引驱动载客电梯"};
+    private String[] workTypes = {"安装", "移装", "改造", "重大修理"};
+    private String[] controlTypes = {"集选", "并联", "其他"};
     private Calendar mCurrentCalendar;
     private String mUid;
 
@@ -150,7 +150,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         activityState = true;
-        mId = getIntent().getLongExtra("_id",0);
+        mId = getIntent().getLongExtra("_id", 0);
         QMUIStatusBarHelper.translucent(this);
         mCurrentCalendar = Calendar.getInstance(Locale.CHINA);
         LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_check_info, null);
@@ -164,12 +164,12 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mUid = SharedPrefUtils.getObj(Constant.USERID);
         Map<String, String> checks = new HashMap<>();
         checks.put("UserId", mUid);
-        checks.put("RoleID","1011");
+        checks.put("RoleID", "1011");
         presenter.getCheckPersonList(checks);
 
         Map<String, String> verifys = new HashMap<>();
         verifys.put("UserId", mUid);
-        verifys.put("RoleID","1019");
+        verifys.put("RoleID", "1019");
         presenter.getCheckPersonList(verifys);
     }
 
@@ -187,21 +187,60 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     public void showTaskData(TaskListData listData) {
         mData = listData;
 
-        mNumber.setText("记录编号："+mData.getCraneRecordCode());
+        mNumber.setText("记录编号：" + mData.getCraneRecordCode());
         mUser.setText(mData.getUseOrganize());
         mDeviceCode.setText(mData.getEquipmentCode());
-        mDeviceType.setText("自动扶梯");
+        mDeviceType.setText(getElevator(mData.getElevatorType()));
+        mStartTime.setText(mData.getSurveyDate());
+        mNextTime.setText(mData.getNextSurveyDate());
+        mResult.setText(getResult(mData.getSurveyConclusions()));
+        mCheckPerson.setText(mData.getChecker1()+","+mData.getChecker2());
+        mVerifyPerson.setText(mData.getCheckerOut());
+        mDeviceBreed.setText(mData.getEquipmentVarieties());
+    }
 
+    //获取结论
+    private String getResult(String type) {
+        switch (type) {
+            case "01":
+                return "合格";
+            case "02":
+                return "不合格";
+            case "03":
+                return "复检合格";
+            case "04":
+                return "复检不合格";
+            default:
+                return "合格";
+        }
+    }
+
+    /**
+     * 获取电梯类型
+     *
+     * @param type
+     * @return
+     */
+    private String getElevator(int type) {
+        switch (type) {
+            case 1:
+                return "自动直梯";
+            case 2:
+                return "自动扶梯";
+            default:
+                return "自动扶梯";
+
+        }
     }
 
     @Override
     public void showCheckPersonData(PersonData personData) {
         mCheckList.clear();
         mCheckNames.clear();
-        if(personData.getData()!=null && personData.getData().size()>0){
+        if (personData.getData() != null && personData.getData().size() > 0) {
             mCheckList.addAll(personData.getData());
         }
-        for(PersonData.PersonListData data:mCheckList){
+        for (PersonData.PersonListData data : mCheckList) {
             mCheckNames.add(data.getUserName());
         }
     }
@@ -210,10 +249,10 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     public void showVerifyData(PersonData personData) {
         mVerifyList.clear();
         mVerifiNames.clear();
-        if(personData.getData()!=null && personData.getData().size()>0){
+        if (personData.getData() != null && personData.getData().size() > 0) {
             mVerifyList.addAll(personData.getData());
         }
-        for(PersonData.PersonListData data:mVerifyList){
+        for (PersonData.PersonListData data : mVerifyList) {
             mVerifiNames.add(data.getUserName());
         }
     }
@@ -242,7 +281,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mVerifyPerson = findViewById(R.id.id_et_verify_person);
         mVerifyPerson.setOnClickListener(this);
         mDeviceBreed = findViewById(R.id.id_et_device_breed);
-        mDeviceBreed.setOnClickListener(this);
+//        mDeviceBreed.setOnClickListener(this);
         mDeviceModel = findViewById(R.id.id_et_device_model);
         mProductNumber = findViewById(R.id.id_et_product_number);
         mProductTime = findViewById(R.id.id_et_product_time);
@@ -289,6 +328,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
     }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -309,7 +349,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
 
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.id_et_device_type:
                 QMUIDialog.MenuDialogBuilder deviceTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
                         addItems(deviceTypes, (dialog, which) -> {
@@ -357,6 +397,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         addItems(resultTypes, (dialog, which) -> {
                             dialog.dismiss();
                             mResult.setText(resultTypes[which]);
+                            mData.setSurveyConclusions("0"+(which+1));
                         });
                 QMUIDialog resultTypeDialog = rusultTypeBuilder.create();
                 resultTypeDialog.show();
@@ -369,8 +410,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         });
                 builder.addAction("取消", (dialog, index) -> dialog.dismiss());
                 builder.addAction("确认", (dialog, index) -> {
-                    if(builder.getCheckedItemIndexes().length!=2){
-                        Toast.makeText(this,"只能选择两个检验员",Toast.LENGTH_SHORT).show();
+                    if (builder.getCheckedItemIndexes().length != 2) {
+                        Toast.makeText(this, "只能选择两个检验员", Toast.LENGTH_SHORT).show();
                         return;
                     }
                     StringBuilder result = new StringBuilder();
@@ -466,6 +507,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 break;
         }
     }
+
     //拼接日期
     private String getDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
@@ -479,13 +521,14 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
             sb.append(String.valueOf(monthOfYear));
         }
         sb.append("-");
-        if(day<10){
+        if (day < 10) {
             sb.append("0").append(String.valueOf(day));
-        }else{
+        } else {
             sb.append(String.valueOf(day));
         }
         return sb.toString();
     }
+
     //拼接日期
     private String getCDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);

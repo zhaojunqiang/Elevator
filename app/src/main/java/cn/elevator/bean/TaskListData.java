@@ -31,6 +31,12 @@ public class TaskListData {
      * RegistCode : 注册代码
      * InspectionID : null
      * UnitNumber : 使用单位设备编号
+     * ElevatorType : 直梯
+     * NextSurveyDate : 下次检验日期
+     * Checker1 : 检验人员1
+     * Checker2 : 检验人员2
+     * CheckerOut : 校核人员
+     * EquipmentVarieties : 设备品种
      */
     @Id(assignable = true)
     private long id;
@@ -52,6 +58,12 @@ public class TaskListData {
     private String EquipmentCode;
     private String RegistCode;
     private String UnitNumber;
+    private int ElevatorType;
+    private String NextSurveyDate;
+    private String Checker1;
+    private String Checker2;
+    private String CheckerOut;
+    private String EquipmentVarieties;
     @Transient
     private Object InspectionID;
 
@@ -205,6 +217,54 @@ public class TaskListData {
 
     public void setUnitNumber(String unitNumber) {
         UnitNumber = unitNumber;
+    }
+
+    public int getElevatorType() {
+        return ElevatorType;
+    }
+
+    public void setElevatorType(int elevatorType) {
+        ElevatorType = elevatorType;
+    }
+
+    public String getNextSurveyDate() {
+        return NextSurveyDate;
+    }
+
+    public void setNextSurveyDate(String nextSurveyDate) {
+        NextSurveyDate = nextSurveyDate;
+    }
+
+    public String getChecker1() {
+        return Checker1;
+    }
+
+    public void setChecker1(String checker1) {
+        Checker1 = checker1;
+    }
+
+    public String getChecker2() {
+        return Checker2;
+    }
+
+    public void setChecker2(String checker2) {
+        Checker2 = checker2;
+    }
+
+    public String getCheckerOut() {
+        return CheckerOut;
+    }
+
+    public void setCheckerOut(String checkerOut) {
+        CheckerOut = checkerOut;
+    }
+
+    public String getEquipmentVarieties() {
+        return EquipmentVarieties;
+    }
+
+    public void setEquipmentVarieties(String equipmentVarieties) {
+        EquipmentVarieties = equipmentVarieties;
     }
 
     public Object getInspectionID() {
