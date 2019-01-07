@@ -327,6 +327,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
+        //提交
+        findViewById(R.id.id_tv_submit).setOnClickListener(this);
     }
 
     @Override
@@ -504,6 +506,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 });
                 testDlg.setBackButton(getString(R.string.cancel), (dialog, which) -> testDlg.cancel());
                 testDlg.show();
+                break;
+            case R.id.id_tv_submit:
+
                 break;
         }
     }
