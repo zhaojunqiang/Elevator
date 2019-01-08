@@ -54,6 +54,15 @@ public class TaskListData {
      * Builder : 施工单位
      * ConstructLicence : 施工许可证编号
      * ConstructType : 施工类别
+     * RatedLoad : 额定载重量
+     * RatedSpeed : 额定速度
+     * LayerStations : 层站数
+     * Ladderwidth : 名义宽度
+     * Angle : 倾斜角
+     * TransmissionCapacity : 输送能力
+     * LiftingHeight : 提升高度
+     * SegmentLength : 使用长度
+     * Instrument : 检验仪器
      */
     @Id(assignable = true)
     private long id;
@@ -98,6 +107,16 @@ public class TaskListData {
     private String Builder;
     private String ConstructLicence;
     private String ConstructType;
+    private String RatedLoad;
+    private String RatedSpeed;
+    private String LayerStations;
+    private String Ladderwidth;
+    private String Angle;
+    private String TransmissionCapacity;
+    private String LiftingHeight;
+    private String SegmentLength;
+    private String Instrument;
+
     @Transient
     private Object InspectionID;
 
@@ -435,6 +454,78 @@ public class TaskListData {
 
     public void setConstructType(String constructType) {
         ConstructType = constructType;
+    }
+
+    public String getRatedLoad() {
+        return RatedLoad;
+    }
+
+    public void setRatedLoad(String ratedLoad) {
+        RatedLoad = ratedLoad;
+    }
+
+    public String getRatedSpeed() {
+        return RatedSpeed;
+    }
+
+    public void setRatedSpeed(String ratedSpeed) {
+        RatedSpeed = ratedSpeed;
+    }
+
+    public String getLayerStations() {
+        return LayerStations;
+    }
+
+    public void setLayerStations(String layerStations) {
+        LayerStations = layerStations;
+    }
+
+    public String getLadderwidth() {
+        return Ladderwidth;
+    }
+
+    public void setLadderwidth(String ladderwidth) {
+        Ladderwidth = ladderwidth;
+    }
+
+    public String getAngle() {
+        return Angle;
+    }
+
+    public void setAngle(String angle) {
+        Angle = angle;
+    }
+
+    public String getTransmissionCapacity() {
+        return TransmissionCapacity;
+    }
+
+    public void setTransmissionCapacity(String transmissionCapacity) {
+        TransmissionCapacity = transmissionCapacity;
+    }
+
+    public String getLiftingHeight() {
+        return LiftingHeight;
+    }
+
+    public void setLiftingHeight(String liftingHeight) {
+        LiftingHeight = liftingHeight;
+    }
+
+    public String getSegmentLength() {
+        return SegmentLength;
+    }
+
+    public void setSegmentLength(String segmentLength) {
+        SegmentLength = segmentLength;
+    }
+
+    public String getInstrument() {
+        return Instrument;
+    }
+
+    public void setInstrument(String instrument) {
+        Instrument = instrument;
     }
 
     public Object getInspectionID() {

@@ -197,6 +197,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mCheckPerson.setText(mData.getChecker1()+","+mData.getChecker2());
         mVerifyPerson.setText(mData.getCheckerOut());
         mDeviceBreed.setText(mData.getEquipmentVarieties());
+        mDeviceModel.setText(mData.getSpecification());
+
     }
 
     //获取结论
