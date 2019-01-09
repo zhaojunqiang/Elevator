@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -388,6 +389,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         addItems(deviceTypes, (dialog, which) -> {
                             dialog.dismiss();
                             mDeviceType.setText(deviceTypes[which]);
+                            mData.setElevatorType(which+1);
                         });
                 QMUIDialog deviceTypeDialog = deviceTypeBuilder.create();
                 deviceTypeDialog.show();
@@ -539,7 +541,129 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 testDlg.show();
                 break;
             case R.id.id_tv_submit:
-
+                if(!TextUtils.isEmpty(mUser.getText())){
+                    mData.setUseOrganize(mUser.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mDeviceCode.getText())){
+                    mData.setEquipmentCode(mDeviceCode.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mStartTime.getText())){
+                    mData.setSurveyDate(mStartTime.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mNextTime.getText())){
+                    mData.setNextSurveyDate(mNextTime.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mCheckPerson.getText())){
+                    String[] checks = mCheckPerson.getText().toString().split(",");
+                    mData.setChecker1(checks[0]);
+                    mData.setChecker2(checks[1]);
+                }
+                if(!TextUtils.isEmpty(mVerifyPerson.getText())){
+                    mData.setCheckerOut(mVerifyPerson.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mDeviceBreed.getText())){
+                    mData.setEquipmentVarieties(mDeviceBreed.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mDeviceModel.getText())){
+                    mData.setSpecification(mDeviceModel.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mProductNumber.getText())){
+                    mData.setProductCode(mProductNumber.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mProductTime.getText())){
+                    mData.setMakeDate(mProductTime.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mProduct.getText())){
+                    mData.setMakeOrganize(mProduct.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mUserAddress.getText())){
+                    mData.setUseOrganizeAdd(mUserAddress.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mDeviceAddress.getText())){
+                    mData.setInstallationSite(mDeviceAddress.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mUserNumber.getText())){
+                    mData.setUseOrganizeCode(mUserNumber.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mRegistNumber.getText())){
+                    mData.setUserRegeditCode(mRegistNumber.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mSafeManager.getText())){
+                    mData.setSafeAdmin(mSafeManager.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mUserPhone.getText())){
+                    mData.setUseOrganizeTel(mUserPhone.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mUserInterNumber.getText())){
+                    mData.setUnitNumber(mUserInterNumber.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mTransTime.getText())){
+                    mData.setReformDate(mTransTime.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mTransName.getText())){
+                    mData.setReform(mTransName.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mRepairName.getText())){
+                    mData.setTendingOrganize(mRepairName.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mRepairPerson.getText())){
+                    mData.setTendingLinkMan(mRepairPerson.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mRescuePhone.getText())){
+                    mData.setTendingTel(mRescuePhone.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mWorkName.getText())){
+                    mData.setBuilder(mWorkName.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mPermintNumber.getText())){
+                    mData.setConstructLicence(mPermintNumber.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mWorkType.getText())){
+                    mData.setConstructType(mWorkType.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mPowerRate.getText())){
+                    mData.setRatedLoad(mPowerRate.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mRateSpeed.getText())){
+                    mData.setRatedSpeed(mRateSpeed.getText().toString());
+                }
+                String floor = "";
+                if(!TextUtils.isEmpty(mFloorNum.getText())){
+                    floor+=mFloorNum.getText().toString()+"层";
+                }
+                if(!TextUtils.isEmpty(mStationNum.getText())){
+                    floor+=mStationNum.getText().toString()+"站";
+                }
+                if(!TextUtils.isEmpty(mDoorNum.getText())){
+                    floor+=mDoorNum.getText().toString()+"门";
+                }
+                mData.setLayerStations(floor);
+                /**
+                 *         mNormalSpeed.setText(mData.getRatedSpeed());
+                 *         mNormalWidth.setText(mData.getLadderwidth());
+                 *         mNormalDip.setText(mData.getAngle());
+                 *         mNormalDeliver.setText(mData.getTransmissionCapacity());
+                 *         mNormalHoist.setText(mData.getLiftingHeight());
+                 *         mNormalLength.setText(mData.getSegmentLength());
+                 */
+                if(!TextUtils.isEmpty(mNormalSpeed.getText())){
+                    mData.setRatedSpeed(mNormalSpeed.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mNormalWidth.getText())){
+                    mData.setLadderwidth(mNormalWidth.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mNormalDip.getText())){
+                    mData.setAngle(mNormalDip.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mNormalDeliver.getText())){
+                    mData.setTransmissionCapacity(mNormalDeliver.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mNormalHoist.getText())){
+                    mData.setLiftingHeight(mNormalHoist.getText().toString());
+                }
+                if(!TextUtils.isEmpty(mNormalLength.getText())){
+                    mData.setSegmentLength(mNormalLength.getText().toString());
+                }
                 break;
         }
     }
