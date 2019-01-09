@@ -63,6 +63,7 @@ public class TaskListData {
      * LiftingHeight : 提升高度
      * SegmentLength : 使用长度
      * Instrument : 检验仪器
+     * InstallationSite : 安装地点
      */
     @Id(assignable = true)
     private long id;
@@ -116,6 +117,7 @@ public class TaskListData {
     private String LiftingHeight;
     private String SegmentLength;
     private String Instrument;
+    private String InstallationSite;
 
     @Transient
     private Object InspectionID;
@@ -526,6 +528,14 @@ public class TaskListData {
 
     public void setInstrument(String instrument) {
         Instrument = instrument;
+    }
+
+    public String getInstallationSite() {
+        return InstallationSite;
+    }
+
+    public void setInstallationSite(String installationSite) {
+        InstallationSite = installationSite;
     }
 
     public Object getInspectionID() {

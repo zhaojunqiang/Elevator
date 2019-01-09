@@ -198,7 +198,36 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mVerifyPerson.setText(mData.getCheckerOut());
         mDeviceBreed.setText(mData.getEquipmentVarieties());
         mDeviceModel.setText(mData.getSpecification());
-
+        mProductNumber.setText(mData.getProductCode());
+        mProductTime.setText(mData.getMakeDate());
+        mProduct.setText(mData.getMakeOrganize());
+        mUserAddress.setText(mData.getUseOrganizeAdd());
+        mDeviceAddress.setText(mData.getInstallationSite());
+        mUserNumber.setText(mData.getUseOrganizeCode());
+        mRegistNumber.setText(mData.getUserRegeditCode());
+        mSafeManager.setText(mData.getSafeAdmin());
+        mUserPhone.setText(mData.getUseOrganizeTel());
+        mUserInterNumber.setText(mData.getUnitNumber());
+        mTransTime.setText(mData.getReformDate());
+        mTransName.setText(mData.getReform());
+        mRepairName.setText(mData.getTendingOrganize());
+        mRepairPerson.setText(mData.getTendingLinkMan());
+        mRescuePhone.setText(mData.getTendingTel());
+        mWorkName.setText(mData.getBuilder());
+        mPermintNumber.setText(mData.getConstructLicence());
+        mWorkType.setText(mData.getConstructType());
+        mPowerRate.setText(mData.getRatedLoad());
+        mRateSpeed.setText(mData.getRatedSpeed());
+        mFloorNum.setText(mData.getLayerStations());
+        mControlType.setText("");
+        mConfirmYear.setText("");
+        mTestYear.setText("");
+        mNormalSpeed.setText(mData.getRatedSpeed());
+        mNormalWidth.setText(mData.getLadderwidth());
+        mNormalDip.setText(mData.getAngle());
+        mNormalDeliver.setText(mData.getTransmissionCapacity());
+        mNormalHoist.setText(mData.getLiftingHeight());
+        mNormalLength.setText(mData.getSegmentLength());
     }
 
     //获取结论
