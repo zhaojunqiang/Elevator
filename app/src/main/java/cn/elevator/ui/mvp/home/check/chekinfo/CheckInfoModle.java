@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import cn.elevator.bean.PersonData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import cn.elevator.http.ApiService;
 import cn.elevator.http.HttpClient;
@@ -28,5 +29,13 @@ public class CheckInfoModle implements CheckInfoContact.Modle{
         return HttpClient.getInstance()
                 .create(ApiService.class)
                 .getPersonData(body);
+    }
+
+    @Override
+    public Observable<SaveResult> getHttpSaveData(String json) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .saveTaskData(body);
     }
 }

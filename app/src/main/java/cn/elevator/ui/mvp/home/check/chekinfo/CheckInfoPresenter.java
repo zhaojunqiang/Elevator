@@ -4,6 +4,7 @@ import java.util.Map;
 
 import cn.elevator.app.App;
 import cn.elevator.bean.PersonData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.bean.TaskListData_;
@@ -94,6 +95,32 @@ public class CheckInfoPresenter implements CheckInfoContact.Presenter {
                     public void onNext(PersonData personData) {
                         if (mView.isActive()){
                             mView.showVerifyData(personData);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposableTask);
+    }
+
+    @Override
+    public void saveCheckData(String json) {
+        Disposable disposableTask = mModle.getHttpSaveData(json)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<SaveResult>() {
+                    @Override
+                    public void onNext(SaveResult saveResult) {
+                        if (mView.isActive()){
+                            mView.showSaveResult(saveResult);
                         }
                     }
 

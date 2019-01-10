@@ -15,12 +15,15 @@ public class Api {
     public static final String Banner = BASE_URL + "";
 
     // 检验任务列表
-    public static final String TESK_LIST = BASE_URL + "Task/GetCheckTaskList";
+    public static final String TASK_LIST = BASE_URL + "Task/GetCheckTaskList";
 
     // 检验项目数据
     public static final String PROJECT_DATA = BASE_URL + "Task/GetCheckProject";
 
     //获取权限人员
     public static final String CHECK_PERSON = BASE_URL + "Task/GetUserList";
+
+    //保存检验数据
+    public static final String SAVE_TASK = BASE_URL + "Task/SaveCheckTask";
 
 }

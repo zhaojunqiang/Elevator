@@ -433,7 +433,6 @@
                         android:layout_weight="1"
                         android:background="@drawable/edit_bg"
                         android:inputType="text"
-                        android:enabled="false"
                         android:textSize="@dimen/sp_14"/>
                 </LinearLayout>
                 <LinearLayout
@@ -627,7 +626,6 @@
                         android:layout_weight="1"
                         android:background="@drawable/edit_bg"
                         android:inputType="text"
-                        android:enabled="false"
                         android:textSize="@dimen/sp_14"/>
                 </LinearLayout>
                 <LinearLayout

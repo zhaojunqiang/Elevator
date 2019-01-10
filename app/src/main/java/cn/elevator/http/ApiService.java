@@ -5,6 +5,7 @@ import java.util.List;
 import cn.elevator.bean.BannerData;
 import cn.elevator.bean.LoginData;
 import cn.elevator.bean.PersonData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -35,11 +36,16 @@ public interface ApiService {
      *  获取检验任务数据数据
      * @return
      */
-    @POST(Api.TESK_LIST)
+    @POST(Api.TASK_LIST)
     Observable<TaskData> getTaskData(@Body RequestBody body);
     /**
      * 获取检验人员列表
      */
     @POST(Api.CHECK_PERSON)
     Observable<PersonData> getPersonData(@Body RequestBody body);
+    /**
+     * 保存检验数据
+     */
+    @POST(Api.SAVE_TASK)
+    Observable<SaveResult> saveTaskData(@Body RequestBody body);
 }

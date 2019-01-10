@@ -90,7 +90,8 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         mUid = SharedPrefUtils.getObj(Constant.USERID);
         dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode," +
                 "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
-                "SurveyConclusions,SurveyDate,TendingOrganize,ReportID,EquipmentCode,UnitNumber";
+                "SurveyConclusions,SurveyDate,NextSurveyDate,Checker1,Checker2,ConstructType,Builder,TendingOrganize," +
+                "TendingLinkMan,TendingTel,ReportID,EquipmentCode,UnitNumber";
         presenter.getTaskFromDataBase();
     }
 

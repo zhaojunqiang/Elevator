@@ -12,6 +12,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -25,6 +26,7 @@ import java.util.Map;
 
 import cn.elevator.R;
 import cn.elevator.bean.PersonData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
 import cn.elevator.ui.mvp.home.check.CheckContact;
@@ -287,6 +289,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         for (PersonData.PersonListData data : mVerifyList) {
             mVerifiNames.add(data.getUserName());
         }
+    }
+
+    @Override
+    public void showSaveResult(SaveResult saveResult) {
+
     }
 
     @Override
@@ -638,14 +645,6 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                     floor+=mDoorNum.getText().toString()+"门";
                 }
                 mData.setLayerStations(floor);
-                /**
-                 *         mNormalSpeed.setText(mData.getRatedSpeed());
-                 *         mNormalWidth.setText(mData.getLadderwidth());
-                 *         mNormalDip.setText(mData.getAngle());
-                 *         mNormalDeliver.setText(mData.getTransmissionCapacity());
-                 *         mNormalHoist.setText(mData.getLiftingHeight());
-                 *         mNormalLength.setText(mData.getSegmentLength());
-                 */
                 if(!TextUtils.isEmpty(mNormalSpeed.getText())){
                     mData.setRatedSpeed(mNormalSpeed.getText().toString());
                 }
@@ -664,6 +663,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 if(!TextUtils.isEmpty(mNormalLength.getText())){
                     mData.setSegmentLength(mNormalLength.getText().toString());
                 }
+                Gson gson = new Gson();
+                String jsonStr = gson.toJson(mData);
+                presenter.saveCheckData(jsonStr);
                 break;
         }
     }
