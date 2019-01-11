@@ -136,11 +136,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     //仪器列表
     private ExpendRecycleView mRecycleView;
 
-    private String[] deviceTypes = {"自动扶梯与自动人行道", "直梯"};
+    private String[] deviceTypes = {"直梯","自动扶梯与自动人行道"};
     private String[] resultTypes = {"合格", "不合格", "复检合格", "复检不合格"};
     private String[] breedTypes = {"曳引驱动乘客电梯", "曳引驱动载客电梯"};
     private String[] workTypes = {"安装", "移装", "改造", "重大修理"};
-    private String[] controlTypes = {"集选", "并联", "其他"};
+    private String[] controlTypes = {"集选", "并联", "群控","按钮","信号"};
     private Calendar mCurrentCalendar;
     private String mUid;
 
@@ -222,7 +222,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mPowerRate.setText(mData.getRatedLoad());
         mRateSpeed.setText(mData.getRatedSpeed());
         mFloorNum.setText(mData.getLayerStations());
-        mControlType.setText("");
+        mControlType.setText(mData.getControl());
         mConfirmYear.setText("");
         mTestYear.setText("");
         mNormalSpeed.setText(mData.getRatedSpeed());
@@ -237,15 +237,15 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String getResult(String type) {
         switch (type) {
             case "01":
-                return "合格";
+                return resultTypes[0];
             case "02":
-                return "不合格";
+                return resultTypes[1];
             case "03":
-                return "复检合格";
+                return resultTypes[2];
             case "04":
-                return "复检不合格";
+                return resultTypes[3];
             default:
-                return "合格";
+                return resultTypes[0];
         }
     }
 
@@ -258,11 +258,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String getElevator(int type) {
         switch (type) {
             case 1:
-                return "自动直梯";
+                return deviceTypes[0];
             case 2:
-                return "自动扶梯";
+                return deviceTypes[1];
             default:
-                return "自动扶梯";
+                return deviceTypes[0];
 
         }
     }
@@ -510,6 +510,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         addItems(workTypes, (dialog, which) -> {
                             dialog.dismiss();
                             mWorkType.setText(workTypes[which]);
+                            mData.setConstructType(String.valueOf(which+1));
                         });
                 QMUIDialog workTypeDialog = workTypeBuilder.create();
                 workTypeDialog.show();
@@ -519,6 +520,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         addItems(controlTypes, (dialog, which) -> {
                             dialog.dismiss();
                             mControlType.setText(controlTypes[which]);
+                            mData.setControl("0"+(which+1));
                         });
                 QMUIDialog controlTypeDialog = controlTypeBuilder.create();
                 controlTypeDialog.show();

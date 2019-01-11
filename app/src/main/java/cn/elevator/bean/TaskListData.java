@@ -64,6 +64,7 @@ public class TaskListData {
      * SegmentLength : 使用长度
      * Instrument : 检验仪器
      * InstallationSite : 安装地点
+     * Control:控制方式
      */
     @Id(assignable = true)
     private long id;
@@ -118,6 +119,7 @@ public class TaskListData {
     private String SegmentLength;
     private String Instrument;
     private String InstallationSite;
+    private String Control;
 
     @Transient
     private Object InspectionID;
@@ -536,6 +538,14 @@ public class TaskListData {
 
     public void setInstallationSite(String installationSite) {
         InstallationSite = installationSite;
+    }
+
+    public String getControl() {
+        return Control;
+    }
+
+    public void setControl(String control) {
+        Control = control;
     }
 
     public Object getInspectionID() {
