@@ -141,6 +141,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String[] breedTypes = {"曳引驱动乘客电梯", "曳引驱动载客电梯"};
     private String[] workTypes = {"安装", "移装", "改造", "重大修理"};
     private String[] controlTypes = {"集选", "并联", "群控","按钮","信号"};
+    private String[] users;
     private Calendar mCurrentCalendar;
     private String mUid;
 
@@ -166,14 +167,13 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private void initCheckPersonData() {
         mUid = SharedPrefUtils.getObj(Constant.USERID);
         Map<String, String> checks = new HashMap<>();
-        checks.put("UserId", mUid);
-        checks.put("RoleID", "1011");
+        checks.put("DepartmentID", "BM001");
         presenter.getCheckPersonList(checks);
 
-        Map<String, String> verifys = new HashMap<>();
-        verifys.put("UserId", mUid);
-        verifys.put("RoleID", "1019");
-        presenter.getCheckPersonList(verifys);
+//        Map<String, String> verifys = new HashMap<>();
+//        verifys.put("UserId", mUid);
+//        verifys.put("RoleID", "1019");
+//        presenter.getCheckPersonList(verifys);
     }
 
 
@@ -277,6 +277,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         for (PersonData.PersonListData data : mCheckList) {
             mCheckNames.add(data.getUserName());
         }
+        users = new String[mCheckNames.size()];
+        for(int i=0;i<mCheckNames.size();i++){
+            users[i] = mCheckNames.get(i);
+        }
+
     }
 
     @Override
@@ -445,10 +450,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 resultTypeDialog.show();
                 break;
             case R.id.id_et_check_person:
-                final String[] items = new String[]{"选项1", "选项2", "选项3", "选项4", "选项5", "选项6"};
                 final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(this)
                         .setCheckedItems(new int[]{-1})
-                        .addItems(items, (dialog, which) -> {
+                        .addItems(users, (dialog, which) -> {
                         });
                 builder.addAction("取消", (dialog, index) -> dialog.dismiss());
                 builder.addAction("确认", (dialog, index) -> {
@@ -458,7 +462,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                     }
                     StringBuilder result = new StringBuilder();
                     for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
-                        result.append(items[builder.getCheckedItemIndexes()[i]]).append(",");
+                        result.append(users[builder.getCheckedItemIndexes()[i]]).append(",");
                     }
                     mCheckPerson.setText(result);
                     dialog.dismiss();
@@ -467,9 +471,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 break;
             case R.id.id_et_verify_person:
                 QMUIDialog.MenuDialogBuilder verifyTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
-                        addItems(resultTypes, (dialog, which) -> {
+                        addItems(users, (dialog, which) -> {
                             dialog.dismiss();
-                            mVerifyPerson.setText(resultTypes[which]);
+                            mVerifyPerson.setText(users[which]);
                         });
                 QMUIDialog verifyTypeDialog = verifyTypeBuilder.create();
                 verifyTypeDialog.show();

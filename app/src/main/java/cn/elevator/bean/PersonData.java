@@ -28,41 +28,49 @@ public class PersonData {
     }
 
     public class PersonListData {
-        private String UserId;
+
+        /**
+         * UserID : u0001
+         * UserCode : XB001
+         * UserName : 李明
+         * DepartmentID : BM001
+         */
+
+        private String UserID;
         private String UserCode;
         private String UserName;
         private String DepartmentID;
 
-        public String getUserId() {
-            return UserId;
+        public String getUserID() {
+            return UserID;
         }
 
-        public void setUserId(String userId) {
-            UserId = userId;
+        public void setUserID(String UserID) {
+            this.UserID = UserID;
         }
 
         public String getUserCode() {
             return UserCode;
         }
 
-        public void setUserCode(String userCode) {
-            UserCode = userCode;
+        public void setUserCode(String UserCode) {
+            this.UserCode = UserCode;
         }
 
         public String getUserName() {
             return UserName;
         }
 
-        public void setUserName(String userName) {
-            UserName = userName;
+        public void setUserName(String UserName) {
+            this.UserName = UserName;
         }
 
         public String getDepartmentID() {
             return DepartmentID;
         }
 
-        public void setDepartmentID(String departmentID) {
-            DepartmentID = departmentID;
+        public void setDepartmentID(String DepartmentID) {
+            this.DepartmentID = DepartmentID;
         }
     }
 }

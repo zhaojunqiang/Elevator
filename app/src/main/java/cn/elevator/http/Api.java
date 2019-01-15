@@ -21,7 +21,7 @@ public class Api {
     public static final String PROJECT_DATA = BASE_URL + "Task/GetCheckProject";
 
     //获取权限人员
-    public static final String CHECK_PERSON = BASE_URL + "Task/GetUserList";
+    public static final String CHECK_PERSON = BASE_URL + "User/GetUserList";
 
     //保存检验数据
     public static final String SAVE_TASK = BASE_URL + "Task/SaveCheckTask";

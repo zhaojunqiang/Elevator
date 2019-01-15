@@ -46,7 +46,7 @@ public class SettingFrament extends Fragment implements View.OnClickListener {
                 break;
             case R.id.btn_exit:
                 new QMUIDialog.MessageDialogBuilder(getActivity())
-                        .setTitle("标题")
+                        .setTitle("提示")
                         .setMessage("确定要退出登录吗？")
                         .addAction("取消", (dialog, index) -> dialog.dismiss())
                         .addAction("确定", (dialog, index) -> {
