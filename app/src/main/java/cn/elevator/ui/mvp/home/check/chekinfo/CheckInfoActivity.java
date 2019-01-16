@@ -135,6 +135,10 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private TextView mTvEquipment;
     //仪器列表
     private ExpendRecycleView mRecycleView;
+    //直梯
+    private LinearLayout mVertical;
+    //扶梯
+    private LinearLayout mStaircase;
 
     private String[] deviceTypes = {"直梯","自动扶梯与自动人行道"};
     private String[] resultTypes = {"合格", "不合格", "复检合格", "复检不合格"};
@@ -219,6 +223,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mWorkName.setText(mData.getBuilder());
         mPermintNumber.setText(mData.getConstructLicence());
         mWorkType.setText(mData.getConstructType());
+        if(mData.getCheckType()==3){
+            mWorkName.setEnabled(false);
+            mPermintNumber.setEnabled(false);
+            mWorkType.setEnabled(false);
+        }
         mPowerRate.setText(mData.getRatedLoad());
         mRateSpeed.setText(mData.getRatedSpeed());
         mFloorNum.setText(mData.getLayerStations());
@@ -258,10 +267,16 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String getElevator(int type) {
         switch (type) {
             case 1:
+                mVertical.setVisibility(View.VISIBLE);
+                mStaircase.setVisibility(View.GONE);
                 return deviceTypes[0];
             case 2:
+                mVertical.setVisibility(View.GONE);
+                mStaircase.setVisibility(View.VISIBLE);
                 return deviceTypes[1];
             default:
+                mVertical.setVisibility(View.VISIBLE);
+                mStaircase.setVisibility(View.GONE);
                 return deviceTypes[0];
 
         }
@@ -366,6 +381,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mNormalHoist = findViewById(R.id.id_et_normal_hoist);
         mNormalLength = findViewById(R.id.id_et_normal_length);
         mTvEquipment = findViewById(R.id.id_tv_equipment);
+        mVertical = findViewById(R.id.id_ll_vertical);
+        mStaircase = findViewById(R.id.id_ll_staircase);
         mRecycleView = findViewById(R.id.id_rv);
         //创建布局管理
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
