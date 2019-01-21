@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     private List<Fragment> fragments = null;
     private FragmentHelper helper;
     private HomeFragment mHomeFragment= new HomeFragment();
-    private SearchFragment mSearchFragment = new SearchFragment();
+    //private SearchFragment mSearchFragment = new SearchFragment();
     private SettingFrament mSettingFrament = new SettingFrament();
 
     @Override
@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         fragments = new ArrayList<>();
         fragments.add(mHomeFragment);
-        fragments.add(mSearchFragment);
+        //fragments.add(mSearchFragment);
         fragments.add(mSettingFrament);
 
         helper = new FragmentHelper(getSupportFragmentManager(), R.id.contentView, fragments);
@@ -56,11 +56,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.action_home:
                 helper.showCurrentFragment(0);
                 break;
-            case R.id.action_search:
-                helper.showCurrentFragment(1);
-                break;
+//            case R.id.action_search:
+//                helper.showCurrentFragment(1);
+//                break;
             case R.id.action_setting:
-                helper.showCurrentFragment(2);
+                helper.showCurrentFragment(1);
             default:
                 break;
         }

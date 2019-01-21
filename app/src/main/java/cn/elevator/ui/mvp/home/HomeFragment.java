@@ -26,6 +26,7 @@ import cn.elevator.config.Constant;
 import cn.elevator.helper.GlideLoaderHelper;
 import cn.elevator.ui.adapter.HomeMenuAdapter;
 import cn.elevator.ui.mvp.home.check.CheckActivity;
+import cn.elevator.ui.mvp.home.verify.VerifyActivity;
 import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.utils.ToastUtil;
 
@@ -77,12 +78,12 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     }
 
     private void initDatas() {
-        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, 1));
-        menus[1] = new Pair("报告审核", new MenuData(R.drawable.report, 0));
-        menus[2] = new Pair("报告批准", new MenuData(R.drawable.approve, 3));
-        menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, 0));
-        menus[4] = new Pair("检验配置", new MenuData(R.drawable.configuration, 2));
-        menus[5] = new Pair("系统配置", new MenuData(R.drawable.system, 7));
+        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, 0,0));
+        menus[1] = new Pair("报告审核", new MenuData(R.drawable.report, 0,1));
+        menus[2] = new Pair("报告批准", new MenuData(R.drawable.approve, 0,2));
+        menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, 0,3));
+        menus[4] = new Pair("检验配置", new MenuData(R.drawable.configuration, 0,4));
+        menus[5] = new Pair("系统配置", new MenuData(R.drawable.system, 0,5));
         menuAdapter.notifyDataSetChanged();
     }
 
@@ -102,6 +103,15 @@ public class HomeFragment extends Fragment implements HomeContact.View {
             switch (position) {
                 case 0:
                     startActivity(new Intent(getActivity(), CheckActivity.class));
+                    break;
+                case 1:
+                    startActivity(new Intent(getActivity(),VerifyActivity.class));
+                    break;
+                case 2:
+                    startActivity(new Intent(getActivity(),VerifyActivity.class));
+                    break;
+                case 3:
+                    startActivity(new Intent(getActivity(),VerifyActivity.class));
                     break;
             }
         });
@@ -161,7 +171,10 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      */
     @Override
     public void showTaskCount(TaskData taskData) {
-        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, taskData.getCount()));
+        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, taskData.getCount(),0));
+        menus[1] = new Pair("报告审核", new MenuData(R.drawable.report, taskData.getCount(),1));
+        menus[2] = new Pair("报告批准", new MenuData(R.drawable.approve, taskData.getCount(),2));
+        menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, taskData.getCount(),3));
         menuAdapter.notifyDataSetChanged();
     }
 

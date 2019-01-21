@@ -15,6 +15,7 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import cn.elevator.BuildConfig;
 import cn.elevator.R;
+import cn.elevator.config.Constant;
 import cn.elevator.ui.mvp.account.LoginActivity;
 import cn.elevator.ui.mvp.setting.about.AboutActivity;
 import cn.elevator.utils.SharedPrefUtils;
@@ -26,6 +27,7 @@ import cn.elevator.utils.SharedPrefUtils;
  */
 public class SettingFrament extends Fragment implements View.OnClickListener {
     private TextView mVersion;
+    private TextView mUserName;
 
     @Nullable
     @Override
@@ -33,6 +35,8 @@ public class SettingFrament extends Fragment implements View.OnClickListener {
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         view.findViewById(R.id.id_tv_about).setOnClickListener(this);
         view.findViewById(R.id.btn_exit).setOnClickListener(this);
+        mUserName = view.findViewById(R.id.id_tv_userName);
+        mUserName.setText("下午好，"+SharedPrefUtils.getObj(Constant.USER_NAME));
         mVersion = view.findViewById(R.id.id_tv_version);
         mVersion.setText("版本号V" + BuildConfig.VERSION_NAME);
         return view;

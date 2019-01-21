@@ -3,7 +3,9 @@ package cn.elevator.ui.adapter;
 import android.support.annotation.Nullable;
 import android.util.Pair;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
@@ -28,12 +30,20 @@ public class HomeMenuAdapter extends BaseQuickAdapter<Pair<String, MenuData>, Ba
 
     @Override
     protected void convert(BaseViewHolder helper, Pair<String, MenuData> item) {
-        helper.setText(R.id.titleTextView, item.first);
+        TextView textView = helper.getView(R.id.titleTextView);
+        textView.setText(item.first);
         ImageView imageView = helper.getView(R.id.iconImageView);
         imageView.setImageResource(item.second.getIcon());
         QBadgeView badgeView = new QBadgeView(mContext);
         badgeView.bindTarget(imageView);
         badgeView.setBadgeNumber(item.second.getCout());
         badgeView.setBadgeGravity(Gravity.END | Gravity.TOP);
+        if(item.second.getPosition()>3){
+            textView.setVisibility(View.INVISIBLE);
+            imageView.setVisibility(View.INVISIBLE);
+        }else {
+            textView.setVisibility(View.VISIBLE);
+            imageView.setVisibility(View.VISIBLE);
+        }
     }
 }

@@ -1,6 +1,7 @@
 package cn.elevator.ui.mvp.setting.about;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -25,5 +26,11 @@ public class AboutActivity extends AppCompatActivity {
         toolBar.setLeftButtonOnClick(v -> finish());
         TextView vesion = findViewById(R.id.id_tv_version);
         vesion.setText("九州电子V"+BuildConfig.VERSION_NAME);
+        TextView agreement = findViewById(R.id.id_tv_agreement);
+        agreement.setOnClickListener(v -> {
+            startActivity(new Intent(AboutActivity.this,AgreementActivity.class));
+        });
+        TextView secret = findViewById(R.id.id_tv_secret);
+        secret.setOnClickListener(v -> startActivity(new Intent(AboutActivity.this,SecretActivity.class)));
     }
 }

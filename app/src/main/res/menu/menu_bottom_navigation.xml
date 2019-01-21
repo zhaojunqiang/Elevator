@@ -9,12 +9,6 @@
         android:title="首页"
         app:showAsAction="ifRoom" />
     <item
-        android:id="@+id/action_search"
-        android:enabled="true"
-        android:icon="@drawable/bottom_search_selector"
-        android:title="查询"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/action_setting"
         android:enabled="true"
         android:icon="@drawable/bottom_me_selector"

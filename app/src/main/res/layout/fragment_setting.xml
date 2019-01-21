@@ -25,6 +25,7 @@
             android:src="@drawable/bg" />
 
         <TextView
+            android:id="@+id/id_tv_userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
@@ -58,6 +59,7 @@
         android:layout_height="1px"
         android:background="@color/colorLine"/>
     <TextView
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="54dp"
         android:background="@color/colorWhite"
@@ -69,6 +71,7 @@
         android:textColor="@color/colorContentText"
         android:textSize="20sp"/>
     <View
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/colorLine"/>
