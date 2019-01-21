@@ -201,7 +201,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mStartTime.setText(mData.getSurveyDate());
         mNextTime.setText(mData.getNextSurveyDate());
         mResult.setText(getResult(mData.getSurveyConclusions()));
-        mCheckPerson.setText(mData.getChecker1()+","+mData.getChecker2());
+        if(!TextUtils.isEmpty(mData.getChecker1()) && !TextUtils.isEmpty(mData.getChecker2())){
+            mCheckPerson.setText(mData.getChecker1()+","+mData.getChecker2());
+        }
         mVerifyPerson.setText(mData.getCheckerOut());
         mDeviceBreed.setText(mData.getEquipmentVarieties());
         mDeviceModel.setText(mData.getSpecification());
@@ -223,7 +225,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mWorkName.setText(mData.getBuilder());
         mPermintNumber.setText(mData.getConstructLicence());
         mWorkType.setText(mData.getConstructType());
-        if(mData.getCheckType()==3){
+        if(mData.getCheckType()==3){//施工信息不可编辑
             mWorkName.setEnabled(false);
             mPermintNumber.setEnabled(false);
             mWorkType.setEnabled(false);
