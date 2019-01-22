@@ -25,6 +25,7 @@ public class CheckInfoContact {
 
     interface Presenter extends BasePresenter {
         void getTaskById(long Id);
+        void saveData(TaskListData data);
         void getCheckPersonList(Map<String,String> params);
         void getVerifyList(Map<String,String> params);
         void saveCheckData(String json);

@@ -19,6 +19,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cn.elevator.R;
+import cn.elevator.bean.BannerData;
 import cn.elevator.bean.MenuData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
@@ -133,8 +134,8 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      */
     @Override
     public void initBanners() {
-//        presenter.getBannersData();
-        showBanners();
+        presenter.getBannersData();
+//        showBanners();
     }
 
     /**
@@ -154,14 +155,15 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      * 显示轮播 banner
      */
     @Override
-    public void showBanners() {
-        banner.setImages(Arrays.asList(bannerUrls));
+    public void showBanners(BannerData data) {
+        banner.setImages(data.getData());
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
         banner.setImageLoader(new GlideLoaderHelper());
         banner.isAutoPlay(true);
         banner.setDelayTime(3500);
-        banner.setOnBannerListener(position ->
-                ToastUtil.showToast(getActivity(), "你点击了第 " + position + " 条广告"));
+//        banner.setOnBannerListener(position ->
+//                ToastUtil.showToast(getActivity(), "你点击了第 " + position + " 条广告")
+//        );
 
         banner.start();
     }

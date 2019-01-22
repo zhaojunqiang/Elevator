@@ -60,6 +60,13 @@ public class CheckInfoPresenter implements CheckInfoContact.Presenter {
     }
 
     @Override
+    public void saveData(TaskListData data) {
+        Box<TaskListData> listDataBox = App.getInstance().
+                getBoxStore().boxFor(TaskListData.class);
+        listDataBox.put(data);
+    }
+
+    @Override
     public void getCheckPersonList(Map<String, String> params) {
         Disposable disposableTask = mModle.getHttpPersonData(params)
                 .subscribeOn(Schedulers.io())

@@ -1,6 +1,9 @@
 package cn.elevator.ui.mvp.home.check.chekinfo;
 
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -25,16 +28,19 @@ import java.util.Locale;
 import java.util.Map;
 
 import cn.elevator.R;
+import cn.elevator.app.App;
 import cn.elevator.bean.PersonData;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
 import cn.elevator.ui.mvp.home.check.CheckContact;
 import cn.elevator.ui.mvp.home.check.CheckPresenter;
+import cn.elevator.ui.mvp.home.check.form.FormActivity;
 import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.widget.DateDialog;
 import cn.elevator.widget.ExpendRecycleView;
 import cn.elevator.widget.ToolBar;
+import io.objectbox.Box;
 
 public class CheckInfoActivity extends AppCompatActivity implements CheckInfoContact.View, View.OnClickListener {
     // 记录当前 activity 是否是显示状态
@@ -153,7 +159,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private List<String> mCheckNames = new ArrayList<>();
     private List<PersonData.PersonListData> mVerifyList = new ArrayList<>();
     private List<String> mVerifiNames = new ArrayList<>();
-
+    private ProgressDialog mProgressD;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -161,6 +167,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mId = getIntent().getLongExtra("_id", 0);
         QMUIStatusBarHelper.translucent(this);
         mCurrentCalendar = Calendar.getInstance(Locale.CHINA);
+
+        mProgressD = new ProgressDialog(this);
+        mProgressD.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressD.setMessage("数据保存中，请稍候！");
+
         LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_check_info, null);
         setContentView(view);
         initViews(view);
@@ -319,11 +330,20 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     }
 
     @Override
+    public void onBackPressed() {
+        backTip();
+    }
+
+    @Override
     public void initViews(View view) {
         presenter = new CheckInfoPresenter(this);
         ToolBar toolBar = findViewById(R.id.titlebar);
-        toolBar.setLeftButtonOnClick(v -> finish());
-
+        toolBar.setLeftButtonOnClick(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                backTip();
+            }
+        });
         mNumber = findViewById(R.id.id_tv_number);
         mUser = findViewById(R.id.id_et_user);
         mDeviceCode = findViewById(R.id.id_et_device_code);
@@ -390,10 +410,22 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         mRecycleView.setLayoutManager(layoutManager);
-        //提交
-        findViewById(R.id.id_tv_submit).setOnClickListener(this);
+        //下一步
+        findViewById(R.id.id_tv_next).setOnClickListener(this);
     }
-
+    private void backTip(){
+        new QMUIDialog.MessageDialogBuilder(CheckInfoActivity.this)
+                .setTitle("提示")
+                .setMessage("是否保存已编辑的数据？")
+                .addAction("取消", (dialog, index) -> {
+                    dialog.dismiss();
+                    finish();
+                })
+                .addAction("确定", (dialog, index) -> {
+                    new saveDataToDB(1).execute();
+                    dialog.dismiss();
+                }).show();
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -410,6 +442,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     protected void onDestroy() {
         super.onDestroy();
         activityState = false;
+        if (mProgressD != null) {
+            mProgressD.dismiss();
+        }
     }
 
     @Override
@@ -572,129 +607,169 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 testDlg.setBackButton(getString(R.string.cancel), (dialog, which) -> testDlg.cancel());
                 testDlg.show();
                 break;
-            case R.id.id_tv_submit:
-                if(!TextUtils.isEmpty(mUser.getText())){
-                    mData.setUseOrganize(mUser.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mDeviceCode.getText())){
-                    mData.setEquipmentCode(mDeviceCode.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mStartTime.getText())){
-                    mData.setSurveyDate(mStartTime.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mNextTime.getText())){
-                    mData.setNextSurveyDate(mNextTime.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mCheckPerson.getText())){
-                    String[] checks = mCheckPerson.getText().toString().split(",");
-                    mData.setChecker1(checks[0]);
-                    mData.setChecker2(checks[1]);
-                }
-                if(!TextUtils.isEmpty(mVerifyPerson.getText())){
-                    mData.setCheckerOut(mVerifyPerson.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mDeviceBreed.getText())){
-                    mData.setEquipmentVarieties(mDeviceBreed.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mDeviceModel.getText())){
-                    mData.setSpecification(mDeviceModel.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mProductNumber.getText())){
-                    mData.setProductCode(mProductNumber.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mProductTime.getText())){
-                    mData.setMakeDate(mProductTime.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mProduct.getText())){
-                    mData.setMakeOrganize(mProduct.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mUserAddress.getText())){
-                    mData.setUseOrganizeAdd(mUserAddress.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mDeviceAddress.getText())){
-                    mData.setInstallationSite(mDeviceAddress.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mUserNumber.getText())){
-                    mData.setUseOrganizeCode(mUserNumber.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mRegistNumber.getText())){
-                    mData.setUserRegeditCode(mRegistNumber.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mSafeManager.getText())){
-                    mData.setSafeAdmin(mSafeManager.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mUserPhone.getText())){
-                    mData.setUseOrganizeTel(mUserPhone.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mUserInterNumber.getText())){
-                    mData.setUnitNumber(mUserInterNumber.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mTransTime.getText())){
-                    mData.setReformDate(mTransTime.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mTransName.getText())){
-                    mData.setReform(mTransName.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mRepairName.getText())){
-                    mData.setTendingOrganize(mRepairName.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mRepairPerson.getText())){
-                    mData.setTendingLinkMan(mRepairPerson.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mRescuePhone.getText())){
-                    mData.setTendingTel(mRescuePhone.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mWorkName.getText())){
-                    mData.setBuilder(mWorkName.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mPermintNumber.getText())){
-                    mData.setConstructLicence(mPermintNumber.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mWorkType.getText())){
-                    mData.setConstructType(mWorkType.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mPowerRate.getText())){
-                    mData.setRatedLoad(mPowerRate.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mRateSpeed.getText())){
-                    mData.setRatedSpeed(mRateSpeed.getText().toString());
-                }
-                String floor = "";
-                if(!TextUtils.isEmpty(mFloorNum.getText())){
-                    floor+=mFloorNum.getText().toString()+"层";
-                }
-                if(!TextUtils.isEmpty(mStationNum.getText())){
-                    floor+=mStationNum.getText().toString()+"站";
-                }
-                if(!TextUtils.isEmpty(mDoorNum.getText())){
-                    floor+=mDoorNum.getText().toString()+"门";
-                }
-                mData.setLayerStations(floor);
-                if(!TextUtils.isEmpty(mNormalSpeed.getText())){
-                    mData.setRatedSpeed(mNormalSpeed.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mNormalWidth.getText())){
-                    mData.setLadderwidth(mNormalWidth.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mNormalDip.getText())){
-                    mData.setAngle(mNormalDip.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mNormalDeliver.getText())){
-                    mData.setTransmissionCapacity(mNormalDeliver.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mNormalHoist.getText())){
-                    mData.setLiftingHeight(mNormalHoist.getText().toString());
-                }
-                if(!TextUtils.isEmpty(mNormalLength.getText())){
-                    mData.setSegmentLength(mNormalLength.getText().toString());
-                }
-                Gson gson = new Gson();
-                String jsonStr = gson.toJson(mData);
-                presenter.saveCheckData(jsonStr);
+            case R.id.id_tv_next:
+                new saveDataToDB(0).execute();
                 break;
         }
     }
 
+    private void saveData() {
+        Box<TaskListData> listDataBox = App.getInstance().
+                getBoxStore().boxFor(TaskListData.class);
+        listDataBox.put(mData);
+    }
+
+    private void setData(){
+        if(!TextUtils.isEmpty(mUser.getText())){
+            mData.setUseOrganize(mUser.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mDeviceCode.getText())){
+            mData.setEquipmentCode(mDeviceCode.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mStartTime.getText())){
+            mData.setSurveyDate(mStartTime.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mNextTime.getText())){
+            mData.setNextSurveyDate(mNextTime.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mCheckPerson.getText())){
+            String[] checks = mCheckPerson.getText().toString().split(",");
+            mData.setChecker1(checks[0]);
+            mData.setChecker2(checks[1]);
+        }
+        if(!TextUtils.isEmpty(mVerifyPerson.getText())){
+            mData.setCheckerOut(mVerifyPerson.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mDeviceBreed.getText())){
+            mData.setEquipmentVarieties(mDeviceBreed.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mDeviceModel.getText())){
+            mData.setSpecification(mDeviceModel.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mProductNumber.getText())){
+            mData.setProductCode(mProductNumber.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mProductTime.getText())){
+            mData.setMakeDate(mProductTime.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mProduct.getText())){
+            mData.setMakeOrganize(mProduct.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mUserAddress.getText())){
+            mData.setUseOrganizeAdd(mUserAddress.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mDeviceAddress.getText())){
+            mData.setInstallationSite(mDeviceAddress.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mUserNumber.getText())){
+            mData.setUseOrganizeCode(mUserNumber.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mRegistNumber.getText())){
+            mData.setUserRegeditCode(mRegistNumber.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mSafeManager.getText())){
+            mData.setSafeAdmin(mSafeManager.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mUserPhone.getText())){
+            mData.setUseOrganizeTel(mUserPhone.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mUserInterNumber.getText())){
+            mData.setUnitNumber(mUserInterNumber.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mTransTime.getText())){
+            mData.setReformDate(mTransTime.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mTransName.getText())){
+            mData.setReform(mTransName.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mRepairName.getText())){
+            mData.setTendingOrganize(mRepairName.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mRepairPerson.getText())){
+            mData.setTendingLinkMan(mRepairPerson.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mRescuePhone.getText())){
+            mData.setTendingTel(mRescuePhone.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mWorkName.getText())){
+            mData.setBuilder(mWorkName.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mPermintNumber.getText())){
+            mData.setConstructLicence(mPermintNumber.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mWorkType.getText())){
+            mData.setConstructType(mWorkType.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mPowerRate.getText())){
+            mData.setRatedLoad(mPowerRate.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mRateSpeed.getText())){
+            mData.setRatedSpeed(mRateSpeed.getText().toString());
+        }
+        String floor = "";
+        if(!TextUtils.isEmpty(mFloorNum.getText())){
+            floor+=mFloorNum.getText().toString()+"层";
+        }
+        if(!TextUtils.isEmpty(mStationNum.getText())){
+            floor+=mStationNum.getText().toString()+"站";
+        }
+        if(!TextUtils.isEmpty(mDoorNum.getText())){
+            floor+=mDoorNum.getText().toString()+"门";
+        }
+        mData.setLayerStations(floor);
+        if(!TextUtils.isEmpty(mNormalSpeed.getText())){
+            mData.setRatedSpeed(mNormalSpeed.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mNormalWidth.getText())){
+            mData.setLadderwidth(mNormalWidth.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mNormalDip.getText())){
+            mData.setAngle(mNormalDip.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mNormalDeliver.getText())){
+            mData.setTransmissionCapacity(mNormalDeliver.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mNormalHoist.getText())){
+            mData.setLiftingHeight(mNormalHoist.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mNormalLength.getText())){
+            mData.setSegmentLength(mNormalLength.getText().toString());
+        }
+    }
+    private class saveDataToDB extends AsyncTask<Void, Void, Void> {
+        private int type;
+        private saveDataToDB(int pType){
+            this.type = pType;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            mProgressD.show();
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            setData();
+            saveData();
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            if (mProgressD != null) {
+                mProgressD.dismiss();
+            }
+            if (type==1){
+                finish();
+            }else {
+                Intent intent = new Intent(CheckInfoActivity.this,FormActivity.class);
+                intent.putExtra("_id",mId);
+                startActivity(intent);
+            }
+        }
+    }
     //拼接日期
     private String getDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);

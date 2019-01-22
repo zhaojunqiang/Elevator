@@ -12,7 +12,7 @@ public class Api {
     public static final String LOGIN = BASE_URL + "Account/Login";
 
     // 广告
-    public static final String Banner = BASE_URL + "";
+    public static final String Banner = BASE_URL + "Image/GetSysTopImage";
 
     // 检验任务列表
     public static final String TASK_LIST = BASE_URL + "Task/GetCheckTaskList";

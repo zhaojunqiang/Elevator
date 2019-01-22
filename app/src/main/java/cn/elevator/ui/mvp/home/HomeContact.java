@@ -34,7 +34,7 @@ public class HomeContact {
 
         void initTaskCount();
 
-        void showBanners();
+        void showBanners(BannerData bannerData);
 
         void showTaskCount(TaskData taskData);
 

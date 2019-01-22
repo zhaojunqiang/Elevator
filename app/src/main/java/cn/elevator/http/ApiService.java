@@ -3,6 +3,7 @@ package cn.elevator.http;
 import java.util.List;
 
 import cn.elevator.bean.BannerData;
+import cn.elevator.bean.FormData;
 import cn.elevator.bean.LoginData;
 import cn.elevator.bean.PersonData;
 import cn.elevator.bean.SaveResult;
@@ -29,8 +30,8 @@ public interface ApiService {
      *  获取广告数据
      * @return
      */
-    @GET(Api.Banner)
-    Observable<BannerData> getBannerData();
+    @POST(Api.Banner)
+    Observable<BannerData> getBannerData(@Body RequestBody body);
 
     /**
      *  获取检验任务数据数据
@@ -38,6 +39,11 @@ public interface ApiService {
      */
     @POST(Api.TASK_LIST)
     Observable<TaskData> getTaskData(@Body RequestBody body);
+    /**
+     * 获取检验记录项目
+     */
+    @POST(Api.PROJECT_DATA)
+    Observable<FormData> getFormData(@Body RequestBody body);
     /**
      * 获取检验人员列表
      */

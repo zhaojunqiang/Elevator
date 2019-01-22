@@ -40,14 +40,13 @@ public class HomePresenter implements HomeContact.Presenter {
                         if(!mView.isActive()) return;
                         // 1.此处判断请求结果码是否为200
                         // 2.确认成功后，调用view层的showBanner（）；
-                        mView.showBanners();
+                        mView.showBanners(value);
                     }
 
                     @Override
                     public void onError(Throwable e) {
                         if(mView.isActive()){
                             mView.showNetWorkError();
-                            mView.showBanners();
                         }
                     }
 

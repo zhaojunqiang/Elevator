@@ -25,9 +25,10 @@ public class HomeModle implements HomeContact.Modle{
      */
     @Override
     public Observable<BannerData> getHttpBannersData() {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"),"");
         return HttpClient.getInstance()
                 .create(ApiService.class)
-                .getBannerData();
+                .getBannerData(body);
     }
     /**
      * 获取检验任务列表数据（计算待检验任务个数，显示红点）
