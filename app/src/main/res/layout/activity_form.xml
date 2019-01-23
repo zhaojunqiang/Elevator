@@ -58,5 +58,20 @@
                 android:textColor="#444"
                 android:gravity="left|center_vertical"/>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:background="@color/line"/>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+            <cn.elevator.widget.ExpendRecycleView
+                android:id="@+id/id_rv"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scrollbars="none">
+            </cn.elevator.widget.ExpendRecycleView>
+            <include layout="@layout/view_nodata"/>
+        </RelativeLayout>
     </LinearLayout>
 </LinearLayout>

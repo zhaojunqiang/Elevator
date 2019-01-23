@@ -31,21 +31,27 @@ public class FormPresenter implements FormContact.Presenter {
         compositeDisposable = new CompositeDisposable();
     }
     @Override
-    public void getFormData(String ID) {
-        Disposable disposableTask = mModle.getHttpFormData(ID)
+    public void getFormData(String userId,String checkId) {
+        Disposable disposableTask = mModle.getHttpFormData(userId,checkId)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeWith(new DisposableObserver<FormData>() {
                     @Override
                     public void onNext(FormData formData) {
                         if (mView.isActive()){
-                            mView.showFormData(formData);
+                            if(formData.getData()!=null && formData.getData().size()>0){
+                                mView.showFormData(formData);
+                            }else {
+                                mView.noData();
+                            }
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (mView.isActive()){
+                            mView.noData();
+                        }
                     }
 
                     @Override

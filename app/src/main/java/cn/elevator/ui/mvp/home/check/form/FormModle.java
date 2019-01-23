@@ -25,10 +25,11 @@ public class FormModle implements FormContact.Modle{
 
 
     @Override
-    public Observable<FormData> getHttpFormData(String ID) {
+    public Observable<FormData> getHttpFormData(String userId,String checkId) {
         JSONObject result = new JSONObject();
         try {
-            result.put("CheckRecordID", ID);
+            result.put("UserId",userId);
+            result.put("CheckRecordID", checkId);
         } catch (JSONException e) {
             e.printStackTrace();
         }

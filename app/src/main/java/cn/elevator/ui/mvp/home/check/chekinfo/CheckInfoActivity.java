@@ -765,7 +765,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 finish();
             }else {
                 Intent intent = new Intent(CheckInfoActivity.this,FormActivity.class);
-                intent.putExtra("_id",mId);
+                intent.putExtra("_id",mData.getCraneRecordListID());
                 startActivity(intent);
             }
         }

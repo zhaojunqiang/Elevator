@@ -42,13 +42,19 @@ public class VerifyPresenter implements VerifyContact.Presenter {
                     @Override
                     public void onNext(TaskData taskData) {
                         if (mView.isActive()){
-                            mView.showTaskData(taskData);
+                            if(taskData.getData()!=null && taskData.getData().size()>0){
+                                mView.showTaskData(taskData);
+                            }else {
+                                mView.noData();
+                            }
                         }
                     }
 
                     @Override
                     public void onError(Throwable e) {
-
+                        if (mView.isActive()){
+                            mView.noData();
+                        }
                     }
 
                     @Override

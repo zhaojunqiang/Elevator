@@ -19,11 +19,11 @@ import io.reactivex.Observable;
 public class FormContact {
 
     interface Modle {
-        Observable<FormData> getHttpFormData(String ID);
+        Observable<FormData> getHttpFormData(String userId,String checkId);
     }
 
     interface Presenter extends BasePresenter {
-        void getFormData(String ID);
+        void getFormData(String userId,String checkId);
     }
 
     interface View extends BaseView{
@@ -31,6 +31,8 @@ public class FormContact {
         boolean isActive();
 
         void showFormData(FormData formData);
+
+        void noData();
     }
 
 }

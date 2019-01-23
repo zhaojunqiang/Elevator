@@ -15,8 +15,7 @@ public class FormData {
      */
 
     private String Code;
-    private int Count;
-    private List<TaskListData> Data;
+    private List<FormListData> Data;
 
     public String getCode() {
         return Code;
@@ -26,19 +25,11 @@ public class FormData {
         this.Code = Code;
     }
 
-    public int getCount() {
-        return Count;
-    }
-
-    public void setCount(int count) {
-        Count = count;
-    }
-
-    public List<TaskListData> getData() {
+    public List<FormListData> getData() {
         return Data;
     }
 
-    public void setData(List<TaskListData> data) {
+    public void setData(List<FormListData> data) {
         Data = data;
     }
 }
