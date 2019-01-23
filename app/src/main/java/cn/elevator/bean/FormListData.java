@@ -37,12 +37,12 @@ public class FormListData implements MultiItemEntity {
     private String CheckListCode;
     private String CheckListName;
     private String ListType;
-    private Object InspectionItem;
+    private String InspectionItem;
     private String DefaultResult;
     private String DefaultConclusion;
-    private Object IFMergerConclusions;
-    private Object IFMergerConclusionsDefault;
-    private Object Remark;
+    private int IFMergerConclusions;
+    private int IFMergerConclusionsDefault;
+    private String Remark;
 
     @Override
     public int getItemType() {
@@ -110,11 +110,11 @@ public class FormListData implements MultiItemEntity {
         this.ListType = ListType;
     }
 
-    public Object getInspectionItem() {
+    public String getInspectionItem() {
         return InspectionItem;
     }
 
-    public void setInspectionItem(Object InspectionItem) {
+    public void setInspectionItem(String InspectionItem) {
         this.InspectionItem = InspectionItem;
     }
 
@@ -134,27 +134,27 @@ public class FormListData implements MultiItemEntity {
         this.DefaultConclusion = DefaultConclusion;
     }
 
-    public Object getIFMergerConclusions() {
+    public int getIFMergerConclusions() {
         return IFMergerConclusions;
     }
 
-    public void setIFMergerConclusions(Object IFMergerConclusions) {
+    public void setIFMergerConclusions(int IFMergerConclusions) {
         this.IFMergerConclusions = IFMergerConclusions;
     }
 
-    public Object getIFMergerConclusionsDefault() {
+    public int getIFMergerConclusionsDefault() {
         return IFMergerConclusionsDefault;
     }
 
-    public void setIFMergerConclusionsDefault(Object IFMergerConclusionsDefault) {
+    public void setIFMergerConclusionsDefault(int IFMergerConclusionsDefault) {
         this.IFMergerConclusionsDefault = IFMergerConclusionsDefault;
     }
 
-    public Object getRemark() {
+    public String getRemark() {
         return Remark;
     }
 
-    public void setRemark(Object Remark) {
+    public void setRemark(String Remark) {
         this.Remark = Remark;
     }
 }

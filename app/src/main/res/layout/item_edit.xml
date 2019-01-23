@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="30dp"
     android:paddingLeft="@dimen/dp_10"
-    android:paddingRight="@dimen/dp_10">
+    android:paddingRight="@dimen/dp_10"
+    android:id="@+id/id_ll_show">
     <TextView
         android:id="@+id/id_tv_title"
         android:layout_width="0dp"
