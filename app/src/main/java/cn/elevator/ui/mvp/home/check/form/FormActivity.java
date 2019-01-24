@@ -1,8 +1,7 @@
 package cn.elevator.ui.mvp.home.check.form;
 
-import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,7 +12,6 @@ import com.coorchice.library.SuperTextView;
 import com.google.gson.Gson;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 
-import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,9 +22,9 @@ import cn.elevator.bean.SaveFormResult;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
-import cn.elevator.ui.adapter.CheckListAdapter;
 import cn.elevator.ui.adapter.FormDataAdapter;
 import cn.elevator.utils.SharedPrefUtils;
+import cn.elevator.utils.ToastUtil;
 import cn.elevator.widget.ExpendRecycleView;
 import cn.elevator.widget.ToolBar;
 
@@ -123,12 +121,12 @@ public class FormActivity extends AppCompatActivity implements FormContact.View{
 
     @Override
     public void showSaveTaskResult(SaveResult saveResult) {
-
+        ToastUtil.showToast(this, saveResult.getData().getResultMessage());
     }
 
     @Override
     public void showSaveFormResult(SaveFormResult saveFormResult) {
-
+        //ToastUtil.showToast(this, saveFormResult.getData().getResultMessage());
     }
 
     @Override

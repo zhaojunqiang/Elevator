@@ -1,10 +1,11 @@
 package cn.elevator.bean;
 
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
+import cn.elevator.config.Constant;
+import cn.elevator.utils.SharedPrefUtils;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 
@@ -36,6 +37,7 @@ public class FormListData implements MultiItemEntity {
 
     @Id(assignable = true)
     private long id;
+    private String UserId;
     private String CheckProjectListID;
     private String CheckRecordID;
     private String ReportClassID;
@@ -67,6 +69,14 @@ public class FormListData implements MultiItemEntity {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return SharedPrefUtils.getObj(Constant.USERID);
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
     }
 
     public String getCheckProjectListID() {
