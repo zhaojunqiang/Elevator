@@ -5,11 +5,15 @@ import android.widget.TextView;
 
 import com.chad.library.adapter.base.entity.MultiItemEntity;
 
+import io.objectbox.annotation.Entity;
+import io.objectbox.annotation.Id;
+
 /**
  * Created by Yangzb on 2019/1/23 13:57
  * E-mail：yangzongbin@si-top.com
  * Describe:
  */
+@Entity
 public class FormListData implements MultiItemEntity {
     public static final int TEXT_BG_BLUE = 1;
     public static final int TEXT = 2;
@@ -30,6 +34,8 @@ public class FormListData implements MultiItemEntity {
      * Remark : null
      */
 
+    @Id(assignable = true)
+    private long id;
     private String CheckProjectListID;
     private String CheckRecordID;
     private String ReportClassID;
@@ -43,6 +49,7 @@ public class FormListData implements MultiItemEntity {
     private int IFMergerConclusions;
     private int IFMergerConclusionsDefault;
     private String Remark;
+    private int ord;
 
     @Override
     public int getItemType() {
@@ -52,6 +59,14 @@ public class FormListData implements MultiItemEntity {
             return ITEM_EDIT;
         }
         return TEXT;
+    }
+
+    public long getId() {
+        return Long.valueOf(this.CheckProjectListID);
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getCheckProjectListID() {
@@ -156,5 +171,13 @@ public class FormListData implements MultiItemEntity {
 
     public void setRemark(String Remark) {
         this.Remark = Remark;
+    }
+
+    public int getOrd() {
+        return ord;
+    }
+
+    public void setOrd(int ord) {
+        this.ord = ord;
     }
 }

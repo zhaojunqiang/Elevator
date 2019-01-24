@@ -74,4 +74,22 @@
             <include layout="@layout/view_nodata"/>
         </RelativeLayout>
     </LinearLayout>
+    <RelativeLayout
+        android:padding="@dimen/dp_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff">
+        <com.coorchice.library.SuperTextView
+            android:layout_centerInParent="true"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/id_tv_submit"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
+            android:text="提交"
+            android:textSize="12sp"
+            android:textColor="#fff"
+            app:stv_corner="20dp"
+            app:stv_solid="@color/colorPrimary"
+            android:gravity="center"/>
+    </RelativeLayout>
 </LinearLayout>

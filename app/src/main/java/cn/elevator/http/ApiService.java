@@ -6,6 +6,7 @@ import cn.elevator.bean.BannerData;
 import cn.elevator.bean.FormData;
 import cn.elevator.bean.LoginData;
 import cn.elevator.bean.PersonData;
+import cn.elevator.bean.SaveFormResult;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import io.reactivex.Observable;
@@ -54,4 +55,9 @@ public interface ApiService {
      */
     @POST(Api.SAVE_TASK)
     Observable<SaveResult> saveTaskData(@Body RequestBody body);
+    /**
+     * 保存检验项数据
+     */
+    @POST(Api.SAVE_FORM)
+    Observable<SaveFormResult> saveFormData(@Body RequestBody body);
 }

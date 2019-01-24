@@ -5,7 +5,7 @@ package cn.elevator.bean;
  * E-mail：yangzongbin@si-top.com
  * Describe:
  */
-public class SaveResult {
+public class SaveFormResult {
     private String Code;
     private DataBean Data;
 
@@ -29,7 +29,7 @@ public class SaveResult {
 
         private boolean Result;
         private String ResultMessage;
-        private String CraneRecordListID;
+        private String CheckProjectListID;
 
         public boolean isResult() {
             return Result;
@@ -48,11 +48,11 @@ public class SaveResult {
         }
 
         public String getCheckProjectListID() {
-            return CraneRecordListID;
+            return CheckProjectListID;
         }
 
         public void setCheckProjectListID(String checkProjectListID) {
-            CraneRecordListID = checkProjectListID;
+            CheckProjectListID = checkProjectListID;
         }
     }
 }

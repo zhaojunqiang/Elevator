@@ -7,6 +7,7 @@ import java.util.Map;
 
 import cn.elevator.bean.FormData;
 import cn.elevator.bean.PersonData;
+import cn.elevator.bean.SaveFormResult;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import cn.elevator.http.ApiService;
@@ -37,5 +38,21 @@ public class FormModle implements FormContact.Modle{
         return HttpClient.getInstance()
                 .create(ApiService.class)
                 .getFormData(body);
+    }
+
+    @Override
+    public Observable<SaveResult> getHttpSaveTaskData(String json) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .saveTaskData(body);
+    }
+
+    @Override
+    public Observable<SaveFormResult> getHttpSaveFormData(String json) {
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), json);
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .saveFormData(body);
     }
 }

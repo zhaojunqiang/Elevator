@@ -26,4 +26,6 @@ public class Api {
     //保存检验数据
     public static final String SAVE_TASK = BASE_URL + "Task/SaveCheckTask";
 
+    //保存检验项数据
+    public static final String SAVE_FORM = BASE_URL + "Task/SaveCheckProject";
 }

@@ -12,7 +12,10 @@ import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 import java.util.List;
 
 import cn.elevator.R;
+import cn.elevator.app.App;
 import cn.elevator.bean.FormListData;
+import cn.elevator.bean.TaskListData;
+import io.objectbox.Box;
 
 /**
  * Created by Yangzb on 2019/1/23 14:22
@@ -28,8 +31,6 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
      */
     private String[] means = {"符合", "不符合", "无此项"};
     private String[] results = {"合格","不合格","——"};
-    private TextView check;
-    private TextView result;
     public FormDataAdapter(List<FormListData> data) {
         super(data);
         addItemType(FormListData.TEXT_BG_BLUE, R.layout.item_text_bg_blue);
@@ -63,8 +64,8 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
             case FormListData.ITEM_EDIT:
                 helper.setText(R.id.id_tv_title, item.getCheckListName());
                 helper.setText(R.id.id_tv_type,item.getListType());
-                check = helper.getView(R.id.id_tv_check);
-                result = helper.getView(R.id.id_tv_result);
+                TextView check = helper.getView(R.id.id_tv_check);
+                TextView result = helper.getView(R.id.id_tv_result);
                 check.setText(item.getDefaultResult());
                 result.setText(item.getDefaultConclusion());
                 LinearLayout show3 = helper.getView(R.id.id_ll_show);
@@ -78,39 +79,44 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                     @Override
                     public void onClick(View v) {
                         if(item.getListType().equals("C")){
-                            showMeans(item);
+                            showMeans(check,item);
                         }
                     }
                 });
                 result.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        showResults(item);
+                        showResults(result,item);
                     }
                 });
                 break;
         }
     }
 
-    private void showMeans(FormListData item) {
+
+    private void showMeans(TextView v,FormListData item) {
         QMUIDialog.MenuDialogBuilder typeBuilder = new QMUIDialog.MenuDialogBuilder(mContext).
                 addItems(means, (dialog, which) -> {
-//                    Toast.makeText(CheckActivity.this, "你选择了 " +types[which], Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    check.setText(means[which]);
+//                    v.setText(means[which]);
                     item.setDefaultResult(means[which]);
+                    Box<FormListData> listDataBox = App.getInstance().
+                            getBoxStore().boxFor(FormListData.class);
+                    listDataBox.put(item);
                 });
         QMUIDialog typeDialog = typeBuilder.create();
         typeDialog.show();
     }
 
-    private void showResults(FormListData item) {
+    private void showResults(TextView v,FormListData item) {
         QMUIDialog.MenuDialogBuilder typeBuilder = new QMUIDialog.MenuDialogBuilder(mContext).
                 addItems(results, (dialog, which) -> {
-//                    Toast.makeText(CheckActivity.this, "你选择了 " +types[which], Toast.LENGTH_SHORT).show();
                     dialog.dismiss();
-                    result.setText(results[which]);
-                    item.setDefaultResult(results[which]);
+//                    v.setText(results[which]);
+                    item.setDefaultConclusion(results[which]);
+                    Box<FormListData> listDataBox = App.getInstance().
+                            getBoxStore().boxFor(FormListData.class);
+                    listDataBox.put(item);
                 });
         QMUIDialog typeDialog = typeBuilder.create();
         typeDialog.show();
