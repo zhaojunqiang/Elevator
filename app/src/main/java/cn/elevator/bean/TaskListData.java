@@ -1,5 +1,7 @@
 package cn.elevator.bean;
 
+import cn.elevator.config.Constant;
+import cn.elevator.utils.SharedPrefUtils;
 import io.objectbox.annotation.Entity;
 import io.objectbox.annotation.Id;
 import io.objectbox.annotation.Transient;
@@ -68,6 +70,7 @@ public class TaskListData {
      */
     @Id(assignable = true)
     private long id;
+    private String UserId;
     private String CraneRecordListID;
     private String CraneRecordCode;
     private String CheckRecordID;
@@ -130,6 +133,14 @@ public class TaskListData {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getUserId() {
+        return SharedPrefUtils.getObj(Constant.USERID);
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
     }
 
     public String getCraneRecordListID() {
