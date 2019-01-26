@@ -126,7 +126,7 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                             listDataBox.put(item);
                             dialog.dismiss();
                         } else {
-                            Toast.makeText(mContext, "请填入检验结果", Toast.LENGTH_SHORT).show();
+                            ToastUtil.showToast(mContext,"请输入检验结果");
                         }
                     }
                 }).show();
@@ -150,6 +150,8 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                             }else {
                                 item.setDefaultConclusion(results[which]);
                             }
+                        }else {
+                            item.setDefaultConclusion(results[which]);
                         }
                         Box<FormListData> listDataBox = App.getInstance().
                                 getBoxStore().boxFor(FormListData.class);
@@ -159,20 +161,26 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                                 getBoxStore().boxFor(FormListData.class);
                         listDataBox.put(item);
                         List<FormListData> listDatas = listDataBox.find(FormListData_.FatherId, item.getFatherId());
-                        int index = 0;
+                        int index = -1;//合格/不合格
+//                        int position = 2;//无此项
                         for (FormListData data : listDatas){
                             if(data.getDefaultResult().equals(means[1])){
                                 index = 1;//不合格
                                 break;
                             }else if(data.getDefaultResult().equals(means[0]) || data.getDefaultResult().equals(means[3])){
                                 index = 0;//合格
-                            }else if(data.getDefaultResult().equals(means[2])){
-                                index = 2;//无此项
                             }
+//                            else if(data.getDefaultResult().equals(means[2])){
+//                                position = 2;//无此项
+//                            }
                         }
                         for (FormListData data:listDatas){
                             if(data.getIFMergerConclusionsDefault()==1){//显示合并结论
-                                data.setDefaultConclusion(results[index]);
+                                if(index > -1){
+                                    data.setDefaultConclusion(results[index]);
+                                }else {
+                                    data.setDefaultConclusion(results[2]);
+                                }
                                 listDataBox.put(data);
                                 break;
                             }
