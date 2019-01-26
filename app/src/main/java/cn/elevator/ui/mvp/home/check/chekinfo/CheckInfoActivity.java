@@ -1,5 +1,6 @@
 package cn.elevator.ui.mvp.home.check.chekinfo;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -212,10 +213,10 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mStartTime.setText(mData.getSurveyDate());
         mNextTime.setText(mData.getNextSurveyDate());
         mResult.setText(getResult(mData.getSurveyConclusions()));
-        if(!TextUtils.isEmpty(mData.getChecker1()) && !TextUtils.isEmpty(mData.getChecker2())){
-            mCheckPerson.setText(mData.getChecker1()+","+mData.getChecker2());
-        }
-        mVerifyPerson.setText(mData.getCheckerOut());
+//        if(!TextUtils.isEmpty(mData.getChecker1()) && !TextUtils.isEmpty(mData.getChecker2())){
+//            mCheckPerson.setText(mData.getChecker1()+","+mData.getChecker2());
+//        }
+//        mVerifyPerson.setText(mData.getCheckerOut());
         mDeviceBreed.setText(mData.getEquipmentVarieties());
         mDeviceModel.setText(mData.getSpecification());
         mProductNumber.setText(mData.getProductCode());
@@ -302,8 +303,26 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         if (personData.getData() != null && personData.getData().size() > 0) {
             mCheckList.addAll(personData.getData());
         }
+        String checker1 = "";
+        String checker2 = "";
+        String checkout = "";
         for (PersonData.PersonListData data : mCheckList) {
             mCheckNames.add(data.getUserName());
+            if(data.getUserID().equals(mData.getChecker1())){
+                checker1 = data.getUserName();
+            }
+            if(data.getUserID().equals(mData.getChecker2())){
+                checker2 = data.getUserName();
+            }
+            if(data.getUserID().equals(mData.getCheckerOut())){
+                checkout = data.getUserName();
+            }
+        }
+        if(!TextUtils.isEmpty(checker1) && !TextUtils.isEmpty(checker2)){
+            mCheckPerson.setText(checker1+","+checker2);
+        }
+        if(!TextUtils.isEmpty(checkout)){
+            mVerifyPerson.setText(checkout);
         }
         users = new String[mCheckNames.size()];
         for(int i=0;i<mCheckNames.size();i++){
@@ -515,9 +534,14 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         return;
                     }
                     StringBuilder result = new StringBuilder();
+                    String[] userId = new String[builder.getCheckedItemIndexes().length];
                     for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
                         result.append(users[builder.getCheckedItemIndexes()[i]]).append(",");
+//                        result.append(mCheckList.get(builder.getCheckedItemIndexes()[i]).getUserID()).append(",");
+                        userId[i] = mCheckList.get(builder.getCheckedItemIndexes()[i]).getUserID();
                     }
+                    mData.setChecker1(userId[0]);
+                    mData.setChecker2(userId[1]);
                     mCheckPerson.setText(result);
                     dialog.dismiss();
                 });
@@ -528,6 +552,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         addItems(users, (dialog, which) -> {
                             dialog.dismiss();
                             mVerifyPerson.setText(users[which]);
+                            mData.setCheckerOut(mCheckList.get(which).getUserID());
                         });
                 QMUIDialog verifyTypeDialog = verifyTypeBuilder.create();
                 verifyTypeDialog.show();
@@ -632,14 +657,14 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         if(!TextUtils.isEmpty(mNextTime.getText())){
             mData.setNextSurveyDate(mNextTime.getText().toString());
         }
-        if(!TextUtils.isEmpty(mCheckPerson.getText())){
-            String[] checks = mCheckPerson.getText().toString().split(",");
-            mData.setChecker1(checks[0]);
-            mData.setChecker2(checks[1]);
-        }
-        if(!TextUtils.isEmpty(mVerifyPerson.getText())){
-            mData.setCheckerOut(mVerifyPerson.getText().toString());
-        }
+//        if(!TextUtils.isEmpty(mCheckPerson.getText())){
+//            String[] checks = mCheckPerson.getText().toString().split(",");
+//            mData.setChecker1(checks[0]);
+//            mData.setChecker2(checks[1]);
+//        }
+//        if(!TextUtils.isEmpty(mVerifyPerson.getText())){
+//            mData.setCheckerOut(mVerifyPerson.getText().toString());
+//        }
         if(!TextUtils.isEmpty(mDeviceBreed.getText())){
             mData.setEquipmentVarieties(mDeviceBreed.getText().toString());
         }
@@ -767,10 +792,19 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 Intent intent = new Intent(CheckInfoActivity.this,FormActivity.class);
                 intent.putExtra("_id",mData.getCraneRecordListID());
                 intent.putExtra("id",mId);
-                startActivity(intent);
+                startActivityForResult(intent,1);
             }
         }
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==1 && resultCode==Activity.RESULT_OK){
+            finish();
+        }
+    }
+
     //拼接日期
     private String getDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
