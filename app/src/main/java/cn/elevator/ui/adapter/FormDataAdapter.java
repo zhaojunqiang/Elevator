@@ -139,7 +139,7 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
 //                    v.setText(means[which]);
                     item.setDefaultResult(means[which]);
                     if (item.getIFMergerConclusions() == 0) {//不是合并项
-                        item.setDefaultConclusion(means[which]);
+                        item.setDefaultConclusion(results[which]);
                         Box<FormListData> listDataBox = App.getInstance().
                                 getBoxStore().boxFor(FormListData.class);
                         listDataBox.put(item);
@@ -148,18 +148,18 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                                 getBoxStore().boxFor(FormListData.class);
                         listDataBox.put(item);
                         List<FormListData> listDatas = listDataBox.find(FormListData_.FatherId, item.getFatherId());
-                        boolean result = false;
+                        int index = 0;
                         for (FormListData data : listDatas){
                             if(data.getDefaultResult().equals("不符合")){
-                                result = false;
+                                index = 1;
                                 break;
                             }else if(data.getDefaultResult().equals("符合")){
-                                result = true;
+                                index = 0;
                             }
                         }
                         for (FormListData data:listDatas){
                             if(data.getIFMergerConclusionsDefault()==1){//显示合并结论
-                                data.setDefaultConclusion(result==true?"合格":"不合格");
+                                data.setDefaultConclusion(results[index]);
                                 listDataBox.put(data);
                                 break;
                             }
