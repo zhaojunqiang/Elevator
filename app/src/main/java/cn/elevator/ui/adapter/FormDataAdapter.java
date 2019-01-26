@@ -18,6 +18,7 @@ import cn.elevator.app.App;
 import cn.elevator.bean.FormListData;
 import cn.elevator.bean.FormListData_;
 import cn.elevator.bean.TaskListData;
+import cn.elevator.utils.ToastUtil;
 import io.objectbox.Box;
 
 /**
@@ -32,7 +33,7 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
      *
      * @param data A new list is created out of this one to avoid mutable list
      */
-    private String[] means = {"符合", "不符合", "无此项"};
+    private String[] means = {"符合", "不符合", "无此项","资料确认符合"};
     private String[] results = {"合格", "不合格", "——"};
 
     public FormDataAdapter(List<FormListData> data) {
@@ -137,9 +138,19 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                 addItems(means, (dialog, which) -> {
                     dialog.dismiss();
 //                    v.setText(means[which]);
+                    if(!item.getListType().equals("C") && which==3){
+                        ToastUtil.showToast(mContext,"此项不能选择资料确认符合");
+                        return;
+                    }
                     item.setDefaultResult(means[which]);
                     if (item.getIFMergerConclusions() == 0) {//不是合并项
-                        item.setDefaultConclusion(results[which]);
+                        if(item.getListType().equals("C")){
+                            if(which==0 || which==3){
+                                item.setDefaultConclusion(results[0]);
+                            }else {
+                                item.setDefaultConclusion(results[which]);
+                            }
+                        }
                         Box<FormListData> listDataBox = App.getInstance().
                                 getBoxStore().boxFor(FormListData.class);
                         listDataBox.put(item);
@@ -150,11 +161,13 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                         List<FormListData> listDatas = listDataBox.find(FormListData_.FatherId, item.getFatherId());
                         int index = 0;
                         for (FormListData data : listDatas){
-                            if(data.getDefaultResult().equals("不符合")){
-                                index = 1;
+                            if(data.getDefaultResult().equals(means[1])){
+                                index = 1;//不合格
                                 break;
-                            }else if(data.getDefaultResult().equals("符合")){
-                                index = 0;
+                            }else if(data.getDefaultResult().equals(means[0]) || data.getDefaultResult().equals(means[3])){
+                                index = 0;//合格
+                            }else if(data.getDefaultResult().equals(means[2])){
+                                index = 2;//无此项
                             }
                         }
                         for (FormListData data:listDatas){
