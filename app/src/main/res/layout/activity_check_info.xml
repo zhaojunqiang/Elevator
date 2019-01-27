@@ -1203,18 +1203,18 @@
             <LinearLayout
                 android:paddingLeft="@dimen/dp_10"
                 android:paddingRight="@dimen/dp_10"
-                android:paddingTop="@dimen/dp_10"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
                     android:id="@+id/id_tv_equipment"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="30dp"
                     android:text="所需检验仪器"
                     android:textColor="#09B6F2"
                     android:textSize="@dimen/sp_12"
-                    android:drawableRight="@drawable/down"/>
+                    android:drawableRight="@drawable/down"
+                    android:gravity="center_vertical"/>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -1240,20 +1240,37 @@
                     android:layout_height="wrap_content"
                     android:scrollbars="none">
                 </cn.elevator.widget.ExpendRecycleView>
-
-                <com.coorchice.library.SuperTextView
-                    android:layout_marginTop="@dimen/dp_10"
-                    android:layout_gravity="center_horizontal"
-                    android:id="@+id/id_tv_next"
-                    android:layout_width="80dp"
-                    android:layout_height="40dp"
-                    android:text="下一步"
-                    android:textSize="12sp"
-                    android:textColor="#fff"
-                    app:stv_corner="20dp"
-                    app:stv_solid="@color/colorPrimary"
-                    android:gravity="center"/>
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10">
+
+                <TextView
+                    android:id="@+id/id_tv_remark"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:drawableRight="@drawable/down"
+                    android:gravity="center_vertical"
+                    android:text="备注"
+                    android:textColor="#09B6F2"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+            <com.coorchice.library.SuperTextView
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_gravity="center_horizontal"
+                android:id="@+id/id_tv_next"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:text="下一步"
+                android:textSize="12sp"
+                android:textColor="#fff"
+                app:stv_corner="20dp"
+                app:stv_solid="@color/colorPrimary"
+                android:gravity="center"/>
         </LinearLayout>
     </ScrollView>
 </LinearLayout>
