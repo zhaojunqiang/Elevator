@@ -84,6 +84,14 @@
                         android:inputType="text"
                         android:textSize="@dimen/sp_14"/>
                 </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:paddingLeft="@dimen/dp_10"
+                android:paddingRight="@dimen/dp_10"
+                android:paddingTop="@dimen/dp_10"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
                 <LinearLayout
                     android:paddingLeft="@dimen/dp_4"
                     android:layout_width="0dp"
@@ -652,29 +660,38 @@
                         android:inputType="text"
                         android:textSize="@dimen/sp_14"/>
                 </LinearLayout>
-                <LinearLayout
-                    android:paddingLeft="@dimen/dp_4"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:orientation="horizontal">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="match_parent"
-                        android:gravity="center_vertical"
-                        android:text="应急救援电话："
-                        android:textSize="@dimen/sp_14"/>
-                    <EditText
-                        android:id="@+id/id_et_rescue_phone"
-                        android:layout_width="0dp"
-                        android:layout_height="28dp"
-                        android:paddingLeft="@dimen/dp_10"
-                        android:layout_weight="1"
-                        android:background="@drawable/edit_bg"
-                        android:inputType="phone"
-                        android:textSize="@dimen/sp_14"/>
-                </LinearLayout>
             </LinearLayout>
+            <LinearLayout
+            android:paddingLeft="@dimen/dp_10"
+            android:paddingRight="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:paddingLeft="@dimen/dp_4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="应急救援电话："
+                    android:textSize="@dimen/sp_14"/>
+                <EditText
+                    android:id="@+id/id_et_rescue_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="28dp"
+                    android:paddingLeft="@dimen/dp_10"
+                    android:layout_weight="1"
+                    android:background="@drawable/edit_bg"
+                    android:inputType="phone"
+                    android:textSize="@dimen/sp_14"/>
+            </LinearLayout>
+        </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -1223,6 +1240,7 @@
                     android:layout_height="wrap_content"
                     android:scrollbars="none">
                 </cn.elevator.widget.ExpendRecycleView>
+
                 <com.coorchice.library.SuperTextView
                     android:layout_marginTop="@dimen/dp_10"
                     android:layout_gravity="center_horizontal"
