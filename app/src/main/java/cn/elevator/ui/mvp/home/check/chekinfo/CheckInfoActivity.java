@@ -528,39 +528,47 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 resultTypeDialog.show();
                 break;
             case R.id.id_et_check_person:
-                final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(this)
-                        .setCheckedItems(new int[]{-1})
-                        .addItems(users, (dialog, which) -> {
-                        });
-                builder.addAction("取消", (dialog, index) -> dialog.dismiss());
-                builder.addAction("确认", (dialog, index) -> {
-                    if (builder.getCheckedItemIndexes().length != 2) {
-                        Toast.makeText(this, "只能选择两个检验员", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    StringBuilder result = new StringBuilder();
-                    String[] userId = new String[builder.getCheckedItemIndexes().length];
-                    for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
-                        result.append(users[builder.getCheckedItemIndexes()[i]]).append(",");
+                if(users!=null && users.length>0){
+                    final QMUIDialog.MultiCheckableDialogBuilder builder = new QMUIDialog.MultiCheckableDialogBuilder(this)
+                            .setCheckedItems(new int[]{-1})
+                            .addItems(users, (dialog, which) -> {
+                            });
+                    builder.addAction("取消", (dialog, index) -> dialog.dismiss());
+                    builder.addAction("确认", (dialog, index) -> {
+                        if (builder.getCheckedItemIndexes().length != 2) {
+                            Toast.makeText(this, "只能选择两个检验员", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                        StringBuilder result = new StringBuilder();
+                        String[] userId = new String[builder.getCheckedItemIndexes().length];
+                        for (int i = 0; i < builder.getCheckedItemIndexes().length; i++) {
+                            result.append(users[builder.getCheckedItemIndexes()[i]]).append(",");
 //                        result.append(mCheckList.get(builder.getCheckedItemIndexes()[i]).getUserID()).append(",");
-                        userId[i] = mCheckList.get(builder.getCheckedItemIndexes()[i]).getUserID();
-                    }
-                    mData.setChecker1(userId[0]);
-                    mData.setChecker2(userId[1]);
-                    mCheckPerson.setText(result);
-                    dialog.dismiss();
-                });
-                builder.create().show();
+                            userId[i] = mCheckList.get(builder.getCheckedItemIndexes()[i]).getUserID();
+                        }
+                        mData.setChecker1(userId[0]);
+                        mData.setChecker2(userId[1]);
+                        mCheckPerson.setText(result);
+                        dialog.dismiss();
+                    });
+                    builder.create().show();
+                }else {
+                    return;
+                }
                 break;
             case R.id.id_et_verify_person:
-                QMUIDialog.MenuDialogBuilder verifyTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
-                        addItems(users, (dialog, which) -> {
-                            dialog.dismiss();
-                            mVerifyPerson.setText(users[which]);
-                            mData.setCheckerOut(mCheckList.get(which).getUserID());
-                        });
-                QMUIDialog verifyTypeDialog = verifyTypeBuilder.create();
-                verifyTypeDialog.show();
+                if(users!=null && users.length>0){
+                    QMUIDialog.MenuDialogBuilder verifyTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
+                            addItems(users, (dialog, which) -> {
+                                dialog.dismiss();
+                                mVerifyPerson.setText(users[which]);
+                                mData.setCheckerOut(mCheckList.get(which).getUserID());
+                            });
+                    QMUIDialog verifyTypeDialog = verifyTypeBuilder.create();
+                    verifyTypeDialog.show();
+                }else {
+                    return;
+                }
                 break;
             case R.id.id_et_device_breed:
                 QMUIDialog.MenuDialogBuilder breedTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
