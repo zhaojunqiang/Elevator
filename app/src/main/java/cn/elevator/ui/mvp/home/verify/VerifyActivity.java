@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 
@@ -25,6 +26,7 @@ import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
 import cn.elevator.ui.adapter.CheckListAdapter;
+import cn.elevator.ui.adapter.VerifyListAdapter;
 import cn.elevator.ui.mvp.home.check.CheckActivity;
 import cn.elevator.ui.mvp.home.check.CheckPresenter;
 import cn.elevator.ui.mvp.home.check.chekinfo.CheckInfoActivity;
@@ -44,7 +46,7 @@ public class VerifyActivity extends AppCompatActivity implements VerifyContact.V
     private RelativeLayout mNoDataLayout;
     private ExpendRecycleView mRecycleView;
     private List<TaskListData> dataBeans;
-    private CheckListAdapter mAdapter;
+    private VerifyListAdapter mAdapter;
 
     private String[] types = {"首检", "定检", "监检"};
     private String[] status = {"未编制","已编制"};
@@ -90,9 +92,9 @@ public class VerifyActivity extends AppCompatActivity implements VerifyContact.V
         mRecycleView.setLayoutManager(layoutManager);
 
         dataBeans = new ArrayList<>();
-        mAdapter = new CheckListAdapter(dataBeans);
+        mAdapter = new VerifyListAdapter(dataBeans);
         mRecycleView.setAdapter(mAdapter);
-        mAdapter.setOnClick(listData -> {
+        mAdapter.setOnItemClickListener((adapter, view1, position) -> {
             Intent intent = new Intent(VerifyActivity.this,VerifyInfoActivity.class);
             startActivity(intent);
         });
