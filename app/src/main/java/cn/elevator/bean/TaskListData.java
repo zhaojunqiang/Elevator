@@ -67,6 +67,7 @@ public class TaskListData {
      * Instrument : 检验仪器
      * InstallationSite : 安装地点
      * Control:控制方式
+     * Remark:备注
      */
     @Id(assignable = true)
     private long id;
@@ -123,6 +124,7 @@ public class TaskListData {
     private String Instrument;
     private String InstallationSite;
     private String Control;
+    private String Remark;
 
     @Transient
     private Object InspectionID;
@@ -557,6 +559,14 @@ public class TaskListData {
 
     public void setControl(String control) {
         Control = control;
+    }
+
+    public String getRemark() {
+        return Remark;
+    }
+
+    public void setRemark(String remark) {
+        Remark = remark;
     }
 
     public Object getInspectionID() {

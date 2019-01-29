@@ -1257,7 +1257,9 @@
                     android:gravity="center_vertical"
                     android:text="备注"
                     android:textColor="#09B6F2"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_12"
+                    android:singleLine="true"
+                    android:ellipsize="end"/>
             </LinearLayout>
             <com.coorchice.library.SuperTextView
                 android:layout_marginTop="@dimen/dp_10"

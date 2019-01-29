@@ -146,6 +146,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private LinearLayout mVertical;
     //扶梯
     private LinearLayout mStaircase;
+    //备注
+    private TextView mRemark;
 
     private String[] deviceTypes = {"直梯","自动扶梯与自动人行道"};
     private String[] resultTypes = {"合格", "不合格", "复检合格", "复检不合格"};
@@ -153,6 +155,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String[] workTypes = {"安装", "移装", "改造", "重大修理"};
     private String[] controlTypes = {"集选", "并联", "群控","按钮","信号"};
     private String[] users;
+    private String[] remarks;
     private Calendar mCurrentCalendar;
     private String mUid;
 
@@ -431,6 +434,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mRecycleView.setLayoutManager(layoutManager);
         //下一步
         findViewById(R.id.id_tv_next).setOnClickListener(this);
+        mRemark = findViewById(R.id.id_tv_remark);
+        mRemark.setOnClickListener(this);
     }
     private void backTip(){
         new QMUIDialog.MessageDialogBuilder(CheckInfoActivity.this)
@@ -631,6 +636,23 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 });
                 testDlg.setBackButton(getString(R.string.cancel), (dialog, which) -> testDlg.cancel());
                 testDlg.show();
+                break;
+            case R.id.id_tv_remark:
+                final QMUIDialog.MultiCheckableDialogBuilder remarkBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)
+                        .setCheckedItems(new int[]{-1})
+                        .addItems(users, (dialog, which) -> {
+                        });
+                remarkBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
+                remarkBuilder.addAction("确认", (dialog, index) -> {
+                    StringBuilder result = new StringBuilder();
+                    for (int i = 0; i < remarkBuilder.getCheckedItemIndexes().length; i++) {
+                        result.append(users[remarkBuilder.getCheckedItemIndexes()[i]]).append("|");
+                    }
+                    mRemark.setText(result.toString());
+                    mData.setRemark(result.toString());
+                    dialog.dismiss();
+                });
+                remarkBuilder.create().show();
                 break;
             case R.id.id_tv_next:
                 new saveDataToDB(0).execute();
