@@ -36,6 +36,13 @@ public class CheckListAdapter extends BaseQuickAdapter<TaskListData, BaseViewHol
     public void setOnClick(onClick onClick) {
         this.onClick = onClick;
     }
+    private onRectClick onRect;
+    public interface onRectClick{
+        void myRectClick(TaskListData listData);
+    }
+    public void setRectClick(onRectClick onRect){
+        this.onRect = onRect;
+    }
     @Override
     protected void convert(BaseViewHolder helper, TaskListData item) {
        helper.setText(R.id.id_tv_num,"流  水  号："+item.getCraneRecordListID())
@@ -48,6 +55,8 @@ public class CheckListAdapter extends BaseQuickAdapter<TaskListData, BaseViewHol
                .setText(R.id.id_tv_state,"任 务 状 态："+getStateStr(item.getAPPRecordState()));
         SuperTextView textView = helper.getView(R.id.id_tv_oper);
         textView.setOnClickListener(v -> onClick.myClick(item));
+        SuperTextView textRect = helper.getView(R.id.id_tv_rectify);
+        textRect.setOnClickListener(v -> onRect.myRectClick(item));//整改
     }
 
     private String getStateStr(int appRecordState) {

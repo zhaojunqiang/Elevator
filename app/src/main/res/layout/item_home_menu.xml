@@ -4,8 +4,8 @@
     android:background="@color/colorWhite"
     android:gravity="center"
     android:orientation="vertical"
-    android:paddingTop="8dp"
-    android:paddingBottom="8dp">
+    android:paddingTop="@dimen/dp_10"
+    android:paddingBottom="@dimen/dp_10">
 
     <ImageView
         android:id="@+id/iconImageView"

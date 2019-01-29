@@ -228,6 +228,10 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             intent.putExtra("_id",listData.getId());
             startActivity(intent);
         });
+        mAdapter.setRectClick(listData -> {
+            //调用整改接口
+            ToastUtil.showToast(CheckActivity.this,listData.getCraneRecordListID());
+        });
     }
 
     public int findColorById(int color) {
