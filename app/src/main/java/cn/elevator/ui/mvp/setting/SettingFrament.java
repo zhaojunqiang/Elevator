@@ -107,7 +107,6 @@ public class SettingFrament extends Fragment implements SettingContact.View,View
     @AfterPermissionGranted(REQUEST_EXTERNAL)
     private void checkPermission() {
         if (EasyPermissions.hasPermissions(getActivity().getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-//            new UpdateManager(getActivity(), mVersion.getUrl()).updateApp();
             DownloadAppUtils.DownLoad(getActivity(), dataBean.getCodeName(), "elevator");
         } else {
             EasyPermissions.requestPermissions(this, "需要请求内存卡权限",
