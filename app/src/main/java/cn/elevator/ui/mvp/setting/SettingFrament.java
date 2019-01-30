@@ -13,8 +13,12 @@ import android.widget.TextView;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import cn.elevator.BuildConfig;
 import cn.elevator.R;
+import cn.elevator.bean.VersionInfo;
 import cn.elevator.config.Constant;
 import cn.elevator.ui.mvp.account.LoginActivity;
 import cn.elevator.ui.mvp.setting.about.AboutActivity;
@@ -25,13 +29,14 @@ import cn.elevator.utils.SharedPrefUtils;
  * date:   2018/8/13 0013
  * description: 设置视图
  */
-public class SettingFrament extends Fragment implements View.OnClickListener {
+public class SettingFrament extends Fragment implements SettingContact.View,View.OnClickListener {
     private TextView mVersion;
     private TextView mUserName;
-
+    private SettingPresenter presenter;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        presenter = new SettingPresenter(this);
         View view = inflater.inflate(R.layout.fragment_setting, container, false);
         view.findViewById(R.id.id_tv_about).setOnClickListener(this);
         view.findViewById(R.id.btn_exit).setOnClickListener(this);
@@ -39,6 +44,7 @@ public class SettingFrament extends Fragment implements View.OnClickListener {
         mUserName.setText("下午好，"+SharedPrefUtils.getObj(Constant.USER_NAME));
         mVersion = view.findViewById(R.id.id_tv_version);
         mVersion.setText("版本号V" + BuildConfig.VERSION_NAME);
+        mVersion.setOnClickListener(this);
         return view;
     }
 
@@ -47,6 +53,11 @@ public class SettingFrament extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.id_tv_about:
                 startActivity(new Intent(getActivity(), AboutActivity.class));
+                break;
+            case R.id.id_tv_version:
+                Map<String, String> types = new HashMap<>();
+                types.put("TypeID", "VersionUpgrade");
+                presenter.getVersionInfo(types);
                 break;
             case R.id.btn_exit:
                 new QMUIDialog.MessageDialogBuilder(getActivity())
@@ -61,5 +72,32 @@ public class SettingFrament extends Fragment implements View.OnClickListener {
                         }).show();
                 break;
         }
+    }
+
+    @Override
+    public boolean isActive() {
+        return isAdded() && isResumed();
+    }
+
+    @Override
+    public void showVersionInfo(VersionInfo versionInfo) {
+
+    }
+
+    @Override
+    public void initViews(View view) {
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
     }
 }

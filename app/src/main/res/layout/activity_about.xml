@@ -32,6 +32,11 @@
             android:layout_height="wrap_content"
             android:text="九创电子"
             android:layout_gravity="center_horizontal" />
+        <TextView
+            android:id="@+id/id_tv_about"
+            android:padding="@dimen/dp_10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </LinearLayout>
     <LinearLayout
         android:background="#fff"

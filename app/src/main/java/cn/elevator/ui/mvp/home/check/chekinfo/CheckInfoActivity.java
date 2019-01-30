@@ -30,6 +30,7 @@ import java.util.Map;
 
 import cn.elevator.R;
 import cn.elevator.app.App;
+import cn.elevator.bean.EquipmentData;
 import cn.elevator.bean.PersonData;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskListData;
@@ -189,10 +190,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         checks.put("DepartmentID", "BM001");
         presenter.getCheckPersonList(checks);
 
-//        Map<String, String> verifys = new HashMap<>();
-//        verifys.put("UserId", mUid);
-//        verifys.put("RoleID", "1019");
-//        presenter.getCheckPersonList(verifys);
+        Map<String, String> types = new HashMap<>();
+        types.put("TypeID", "DT_Instrumen");
+        presenter.getEquipList(types);
     }
 
 
@@ -348,6 +348,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
 
     @Override
     public void showSaveResult(SaveResult saveResult) {
+
+    }
+
+    @Override
+    public void showEquipData(EquipmentData equipmentData) {
 
     }
 
@@ -682,7 +687,10 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
             mData.setEquipmentCode(mDeviceCode.getText().toString());
         }
         if(!TextUtils.isEmpty(mStartTime.getText())){
-            mData.setSurveyDate(mStartTime.getText().toString());
+            mData.setCheckStartData(mStartTime.getText().toString());
+        }
+        if(!TextUtils.isEmpty(mEedTime.getText())){
+            mData.setSurveyDate(mEedTime.getText().toString());
         }
         if(!TextUtils.isEmpty(mNextTime.getText())){
             mData.setNextSurveyDate(mNextTime.getText().toString());

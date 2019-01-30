@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,6 +20,7 @@ import android.widget.Toast;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
+import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -29,6 +31,8 @@ import java.util.Map;
 
 import cn.elevator.R;
 import cn.elevator.app.App;
+import cn.elevator.bean.FormListData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.config.Constant;
@@ -188,6 +192,11 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     }
 
     @Override
+    public void showSaveRecResult(SaveResult saveResult) {
+        ToastUtil.showToast(this,saveResult.getData().getResultMessage());
+    }
+
+    @Override
     public void initViews(View view) {
         presenter = new CheckPresenter(this);
         ToolBar toolBar = findViewById(R.id.titlebar);
@@ -230,7 +239,28 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
         });
         mAdapter.setRectClick(listData -> {
             //调用整改接口
-            ToastUtil.showToast(CheckActivity.this,listData.getCraneRecordListID());
+//            ToastUtil.showToast(CheckActivity.this,listData.getCraneRecordListID());
+            final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+            builder.setTitle("输入").setPlaceholder("在此输入整改内容").
+                    setInputType(InputType.TYPE_CLASS_TEXT).
+                    addAction("取消", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            dialog.dismiss();
+                        }
+                    })
+                    .addAction("确定", new QMUIDialogAction.ActionListener() {
+                        @Override
+                        public void onClick(QMUIDialog dialog, int index) {
+                            CharSequence text = builder.getEditText().getText();
+                            if (text != null && text.length() > 0) {
+                                presenter.saveRecData(listData.getCraneRecordListID(),1,text.toString());
+                                dialog.dismiss();
+                            } else {
+                                ToastUtil.showToast(CheckActivity.this,"在此输入整改内容");
+                            }
+                        }
+                    }).show();
         });
     }
 

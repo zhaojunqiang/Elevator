@@ -3,6 +3,7 @@ package cn.elevator.ui.mvp.home.check.chekinfo;
 import java.util.Map;
 
 import cn.elevator.app.App;
+import cn.elevator.bean.EquipmentData;
 import cn.elevator.bean.PersonData;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
@@ -128,6 +129,32 @@ public class CheckInfoPresenter implements CheckInfoContact.Presenter {
                     public void onNext(SaveResult saveResult) {
                         if (mView.isActive()){
                             mView.showSaveResult(saveResult);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposableTask);
+    }
+
+    @Override
+    public void getEquipList(Map<String, String> params) {
+        Disposable disposableTask = mModle.getHttpEquipData(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<EquipmentData>() {
+                    @Override
+                    public void onNext(EquipmentData equipmentData) {
+                        if (mView.isActive()){
+                            mView.showEquipData(equipmentData);
                         }
                     }
 

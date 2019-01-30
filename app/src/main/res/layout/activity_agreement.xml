@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.mvp.setting.about.AgreementActivity"
+    tools:context=".ui.mvp.setting.agreement.AgreementActivity"
     android:orientation="vertical"
     android:fitsSystemWindows="true"
     android:background="@color/colorPrimary">
@@ -19,5 +19,10 @@
         android:layout_height="0dp"
         android:orientation="vertical"
         android:layout_weight="1">
+        <TextView
+            android:id="@+id/id_tv_agreement"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/dp_10"/>
     </LinearLayout>
 </LinearLayout>

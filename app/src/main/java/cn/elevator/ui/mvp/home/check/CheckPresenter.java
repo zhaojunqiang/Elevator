@@ -4,6 +4,7 @@ import java.util.Map;
 
 import cn.elevator.app.App;
 import cn.elevator.bean.BannerData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import cn.elevator.bean.TaskListData_;
@@ -125,6 +126,33 @@ public class CheckPresenter implements CheckContact.Presenter {
                 });
         compositeDisposable.add(disposableTask);
     }
+
+    @Override
+    public void saveRecData(String CraneRecordListID, int IfRectify, String RectifyContent) {
+        Disposable disposableTask = mModle.saveRecData(CraneRecordListID,IfRectify,RectifyContent)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<SaveResult>() {
+                    @Override
+                    public void onNext(SaveResult saveResult) {
+                        if (mView.isActive()){
+                            mView.showSaveRecResult(saveResult);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposableTask);
+    }
+
     @Override
     public void getTaskFromDataBase() {
         /**

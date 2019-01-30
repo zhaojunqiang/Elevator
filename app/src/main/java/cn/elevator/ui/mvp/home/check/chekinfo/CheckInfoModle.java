@@ -5,6 +5,7 @@ import org.json.JSONObject;
 
 import java.util.Map;
 
+import cn.elevator.bean.EquipmentData;
 import cn.elevator.bean.PersonData;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
@@ -37,5 +38,14 @@ public class CheckInfoModle implements CheckInfoContact.Modle{
         return HttpClient.getInstance()
                 .create(ApiService.class)
                 .saveTaskData(body);
+    }
+
+    @Override
+    public Observable<EquipmentData> getHttpEquipData(Map<String, String> params) {
+        JSONObject result = new JSONObject(params);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), result.toString());
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .getEquipData(body);
     }
 }

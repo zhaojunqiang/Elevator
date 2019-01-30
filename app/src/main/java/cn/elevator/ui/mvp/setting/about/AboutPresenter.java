@@ -1,9 +1,11 @@
-package cn.elevator.ui.mvp.setting;
+package cn.elevator.ui.mvp.setting.about;
 
 import java.util.Map;
 
-import cn.elevator.bean.EquipmentData;
+import cn.elevator.bean.AboutInfo;
 import cn.elevator.bean.VersionInfo;
+import cn.elevator.ui.mvp.setting.SettingContact;
+import cn.elevator.ui.mvp.setting.SettingModle;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -15,13 +17,13 @@ import io.reactivex.schedulers.Schedulers;
  * date:   2018/8/13 0013
  * description: 设置的 presenter 层
  */
-public class SettingPresenter implements SettingContact.Presenter {
-    private SettingContact.Modle mModle;
-    private SettingContact.View mView;
+public class AboutPresenter implements AboutContact.Presenter {
+    private AboutContact.Modle mModle;
+    private AboutContact.View mView;
     private CompositeDisposable compositeDisposable;
-    public SettingPresenter(SettingContact.View view) {
+    public AboutPresenter(AboutContact.View view) {
         this.mView = view;
-        this.mModle = new SettingModle();
+        this.mModle = new AboutModle();
         compositeDisposable = new CompositeDisposable();
     }
     @Override
@@ -34,15 +36,15 @@ public class SettingPresenter implements SettingContact.Presenter {
         compositeDisposable.clear();
     }
     @Override
-    public void getVersionInfo(Map<String, String> params) {
-        Disposable disposableTask = mModle.getVersionInfo(params)
+    public void getAboutInfo(Map<String, String> params) {
+        Disposable disposableTask = mModle.getAboutInfo(params)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<VersionInfo>() {
+                .subscribeWith(new DisposableObserver<AboutInfo>() {
                     @Override
-                    public void onNext(VersionInfo versionInfo) {
+                    public void onNext(AboutInfo aboutInfo) {
                         if (mView.isActive()){
-                            mView.showVersionInfo(versionInfo);
+                            mView.showAboutInfo(aboutInfo);
                         }
                     }
 

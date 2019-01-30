@@ -2,13 +2,16 @@ package cn.elevator.http;
 
 import java.util.List;
 
+import cn.elevator.bean.AboutInfo;
 import cn.elevator.bean.BannerData;
+import cn.elevator.bean.EquipmentData;
 import cn.elevator.bean.FormData;
 import cn.elevator.bean.LoginData;
 import cn.elevator.bean.PersonData;
 import cn.elevator.bean.SaveFormResult;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.VersionInfo;
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -60,4 +63,27 @@ public interface ApiService {
      */
     @POST(Api.SAVE_FORM)
     Observable<SaveFormResult> saveFormData(@Body RequestBody body);
+    /**
+     * 保存整改
+     */
+    @POST(Api.SAVE_RECTIFY)
+    Observable<SaveResult> saveRecData(@Body RequestBody body);
+    /**
+     *  获取检验仪器
+     * @return
+     */
+    @POST(Api.BASE_CODE)
+    Observable<EquipmentData> getEquipData(@Body RequestBody body);
+    /**
+     *  获取版本信息
+     * @return
+     */
+    @POST(Api.BASE_CODE)
+    Observable<VersionInfo> getVersionInfo(@Body RequestBody body);
+    /**
+     *  关于我么
+     * @return
+     */
+    @POST(Api.BASE_CODE)
+    Observable<AboutInfo> getAboutInfo(@Body RequestBody body);
 }

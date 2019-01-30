@@ -5,6 +5,7 @@ import java.util.Map;
 
 import cn.elevator.base.BasePresenter;
 import cn.elevator.base.BaseView;
+import cn.elevator.bean.EquipmentData;
 import cn.elevator.bean.PersonData;
 import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
@@ -21,6 +22,7 @@ public class CheckInfoContact {
     interface Modle {
         Observable<PersonData> getHttpPersonData(Map<String,String> params);
         Observable<SaveResult> getHttpSaveData(String json);
+        Observable<EquipmentData> getHttpEquipData(Map<String,String> params);
     }
 
     interface Presenter extends BasePresenter {
@@ -29,6 +31,7 @@ public class CheckInfoContact {
         void getCheckPersonList(Map<String,String> params);
         void getVerifyList(Map<String,String> params);
         void saveCheckData(String json);
+        void getEquipList(Map<String,String> params);
     }
 
     interface View extends BaseView{
@@ -42,6 +45,8 @@ public class CheckInfoContact {
         void showVerifyData(PersonData personData);
 
         void showSaveResult(SaveResult saveResult);
+
+        void showEquipData(EquipmentData equipmentData);
     }
 
 }

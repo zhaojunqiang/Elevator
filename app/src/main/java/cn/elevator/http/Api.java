@@ -28,4 +28,10 @@ public class Api {
 
     //保存检验项数据
     public static final String SAVE_FORM = BASE_URL + "Task/SaveCheckProject";
+
+    //保存检验整改单
+    public static final String SAVE_RECTIFY = BASE_URL + "Task/SaveRectify";
+
+    //基本代码
+    public static final String BASE_CODE = BASE_URL + "Task/GetBaseCode";
 }

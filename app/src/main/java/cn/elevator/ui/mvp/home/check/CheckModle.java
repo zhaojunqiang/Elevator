@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.util.Map;
 
 import cn.elevator.bean.BannerData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import cn.elevator.http.ApiService;
 import cn.elevator.http.HttpClient;
@@ -54,5 +55,21 @@ public class CheckModle implements CheckContact.Modle{
         return HttpClient.getInstance()
                 .create(ApiService.class)
                 .getTaskData(body);
+    }
+
+    @Override
+    public Observable<SaveResult> saveRecData(String CraneRecordListID, int IfRectify, String RectifyContent) {
+        JSONObject result = new JSONObject();
+        try {
+            result.put("CraneRecordListID", CraneRecordListID);
+            result.put("IfRectify",IfRectify);
+            result.put("RectifyContent",RectifyContent);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), result.toString());
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .saveRecData(body);
     }
 }

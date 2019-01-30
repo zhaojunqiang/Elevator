@@ -25,6 +25,7 @@ public class TaskListData {
      * RecordTime : 11 22 2018  3:46PM
      * RecordState : 1
      * SurveyConclusions : 01
+     * CheckStartData : 开始日期
      * SurveyDate : 2018-05-21
      * TendingOrganize : 维护保养养单位
      * TendingLinkMan : 维保单位联系人
@@ -83,6 +84,7 @@ public class TaskListData {
     private String RecordTime;
     private int RecordState;
     private String SurveyConclusions;
+    private String CheckStartData;
     private String SurveyDate;
     private String TendingOrganize;
     private String TendingLinkMan;
@@ -231,6 +233,14 @@ public class TaskListData {
 
     public void setSurveyConclusions(String surveyConclusions) {
         SurveyConclusions = surveyConclusions;
+    }
+
+    public String getCheckStartData() {
+        return CheckStartData;
+    }
+
+    public void setCheckStartData(String checkStartData) {
+        CheckStartData = checkStartData;
     }
 
     public String getSurveyDate() {

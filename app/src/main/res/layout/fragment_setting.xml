@@ -84,9 +84,11 @@
         android:drawableLeft="@drawable/version"
         android:drawablePadding="18dp"
         android:paddingLeft="18dp"
+        android:paddingRight="18dp"
         tools:text="版本号V.0"
         android:textColor="@color/colorContentText"
-        android:textSize="20sp"/>
+        android:textSize="20sp"
+        android:drawableRight="@drawable/right"/>
 
     <Button
         android:id="@+id/btn_exit"

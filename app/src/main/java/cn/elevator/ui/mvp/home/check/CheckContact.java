@@ -6,6 +6,7 @@ import java.util.Map;
 import cn.elevator.base.BasePresenter;
 import cn.elevator.base.BaseView;
 import cn.elevator.bean.LoginData;
+import cn.elevator.bean.SaveResult;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import io.reactivex.Observable;
@@ -20,6 +21,7 @@ public class CheckContact {
     interface Modle {
         Observable<TaskData> getHttpTaskData(String userId, String dataFields);
         Observable<TaskData> getTaskDataList(Map<String,String> params);
+        Observable<SaveResult> saveRecData(String CraneRecordListID,int IfRectify,String RectifyContent);
     }
 
     interface Presenter extends BasePresenter {
@@ -29,6 +31,7 @@ public class CheckContact {
         void getTaskByParam(String param,int type);
         void getTaskList(Map<String,String> params);
         void getTaskListMore(Map<String,String> params);
+        void saveRecData(String CraneRecordListID,int IfRectify,String RectifyContent);
     }
 
     interface View extends BaseView{
@@ -51,6 +54,8 @@ public class CheckContact {
 
         void showLoading();
         void hideLoading();
+
+        void showSaveRecResult(SaveResult saveResult);
     }
 
 }
