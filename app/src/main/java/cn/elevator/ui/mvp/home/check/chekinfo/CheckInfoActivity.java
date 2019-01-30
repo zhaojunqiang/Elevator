@@ -157,6 +157,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String[] controlTypes = {"集选", "并联", "群控","按钮","信号"};
     private String[] users;
     private String[] remarks;
+    private String[] equips;
     private Calendar mCurrentCalendar;
     private String mUid;
 
@@ -191,7 +192,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         presenter.getCheckPersonList(checks);
 
         Map<String, String> types = new HashMap<>();
-        types.put("TypeID", "DT_Instrumen");
+        types.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
+        types.put("TypeID", "DT_Instrumentation");
         presenter.getEquipList(types);
     }
 
@@ -353,7 +355,12 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
 
     @Override
     public void showEquipData(EquipmentData equipmentData) {
-
+        if(equipmentData!=null && equipmentData.getData()!=null && equipmentData.getData().size()>0){
+            equips = new String[equipmentData.getData().size()];
+            for(int i=0;i<equipmentData.getData().size();i++){
+                equips[i] = equipmentData.getData().get(i).getCodeName();
+            }
+        }
     }
 
     @Override
@@ -430,6 +437,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mNormalHoist = findViewById(R.id.id_et_normal_hoist);
         mNormalLength = findViewById(R.id.id_et_normal_length);
         mTvEquipment = findViewById(R.id.id_tv_equipment);
+        mTvEquipment.setOnClickListener(this);
         mVertical = findViewById(R.id.id_ll_vertical);
         mStaircase = findViewById(R.id.id_ll_staircase);
         mRecycleView = findViewById(R.id.id_rv);
@@ -649,6 +657,23 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 });
                 testDlg.setBackButton(getString(R.string.cancel), (dialog, which) -> testDlg.cancel());
                 testDlg.show();
+                break;
+            case R.id.id_tv_equipment:
+                final QMUIDialog.MultiCheckableDialogBuilder equipBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)
+                        .setCheckedItems(new int[]{-1})
+                        .addItems(equips, (dialog, which) -> {
+                        });
+                equipBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
+                equipBuilder.addAction("确认", (dialog, index) -> {
+                    StringBuilder result = new StringBuilder();
+                    for (int i = 0; i < equipBuilder.getCheckedItemIndexes().length; i++) {
+                        result.append(equips[equipBuilder.getCheckedItemIndexes()[i]]).append(",");
+                    }
+                    mTvEquipment.setText(result.toString());
+                    mData.setInstrument(result.toString());
+                    dialog.dismiss();
+                });
+                equipBuilder.create().show();
                 break;
             case R.id.id_tv_remark:
                 final QMUIDialog.MultiCheckableDialogBuilder remarkBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)

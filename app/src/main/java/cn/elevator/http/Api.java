@@ -33,5 +33,5 @@ public class Api {
     public static final String SAVE_RECTIFY = BASE_URL + "Task/SaveRectify";
 
     //基本代码
-    public static final String BASE_CODE = BASE_URL + "Task/GetBaseCode";
+    public static final String BASE_CODE = BASE_URL + "BaseCode/GetBaseCode";
 }

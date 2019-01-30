@@ -68,6 +68,7 @@ public class TaskListData {
      * Instrument : 检验仪器
      * InstallationSite : 安装地点
      * Control:控制方式
+     * Instrumen : 检验仪器
      * Remark:备注
      */
     @Id(assignable = true)

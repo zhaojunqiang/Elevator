@@ -13,6 +13,8 @@ import java.util.Map;
 
 import cn.elevator.R;
 import cn.elevator.bean.AboutInfo;
+import cn.elevator.config.Constant;
+import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.widget.ToolBar;
 
 public class SecretActivity extends AppCompatActivity implements SecretContact.View {
@@ -32,6 +34,7 @@ public class SecretActivity extends AppCompatActivity implements SecretContact.V
         secret = findViewById(R.id.id_tv_secret);
 
         Map<String, String> types = new HashMap<>();
+        types.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
         types.put("TypeID", "Privacy");
         presenter.getAboutInfo(types);
     }
@@ -43,14 +46,25 @@ public class SecretActivity extends AppCompatActivity implements SecretContact.V
 
     @Override
     public void showAboutInfo(AboutInfo aboutInfo) {
-        if(aboutInfo!= null && aboutInfo.getData()!=null && !TextUtils.isEmpty(aboutInfo.getData().getCodeName())){
-            secret.setText(aboutInfo.getData().getCodeName());
+        if(aboutInfo!= null && aboutInfo.getData()!=null && aboutInfo.getData().size()>0){
+            secret.setText(aboutInfo.getData().get(0).getCodeName());
         }
     }
 
     @Override
     public void initViews(View view) {
 
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
     }
 
     @Override

@@ -13,6 +13,8 @@ import java.util.Map;
 
 import cn.elevator.R;
 import cn.elevator.bean.AboutInfo;
+import cn.elevator.config.Constant;
+import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.widget.ToolBar;
 
 public class AgreementActivity extends AppCompatActivity implements AgreementContact.View {
@@ -31,6 +33,7 @@ public class AgreementActivity extends AppCompatActivity implements AgreementCon
         toolBar.setLeftButtonOnClick(v -> finish());
         agreement = findViewById(R.id.id_tv_agreement);
         Map<String, String> types = new HashMap<>();
+        types.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
         types.put("TypeID", "UserProtocol");
         presenter.getAboutInfo(types);
     }
@@ -42,8 +45,8 @@ public class AgreementActivity extends AppCompatActivity implements AgreementCon
 
     @Override
     public void showAboutInfo(AboutInfo aboutInfo) {
-        if(aboutInfo!= null && aboutInfo.getData()!=null && !TextUtils.isEmpty(aboutInfo.getData().getCodeName())){
-            agreement.setText(aboutInfo.getData().getCodeName());
+        if(aboutInfo!= null && aboutInfo.getData()!=null && aboutInfo.getData().size()>0){
+            agreement.setText(aboutInfo.getData().get(0).getCodeName());
         }
     }
 
@@ -51,6 +54,18 @@ public class AgreementActivity extends AppCompatActivity implements AgreementCon
     public void initViews(View view) {
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

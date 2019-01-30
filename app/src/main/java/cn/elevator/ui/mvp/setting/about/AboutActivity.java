@@ -16,8 +16,10 @@ import java.util.Map;
 import cn.elevator.BuildConfig;
 import cn.elevator.R;
 import cn.elevator.bean.AboutInfo;
+import cn.elevator.config.Constant;
 import cn.elevator.ui.mvp.setting.agreement.AgreementActivity;
 import cn.elevator.ui.mvp.setting.secret.SecretActivity;
+import cn.elevator.utils.SharedPrefUtils;
 import cn.elevator.widget.ToolBar;
 
 public class AboutActivity extends AppCompatActivity implements AboutContact.View {
@@ -45,6 +47,7 @@ public class AboutActivity extends AppCompatActivity implements AboutContact.Vie
         secret.setOnClickListener(v -> startActivity(new Intent(AboutActivity.this,SecretActivity.class)));
         about = findViewById(R.id.id_tv_about);
         Map<String, String> types = new HashMap<>();
+        types.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
         types.put("TypeID", "AboutUS");
         presenter.getAboutInfo(types);
     }
@@ -56,8 +59,8 @@ public class AboutActivity extends AppCompatActivity implements AboutContact.Vie
 
     @Override
     public void showAboutInfo(AboutInfo aboutInfo) {
-            if(aboutInfo!= null && aboutInfo.getData()!=null && !TextUtils.isEmpty(aboutInfo.getData().getCodeName())){
-                about.setText(aboutInfo.getData().getCodeName());
+            if(aboutInfo!= null && aboutInfo.getData()!=null && aboutInfo.getData().size()>0){
+                about.setText(aboutInfo.getData().get(0).getCodeName());
             }
     }
 
@@ -65,6 +68,18 @@ public class AboutActivity extends AppCompatActivity implements AboutContact.Vie
     public void initViews(View view) {
 
     }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        presenter.subscribe();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        presenter.unSubscribe();
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

@@ -76,6 +76,8 @@ dependencies {
     //object box
     debugCompile "io.objectbox:objectbox-android-objectbrowser:$objectboxVersion"
     releaseCompile "io.objectbox:objectbox-android:$objectboxVersion"
+    //权限申请
+    implementation 'pub.devrel:easypermissions:1.0.1'
 }
 apply plugin: 'io.objectbox' // apply last
 
