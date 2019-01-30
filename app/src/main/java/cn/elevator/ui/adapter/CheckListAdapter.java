@@ -1,6 +1,7 @@
 package cn.elevator.ui.adapter;
 
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
@@ -16,6 +17,7 @@ import cn.elevator.R;
 import cn.elevator.bean.MenuData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
+import cn.elevator.utils.ToastUtil;
 import q.rorbin.badgeview.QBadgeView;
 
 /**
@@ -48,10 +50,10 @@ public class CheckListAdapter extends BaseQuickAdapter<TaskListData, BaseViewHol
        helper.setText(R.id.id_tv_num,"流  水  号："+item.getCraneRecordListID())
                .setText(R.id.id_tv_type,"检 验 类 别："+getTypeStr(item.getCheckType()))
                .setText(R.id.id_tv_report_num,"报 告 编 号："+item.getReportID())
-               .setText(R.id.id_tv_com_devicecode,"单位设备编号："+item.getUnitNumber())
-               .setText(R.id.id_tv_eng,"维 保 单 位："+item.getTendingOrganize())
-               .setText(R.id.id_tv_device_code,"设 备 代 码："+item.getEquipmentCode())
-               .setText(R.id.id_tv_made_code,"出 厂 编 号："+item.getMadeCode())
+               .setText(R.id.id_tv_com_devicecode,"单位设备编号："+(TextUtils.isEmpty(item.getUnitNumber())?"":item.getUnitNumber()))
+               .setText(R.id.id_tv_eng,"维 保 单 位："+(TextUtils.isEmpty(item.getTendingOrganize())?"":item.getTendingOrganize()))
+               .setText(R.id.id_tv_device_code,"设 备 代 码："+(TextUtils.isEmpty(item.getEquipmentCode())?"":item.getEquipmentCode()))
+               .setText(R.id.id_tv_made_code,"出 厂 编 号："+(TextUtils.isEmpty(item.getMadeCode())?"":item.getMadeCode()))
                .setText(R.id.id_tv_state,"任 务 状 态："+getStateStr(item.getAPPRecordState()));
         SuperTextView textView = helper.getView(R.id.id_tv_oper);
         textView.setOnClickListener(v -> onClick.myClick(item));
