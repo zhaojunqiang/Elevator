@@ -1235,6 +1235,7 @@
                         android:text="仪器名称"/>
                 </LinearLayout>
                 <cn.elevator.widget.ExpendRecycleView
+                    android:visibility="gone"
                     android:id="@+id/id_rv"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
