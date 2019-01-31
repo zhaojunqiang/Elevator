@@ -215,7 +215,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mUser.setText(mData.getUseOrganize());
         mDeviceCode.setText(mData.getEquipmentCode());
         mDeviceType.setText(getElevator(mData.getElevatorType()));
-        mStartTime.setText(mData.getSurveyDate());
+        mStartTime.setText(mData.getCheckStartData());
+        mEedTime.setText(mData.getSurveyDate());
         mNextTime.setText(mData.getNextSurveyDate());
         mResult.setText(getResult(mData.getSurveyConclusions()));
 //        if(!TextUtils.isEmpty(mData.getChecker1()) && !TextUtils.isEmpty(mData.getChecker2())){
@@ -515,6 +516,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 endDlg.setConfirmButton(getString(R.string.ok), (dialogInterface, i) -> {
                     mCurrentCalendar = endDlg.getDate();
                     mEedTime.setText(getDate(mCurrentCalendar));
+                    mNextTime.setText(getNext(mCurrentCalendar));
                 });
                 endDlg.setBackButton(getString(R.string.cancel), (dialog, which) -> endDlg.cancel());
                 endDlg.show();
@@ -888,7 +890,26 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         }
         return sb.toString();
     }
-
+    //拼接日期
+    private String getNext(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR)+1;
+        int monthOfYear = calendar.get(Calendar.MONTH) + 1;
+        int day = 1;
+        StringBuilder sb = new StringBuilder();
+        sb.append(String.valueOf(year)).append("-");
+        if (monthOfYear < 10) {
+            sb.append("0").append(String.valueOf(monthOfYear));
+        } else {
+            sb.append(String.valueOf(monthOfYear));
+        }
+        sb.append("-");
+        if (day < 10) {
+            sb.append("0").append(String.valueOf(day));
+        } else {
+            sb.append(String.valueOf(day));
+        }
+        return sb.toString();
+    }
     //拼接日期
     private String getCDate(Calendar calendar) {
         int year = calendar.get(Calendar.YEAR);
