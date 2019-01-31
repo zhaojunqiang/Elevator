@@ -4,13 +4,8 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_10"
-        android:background="@color/colorLine"/>
     <LinearLayout
         android:paddingTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
@@ -110,7 +105,6 @@
         </LinearLayout>
         <View
             android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_10"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:background="@color/colorLine"/>
