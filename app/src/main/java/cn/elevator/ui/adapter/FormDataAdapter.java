@@ -124,6 +124,7 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                             Box<FormListData> listDataBox = App.getInstance().
                                     getBoxStore().boxFor(FormListData.class);
                             listDataBox.put(item);
+                            notifyDataSetChanged();
                             dialog.dismiss();
                         } else {
                             ToastUtil.showToast(mContext,"请输入检验结果");
@@ -156,10 +157,12 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                         Box<FormListData> listDataBox = App.getInstance().
                                 getBoxStore().boxFor(FormListData.class);
                         listDataBox.put(item);
+                        notifyDataSetChanged();
                     } else {//是合并项
                         Box<FormListData> listDataBox = App.getInstance().
                                 getBoxStore().boxFor(FormListData.class);
                         listDataBox.put(item);
+                        notifyDataSetChanged();
                         List<FormListData> listDatas = listDataBox.find(FormListData_.FatherId, item.getFatherId());
                         int index = -1;//合格/不合格
 //                        int position = 2;//无此项
@@ -182,6 +185,7 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                                     data.setDefaultConclusion(results[2]);
                                 }
                                 listDataBox.put(data);
+                                notifyDataSetChanged();
                                 break;
                             }
                         }
@@ -202,6 +206,7 @@ public class FormDataAdapter extends BaseMultiItemQuickAdapter<FormListData, Bas
                     Box<FormListData> listDataBox = App.getInstance().
                             getBoxStore().boxFor(FormListData.class);
                     listDataBox.put(item);
+                    notifyDataSetChanged();
                 });
         QMUIDialog typeDialog = typeBuilder.create();
         typeDialog.show();
