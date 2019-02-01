@@ -170,4 +170,30 @@ public class CheckInfoPresenter implements CheckInfoContact.Presenter {
                 });
         compositeDisposable.add(disposableTask);
     }
+
+    @Override
+    public void getControlList(Map<String, String> params) {
+        Disposable disposableTask = mModle.getHttpControl(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<EquipmentData>() {
+                    @Override
+                    public void onNext(EquipmentData equipmentData) {
+                        if (mView.isActive()){
+                            mView.showControlData(equipmentData);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposableTask);
+    }
 }

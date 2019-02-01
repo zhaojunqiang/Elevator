@@ -154,7 +154,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String[] resultTypes = {"合格", "不合格", "复检合格", "复检不合格"};
     private String[] breedTypes = {"曳引驱动乘客电梯", "曳引驱动载客电梯"};
     private String[] workTypes = {"安装", "移装", "改造", "重大修理"};
-    private String[] controlTypes = {"集选", "并联", "群控","按钮","信号"};
+    private String[] controlTypes;
     private String[] users;
     private String[] remarks;
     private String[] equips;
@@ -195,6 +195,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         types.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
         types.put("TypeID", "DT_Instrumentation");
         presenter.getEquipList(types);
+
+        Map<String, String> controls = new HashMap<>();
+        controls.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
+        controls.put("TypeID", "DT_Control");
+        presenter.getControlList(controls);
     }
 
 
@@ -362,6 +367,16 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 equips[i] = equipmentData.getData().get(i).getCodeName();
             }
         }
+    }
+
+    @Override
+    public void showControlData(EquipmentData equipmentData) {
+            if(equipmentData !=null && equipmentData.getData()!=null && equipmentData.getData().size()>0){
+                controlTypes = new String[equipmentData.getData().size()];
+                for(int i=0;i<equipmentData.getData().size();i++){
+                    controlTypes[i] = equipmentData.getData().get(i).getCodeName();
+                }
+            }
     }
 
     @Override
@@ -627,14 +642,18 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 workTypeDialog.show();
                 break;
             case R.id.id_et_control_type:
-                QMUIDialog.MenuDialogBuilder controlTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
-                        addItems(controlTypes, (dialog, which) -> {
-                            dialog.dismiss();
-                            mControlType.setText(controlTypes[which]);
-                            mData.setControl("0"+(which+1));
-                        });
-                QMUIDialog controlTypeDialog = controlTypeBuilder.create();
-                controlTypeDialog.show();
+                if(controlTypes!=null && controlTypes.length>0){
+                    QMUIDialog.MenuDialogBuilder controlTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
+                            addItems(controlTypes, (dialog, which) -> {
+                                dialog.dismiss();
+                                mControlType.setText(controlTypes[which]);
+                                mData.setControl("0"+(which+1));
+                            });
+                    QMUIDialog controlTypeDialog = controlTypeBuilder.create();
+                    controlTypeDialog.show();
+                }else {
+                    return;
+                }
                 break;
             case R.id.id_et_confirm_year:
                 final DateDialog confirmDlg = new DateDialog(this, R.style.MyDateDialog, mCurrentCalendar.get(Calendar.YEAR)
@@ -661,21 +680,25 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 testDlg.show();
                 break;
             case R.id.id_tv_equipment:
-                final QMUIDialog.MultiCheckableDialogBuilder equipBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)
-                        .setCheckedItems(new int[]{-1})
-                        .addItems(equips, (dialog, which) -> {
-                        });
-                equipBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
-                equipBuilder.addAction("确认", (dialog, index) -> {
-                    StringBuilder result = new StringBuilder();
-                    for (int i = 0; i < equipBuilder.getCheckedItemIndexes().length; i++) {
-                        result.append(equips[equipBuilder.getCheckedItemIndexes()[i]]).append(",");
-                    }
-                    mTvEquipment.setText(result.toString());
-                    mData.setInstrument(result.toString());
-                    dialog.dismiss();
-                });
-                equipBuilder.create().show();
+                if(equips!=null && equips.length>0){
+                    final QMUIDialog.MultiCheckableDialogBuilder equipBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)
+                            .setCheckedItems(new int[]{-1})
+                            .addItems(equips, (dialog, which) -> {
+                            });
+                    equipBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
+                    equipBuilder.addAction("确认", (dialog, index) -> {
+                        StringBuilder result = new StringBuilder();
+                        for (int i = 0; i < equipBuilder.getCheckedItemIndexes().length; i++) {
+                            result.append(equips[equipBuilder.getCheckedItemIndexes()[i]]).append(",");
+                        }
+                        mTvEquipment.setText(result.toString());
+                        mData.setInstrument(result.toString());
+                        dialog.dismiss();
+                    });
+                    equipBuilder.create().show();
+                }else {
+                    return;
+                }
                 break;
             case R.id.id_tv_remark:
                 final QMUIDialog.MultiCheckableDialogBuilder remarkBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)

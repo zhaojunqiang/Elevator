@@ -23,6 +23,7 @@ public class CheckInfoContact {
         Observable<PersonData> getHttpPersonData(Map<String,String> params);
         Observable<SaveResult> getHttpSaveData(String json);
         Observable<EquipmentData> getHttpEquipData(Map<String,String> params);
+        Observable<EquipmentData> getHttpControl(Map<String,String> params);
     }
 
     interface Presenter extends BasePresenter {
@@ -32,6 +33,7 @@ public class CheckInfoContact {
         void getVerifyList(Map<String,String> params);
         void saveCheckData(String json);
         void getEquipList(Map<String,String> params);
+        void getControlList(Map<String,String> params);
     }
 
     interface View extends BaseView{
@@ -47,6 +49,8 @@ public class CheckInfoContact {
         void showSaveResult(SaveResult saveResult);
 
         void showEquipData(EquipmentData equipmentData);
+
+        void showControlData(EquipmentData equipmentData);
     }
 
 }
