@@ -203,8 +203,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
 
         Map<String, String> construction = new HashMap<>();
         construction.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
-        construction.put("TypeID", "DT_Control");
-        presenter.getControlList(construction);
+        construction.put("TypeID", "ConstructType");
+        presenter.getConstructionList(construction);
     }
 
 
