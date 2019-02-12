@@ -153,7 +153,7 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     private String[] deviceTypes = {"直梯","自动扶梯与自动人行道"};
     private String[] resultTypes = {"合格", "不合格", "复检合格", "复检不合格"};
     private String[] breedTypes = {"曳引驱动乘客电梯", "曳引驱动载客电梯"};
-    private String[] workTypes = {"安装", "移装", "改造", "重大修理"};
+    private String[] workTypes;
     private String[] controlTypes;
     private String[] users;
     private String[] remarks;
@@ -200,6 +200,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         controls.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
         controls.put("TypeID", "DT_Control");
         presenter.getControlList(controls);
+
+        Map<String, String> construction = new HashMap<>();
+        construction.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
+        construction.put("TypeID", "DT_Control");
+        presenter.getControlList(construction);
     }
 
 
@@ -377,6 +382,16 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                     controlTypes[i] = equipmentData.getData().get(i).getCodeName();
                 }
             }
+    }
+
+    @Override
+    public void shoConstructionData(EquipmentData equipmentData) {
+        if(equipmentData !=null && equipmentData.getData()!=null && equipmentData.getData().size()>0){
+            workTypes = new String[equipmentData.getData().size()];
+            for(int i=0;i<equipmentData.getData().size();i++){
+                workTypes[i] = equipmentData.getData().get(i).getCodeName();
+            }
+        }
     }
 
     @Override
@@ -632,14 +647,18 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 transDlg.show();
                 break;
             case R.id.id_et_work_type:
-                QMUIDialog.MenuDialogBuilder workTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
-                        addItems(workTypes, (dialog, which) -> {
-                            dialog.dismiss();
-                            mWorkType.setText(workTypes[which]);
-                            mData.setConstructType(String.valueOf(which+1));
-                        });
-                QMUIDialog workTypeDialog = workTypeBuilder.create();
-                workTypeDialog.show();
+                if(workTypes!=null && workTypes.length>0){
+                    QMUIDialog.MenuDialogBuilder workTypeBuilder = new QMUIDialog.MenuDialogBuilder(this).
+                            addItems(workTypes, (dialog, which) -> {
+                                dialog.dismiss();
+                                mWorkType.setText(workTypes[which]);
+                                mData.setConstructType(String.valueOf(which+1));
+                            });
+                    QMUIDialog workTypeDialog = workTypeBuilder.create();
+                    workTypeDialog.show();
+                }else {
+                    return;
+                }
                 break;
             case R.id.id_et_control_type:
                 if(controlTypes!=null && controlTypes.length>0){
