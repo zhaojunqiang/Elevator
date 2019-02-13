@@ -275,6 +275,12 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mNormalDeliver.setText(mData.getTransmissionCapacity());
         mNormalHoist.setText(mData.getLiftingHeight());
         mNormalLength.setText(mData.getSegmentLength());
+        if(!TextUtils.isEmpty(mData.getInstrument())){
+            mTvEquipment.setText(mData.getInstrument());
+        }
+        if(!TextUtils.isEmpty(mData.getRecordRemark())){
+            mRemark.setText(mData.getRecordRemark());
+        }
     }
 
     //获取结论
@@ -725,8 +731,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         for (int i = 0; i < equipBuilder.getCheckedItemIndexes().length; i++) {
                             result.append(equips[equipBuilder.getCheckedItemIndexes()[i]]).append(",");
                         }
-                        mTvEquipment.setText(result.toString());
-                        mData.setInstrument(result.toString());
+                        mTvEquipment.setText(result.toString().substring(0,result.toString().length()-1));
+                        mData.setInstrument(mTvEquipment.getText().toString());
                         dialog.dismiss();
                     });
                     equipBuilder.create().show();
@@ -746,8 +752,8 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                         for (int i = 0; i < remarkBuilder.getCheckedItemIndexes().length; i++) {
                             result.append(remarks[remarkBuilder.getCheckedItemIndexes()[i]]).append("|");
                         }
-                        mRemark.setText(result.toString());
-                        mData.setRecordRemark(result.toString());
+                        mRemark.setText(result.toString().substring(0,result.toString().length()-1));
+                        mData.setRecordRemark(mRemark.getText().toString());
                         dialog.dismiss();
                     });
                     remarkBuilder.create().show();

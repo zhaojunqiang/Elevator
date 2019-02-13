@@ -144,10 +144,13 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     @Override
     public void initTaskCount() {
         mUid = SharedPrefUtils.getObj(Constant.USERID);
-        dataFields = "CraneRecordListID,InspectionID,CraneRecordCode,UseOrganize,MadeCode,ElevatorType," +
-                "RegistCode,CheckRecordID,ReportClassID,CheckYear,CheckType,APPRecordState,RecordTime," +
-                "SurveyConclusions,CheckStartData,SurveyDate,NextSurveyDate,Checker1,Checker2,ConstructType,Builder,TendingOrganize," +
-                "TendingLinkMan,TendingTel,ReportID,EquipmentCode,UnitNumber";
+        dataFields = "CraneRecordListID,CraneRecordCode,CheckRecordID,ReportClassID,CheckYear,ReportID," +
+                "CheckType,APPRecordState,RecordTime,RecordState,SurveyConclusions,CheckStartData,SurveyDate," +
+                "TendingOrganize,TendingLinkMan,TendingTel,UseOrganize,UseOrganizeAdd,UseOrganizeCode,UserRegeditCode,UseOrganizeTel,MadeCode," +
+                "EquipmentCode,RegistCode,UnitNumber,ElevatorType,NextSurveyDate,Checker1,Checker2,CheckerOut,EquipmentVarieties,Specification,"+
+                "Specification,ProductCode,MakeDate,MakeOrganize,UserSite,SafeAdmin,ReformDate,Reform,Builder,ConstructLicence,ConstructType,"+
+                "RatedLoad,RatedSpeed,LayerStations,Ladderwidth,Angle,TransmissionCapacity,LiftingHeight,SegmentLength,Instrument,InstallationSite,"+
+                "Control,RecordRemark";
         presenter.getTaskData(mUid, dataFields);
     }
 
