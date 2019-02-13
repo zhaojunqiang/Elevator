@@ -206,7 +206,33 @@ public class CheckInfoPresenter implements CheckInfoContact.Presenter {
                     @Override
                     public void onNext(EquipmentData equipmentData) {
                         if (mView.isActive()){
-                            mView.shoConstructionData(equipmentData);
+                            mView.showConstructionData(equipmentData);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        compositeDisposable.add(disposableTask);
+    }
+
+    @Override
+    public void getRemarkList(Map<String, String> params) {
+        Disposable disposableTask = mModle.getHttpRemark(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<EquipmentData>() {
+                    @Override
+                    public void onNext(EquipmentData equipmentData) {
+                        if (mView.isActive()){
+                            mView.showRemarkData(equipmentData);
                         }
                     }
 

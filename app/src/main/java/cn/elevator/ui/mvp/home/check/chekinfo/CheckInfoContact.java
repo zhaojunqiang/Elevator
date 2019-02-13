@@ -25,6 +25,7 @@ public class CheckInfoContact {
         Observable<EquipmentData> getHttpEquipData(Map<String,String> params);
         Observable<EquipmentData> getHttpControl(Map<String,String> params);
         Observable<EquipmentData> getHttpConstruction(Map<String,String> params);
+        Observable<EquipmentData> getHttpRemark(Map<String,String> params);
     }
 
     interface Presenter extends BasePresenter {
@@ -36,6 +37,7 @@ public class CheckInfoContact {
         void getEquipList(Map<String,String> params);
         void getControlList(Map<String,String> params);
         void getConstructionList(Map<String,String> params);
+        void getRemarkList(Map<String,String> params);
     }
 
     interface View extends BaseView{
@@ -54,7 +56,9 @@ public class CheckInfoContact {
 
         void showControlData(EquipmentData equipmentData);
 
-        void shoConstructionData(EquipmentData equipmentData);
+        void showConstructionData(EquipmentData equipmentData);
+
+        void showRemarkData(EquipmentData equipmentData);
     }
 
 }

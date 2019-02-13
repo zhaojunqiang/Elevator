@@ -66,4 +66,13 @@ public class CheckInfoModle implements CheckInfoContact.Modle{
                 .create(ApiService.class)
                 .getEquipData(body);
     }
+
+    @Override
+    public Observable<EquipmentData> getHttpRemark(Map<String, String> params) {
+        JSONObject result = new JSONObject(params);
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), result.toString());
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .getEquipData(body);
+    }
 }

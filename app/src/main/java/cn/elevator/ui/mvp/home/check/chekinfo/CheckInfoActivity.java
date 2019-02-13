@@ -205,6 +205,11 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         construction.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
         construction.put("TypeID", "ConstructType");
         presenter.getConstructionList(construction);
+
+        Map<String, String> remark = new HashMap<>();
+        remark.put("UserId",SharedPrefUtils.getObj(Constant.USERID));
+        remark.put("TypeID", "DT_RecordRemark");
+        presenter.getRemarkList(remark);
     }
 
 
@@ -385,11 +390,21 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
     }
 
     @Override
-    public void shoConstructionData(EquipmentData equipmentData) {
+    public void showConstructionData(EquipmentData equipmentData) {
         if(equipmentData !=null && equipmentData.getData()!=null && equipmentData.getData().size()>0){
             workTypes = new String[equipmentData.getData().size()];
             for(int i=0;i<equipmentData.getData().size();i++){
                 workTypes[i] = equipmentData.getData().get(i).getCodeName();
+            }
+        }
+    }
+
+    @Override
+    public void showRemarkData(EquipmentData equipmentData) {
+        if(equipmentData !=null && equipmentData.getData()!=null && equipmentData.getData().size()>0){
+            remarks = new String[equipmentData.getData().size()];
+            for(int i=0;i<equipmentData.getData().size();i++){
+                remarks[i] = equipmentData.getData().get(i).getCodeName();
             }
         }
     }
@@ -720,21 +735,25 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                 }
                 break;
             case R.id.id_tv_remark:
-                final QMUIDialog.MultiCheckableDialogBuilder remarkBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)
-                        .setCheckedItems(new int[]{-1})
-                        .addItems(users, (dialog, which) -> {
-                        });
-                remarkBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
-                remarkBuilder.addAction("确认", (dialog, index) -> {
-                    StringBuilder result = new StringBuilder();
-                    for (int i = 0; i < remarkBuilder.getCheckedItemIndexes().length; i++) {
-                        result.append(users[remarkBuilder.getCheckedItemIndexes()[i]]).append("|");
-                    }
-                    mRemark.setText(result.toString());
-                    mData.setRemark(result.toString());
-                    dialog.dismiss();
-                });
-                remarkBuilder.create().show();
+                if(remarks!=null && remarks.length>0){
+                    final QMUIDialog.MultiCheckableDialogBuilder remarkBuilder = new QMUIDialog.MultiCheckableDialogBuilder(this)
+                            .setCheckedItems(new int[]{-1})
+                            .addItems(remarks, (dialog, which) -> {
+                            });
+                    remarkBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
+                    remarkBuilder.addAction("确认", (dialog, index) -> {
+                        StringBuilder result = new StringBuilder();
+                        for (int i = 0; i < remarkBuilder.getCheckedItemIndexes().length; i++) {
+                            result.append(remarks[remarkBuilder.getCheckedItemIndexes()[i]]).append("|");
+                        }
+                        mRemark.setText(result.toString());
+                        mData.setRecordRemark(result.toString());
+                        dialog.dismiss();
+                    });
+                    remarkBuilder.create().show();
+                }else {
+                    return;
+                }
                 break;
             case R.id.id_tv_next:
                 new saveDataToDB(0).execute();

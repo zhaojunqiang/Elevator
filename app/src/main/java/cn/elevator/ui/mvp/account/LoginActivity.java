@@ -80,9 +80,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
         mUserNameView.setText(TextUtils.isEmpty(mUserName) ? "" : mUserName);
         mPassWordView.setText(TextUtils.isEmpty(mPassword) ? "" : mPassword);
         if(!TextUtils.isEmpty(mUserName) && !TextUtils.isEmpty(mPassword)){
-            Intent intent = new Intent(this, MainActivity.class);
-            this.startActivity(intent);
-            finish();
+//            Intent intent = new Intent(this, MainActivity.class);
+//            this.startActivity(intent);
+//            finish();
+            presenter.login(mUserName, mPassword, "ZX09XNS0819");
         }
     }
 

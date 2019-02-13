@@ -69,7 +69,7 @@ public class TaskListData {
      * InstallationSite : 安装地点
      * Control:控制方式
      * Instrumen : 检验仪器
-     * Remark:备注
+     * RecordRemark:备注
      */
     @Id(assignable = true)
     private long id;
@@ -127,7 +127,7 @@ public class TaskListData {
     private String Instrument;
     private String InstallationSite;
     private String Control;
-    private String Remark;
+    private String RecordRemark;
 
     @Transient
     private Object InspectionID;
@@ -572,12 +572,12 @@ public class TaskListData {
         Control = control;
     }
 
-    public String getRemark() {
-        return Remark;
+    public String getRecordRemark() {
+        return RecordRemark;
     }
 
-    public void setRemark(String remark) {
-        Remark = remark;
+    public void setRecordRemark(String recordRemark) {
+        RecordRemark = RecordRemark;
     }
 
     public Object getInspectionID() {
