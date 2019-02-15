@@ -92,7 +92,9 @@ public class FormPresenter implements FormContact.Presenter {
         query = listDataBox.query().equal(TaskListData_.__ID_PROPERTY,Id).build();
         query.subscribe().on(AndroidScheduler.mainThread()).observer(data -> {
             if (mView.isActive()){
-                mView.showTaskData(data.get(0));
+                if(data!=null && data.size()>0){
+                    mView.showTaskData(data.get(0));
+                }
             }
         });
     }
