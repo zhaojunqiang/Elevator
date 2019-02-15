@@ -727,6 +727,10 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                             });
                     equipBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
                     equipBuilder.addAction("确认", (dialog, index) -> {
+                        if (equipBuilder.getCheckedItemIndexes().length == 0) {
+                            Toast.makeText(this, "请选择仪器", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         StringBuilder result = new StringBuilder();
                         for (int i = 0; i < equipBuilder.getCheckedItemIndexes().length; i++) {
                             result.append(equips[equipBuilder.getCheckedItemIndexes()[i]]).append(",");
@@ -748,6 +752,10 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
                             });
                     remarkBuilder.addAction("取消", (dialog, index) -> dialog.dismiss());
                     remarkBuilder.addAction("确认", (dialog, index) -> {
+                        if (remarkBuilder.getCheckedItemIndexes().length == 0) {
+                            Toast.makeText(this, "请选择备注", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
                         StringBuilder result = new StringBuilder();
                         for (int i = 0; i < remarkBuilder.getCheckedItemIndexes().length; i++) {
                             result.append(remarks[remarkBuilder.getCheckedItemIndexes()[i]]).append("|");
