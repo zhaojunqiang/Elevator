@@ -11,30 +11,40 @@
         style="@style/match2wrap"
         app:showLeftView="false"
         app:title="个人中心" />
-
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="310dp">
-
-        <ImageView
+        android:layout_height="wrap_content">
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="310dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:scaleType="fitXY"
-            android:src="@drawable/bg" />
+            android:layout_height="310dp">
 
-        <TextView
-            android:id="@+id/id_tv_userName"
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="310dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:scaleType="fitXY"
+                android:src="@drawable/bg" />
+
+            <TextView
+                android:id="@+id/id_tv_userName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="34dp"
+                android:text="下午好，赵俊强"
+                android:textColor="@color/colorContentText"
+                android:textSize="20sp" />
+        </RelativeLayout>
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="34dp"
-            android:text="下午好，赵俊强"
-            android:textColor="@color/colorContentText"
-            android:textSize="20sp" />
-    </RelativeLayout>
+            android:src="@mipmap/logo_icon"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"/>
+    </FrameLayout>
+
 
     <View
         android:layout_width="match_parent"
