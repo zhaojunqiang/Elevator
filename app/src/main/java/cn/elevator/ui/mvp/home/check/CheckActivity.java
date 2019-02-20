@@ -18,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -241,7 +242,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             //调用整改接口
 //            ToastUtil.showToast(CheckActivity.this,listData.getCraneRecordListID());
             final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-            builder.setTitle("整改").setPlaceholder("在此输入整改内容").
+            builder.setTitle("整改意见").setPlaceholder("在此输入整改意见").
                     setInputType(InputType.TYPE_CLASS_TEXT).
                     addAction("取消", new QMUIDialogAction.ActionListener() {
                         @Override
