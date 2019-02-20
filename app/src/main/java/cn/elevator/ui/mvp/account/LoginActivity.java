@@ -1,5 +1,6 @@
 package cn.elevator.ui.mvp.account;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
@@ -42,10 +43,14 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
     // 记录当前 activity 是否是显示状态
     private boolean activityState = false;
     private ImageView mSeePass;
+    private ProgressDialog mProgressD;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         QMUIStatusBarHelper.translucent(this);
+        mProgressD = new ProgressDialog(this);
+        mProgressD.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        mProgressD.setMessage("登录中...");
         LinearLayout view = (LinearLayout) LayoutInflater.from(this).inflate(R.layout.activity_login, null);
         setContentView(view);
         initViews(view);
@@ -80,10 +85,10 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
         mUserNameView.setText(TextUtils.isEmpty(mUserName) ? "" : mUserName);
         mPassWordView.setText(TextUtils.isEmpty(mPassword) ? "" : mPassword);
         if(!TextUtils.isEmpty(mUserName) && !TextUtils.isEmpty(mPassword)){
-//            Intent intent = new Intent(this, MainActivity.class);
-//            this.startActivity(intent);
-//            finish();
-            presenter.login(mUserName, mPassword, "ZX09XNS0819");
+            Intent intent = new Intent(this, MainActivity.class);
+            this.startActivity(intent);
+            finish();
+//            presenter.login(mUserName, mPassword, "ZX09XNS0819");
         }
     }
 
@@ -95,6 +100,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
     @Override
     public void onLoginError(String errorMsg) {
         ToastUtil.showToast(this, errorMsg);
+        if (mProgressD != null) {
+            mProgressD.dismiss();
+        }
     }
 
     /**
@@ -123,6 +131,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
         ToastUtil.showToast(this, loginData.getData().getLoginState());
         Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);
+        if (mProgressD != null) {
+            mProgressD.dismiss();
+        }
         finish();
     }
 
@@ -132,6 +143,9 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
     @Override
     public void showNetworkError() {
         ToastUtil.showToast(this, "网络错误，请检查您的网络");
+        if (mProgressD != null) {
+            mProgressD.dismiss();
+        }
     }
 
 
@@ -155,6 +169,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContact.Vie
             case R.id.btn_login:
                 if (checkEnter()) {
 //                     presenter.login("李明", "123", "ZX09XNS0819");
+                    mProgressD.show();
                     presenter.login(mUserName, mPassword, "ZX09XNS0819");
                 }
                 break;
