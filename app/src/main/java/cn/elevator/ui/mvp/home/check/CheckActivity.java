@@ -3,6 +3,7 @@ package cn.elevator.ui.mvp.home.check;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -11,6 +12,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -63,7 +65,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
     private List<String> mYears;
     private String[] years;
     private String[] types = {"首检", "定检", "监检"};
-    private String[] status = {"未编制","已编制"};
+    private String[] status = {"未编制", "已编制"};
     private List<String> mUsers;
     private String[] users;
 
@@ -126,7 +128,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 
     @Override
     public void showTaskData(TaskData taskData) {
-        if(mNoDataLayout.getVisibility() == View.VISIBLE){
+        if (mNoDataLayout.getVisibility() == View.VISIBLE) {
             mNoDataLayout.setVisibility(View.GONE);
         }
         dataBeans.clear();
@@ -150,9 +152,9 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 
     @Override
     public void showSelectList(List<TaskListData> taskListData) {
-        if (taskListData!=null && taskListData.size()>0){
+        if (taskListData != null && taskListData.size() > 0) {
             mNoDataLayout.setVisibility(View.GONE);
-        }else {
+        } else {
             mNoDataLayout.setVisibility(View.VISIBLE);
         }
         dataBeans.clear();
@@ -194,7 +196,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
 
     @Override
     public void showSaveRecResult(SaveResult saveResult) {
-        ToastUtil.showToast(this,saveResult.getData().getResultMessage());
+        ToastUtil.showToast(this, saveResult.getData().getResultMessage());
     }
 
     @Override
@@ -234,34 +236,77 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
                     getBoxStore().boxFor(TaskListData.class);
             listDataBox.put(listData);
 //            mAdapter.notifyDataSetChanged();
-            Intent intent = new Intent(CheckActivity.this,CheckInfoActivity.class);
-            intent.putExtra("_id",listData.getId());
+            Intent intent = new Intent(CheckActivity.this, CheckInfoActivity.class);
+            intent.putExtra("_id", listData.getId());
             startActivity(intent);
         });
         mAdapter.setRectClick(listData -> {
             //调用整改接口
 //            ToastUtil.showToast(CheckActivity.this,listData.getCraneRecordListID());
-            final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
-            builder.setTitle("整改意见").setPlaceholder("在此输入整改意见").
-                    setInputType(InputType.TYPE_CLASS_TEXT).
-                    addAction("取消", new QMUIDialogAction.ActionListener() {
-                        @Override
-                        public void onClick(QMUIDialog dialog, int index) {
-                            dialog.dismiss();
-                        }
-                    })
-                    .addAction("确定", new QMUIDialogAction.ActionListener() {
-                        @Override
-                        public void onClick(QMUIDialog dialog, int index) {
-                            CharSequence text = builder.getEditText().getText();
-                            if (text != null && text.length() > 0) {
-                                presenter.saveRecData(listData.getCraneRecordListID(),1,text.toString());
-                                dialog.dismiss();
-                            } else {
-                                ToastUtil.showToast(CheckActivity.this,"在此输入整改内容");
-                            }
-                        }
-                    }).show();
+//            final QMUIDialog.EditTextDialogBuilder builder = new QMUIDialog.EditTextDialogBuilder(this);
+//            builder.getEditText().setSingleLine(false);
+//            builder.getEditText().setMinLines(3);
+//            builder.setTitle("整改意见").setPlaceholder("在此输入整改意见").
+//                    setInputType(InputType.TYPE_CLASS_TEXT).
+//                    addAction("取消", new QMUIDialogAction.ActionListener() {
+//                        @Override
+//                        public void onClick(QMUIDialog dialog, int index) {
+//                            dialog.dismiss();
+//                        }
+//                    })
+//                    .addAction("确定", new QMUIDialogAction.ActionListener() {
+//                        @Override
+//                        public void onClick(QMUIDialog dialog, int index) {
+//                            CharSequence text = builder.getEditText().getText();
+//                            if (text != null && text.length() > 0) {
+//                                presenter.saveRecData(listData.getCraneRecordListID(),1,text.toString());
+//                                dialog.dismiss();
+//                            } else {
+//                                ToastUtil.showToast(CheckActivity.this,"在此输入整改意见");
+//                            }
+//                        }
+//                    }).show();
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle("整改意见");
+
+            EditText editText = new EditText(this);
+            editText.setHint("请填写整改意见");
+            editText.setInputType(InputType.TYPE_CLASS_TEXT);
+            editText.setWidth(QMUIDisplayHelper.dp2px(this,480));
+            editText.setTextSize(14);
+            editText.setTextColor(findColorById(R.color.colorContentText));
+            editText.setSingleLine(false);
+
+            LinearLayout layout = new LinearLayout(this);
+            layout.addView(editText);
+            layout.setPadding(QMUIDisplayHelper.dpToPx(20), 0, 0, 0);
+
+            builder.setView(layout);
+            builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    CharSequence text = editText.getText();
+                    if (text != null && text.length() > 0) {
+                        presenter.saveRecData(listData.getCraneRecordListID(), 1, text.toString());
+                        dialog.dismiss();
+                    } else {
+                        ToastUtil.showToast(CheckActivity.this, "请输入输入整改意见");
+                        return;
+                    }
+                }
+            });
+            builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            builder.setCancelable(true);
+
+            AlertDialog dialog = builder.create();
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
+
         });
     }
 
@@ -292,13 +337,13 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
                     mCurrentCalendar = dateDlg.getDate();
                     mTvTime.setText(String.valueOf(mCurrentCalendar.get(Calendar.YEAR)));
                     mTime.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down));
-                    mPage=1;
+                    mPage = 1;
                     Map<String, String> params = new HashMap<>();
                     params.put("UserId", mUid);
                     params.put("DataFields", dataFields);
                     params.put("page", String.valueOf(mPage));
                     params.put("limit", String.valueOf(mPageCount));
-                    params.put("CheckYear",mTvTime.getText().toString());
+                    params.put("CheckYear", mTvTime.getText().toString());
                     presenter.getTaskList(params);
                 });
                 dateDlg.setBackButton(getString(R.string.cancel), new DialogInterface.OnClickListener() {
@@ -317,7 +362,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
                             dialog.dismiss();
                             mTvType.setText(types[which]);
                             mType.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
-                            presenter.getTaskByParam(String.valueOf(which+1),2);
+                            presenter.getTaskByParam(String.valueOf(which + 1), 2);
                         });
                 QMUIDialog typeDialog = typeBuilder.create();
                 typeDialog.setOnDismissListener(dialog -> mType.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
@@ -331,7 +376,7 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
                             dialog.dismiss();
                             mTvState.setText(status[which]);
                             mState.setImageDrawable(this.getResources().getDrawable(R.drawable.down));
-                            presenter.getTaskByParam(String.valueOf(which+1),4);
+                            presenter.getTaskByParam(String.valueOf(which + 1), 4);
                         });
                 QMUIDialog stateDialog = stateBuilder.create();
                 stateDialog.setOnDismissListener(dialog -> mState.setImageDrawable(CheckActivity.this.getResources().getDrawable(R.drawable.down)));
