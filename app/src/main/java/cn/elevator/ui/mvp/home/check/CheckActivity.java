@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -272,14 +273,18 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             EditText editText = new EditText(this);
             editText.setHint("请填写整改意见");
             editText.setInputType(InputType.TYPE_CLASS_TEXT);
-            editText.setWidth(QMUIDisplayHelper.dp2px(this,480));
+            editText.setWidth(QMUIDisplayHelper.dpToPx(480));
+            editText.setHeight(QMUIDisplayHelper.dpToPx(120));
+            editText.setBackground(this.getResources().getDrawable(R.drawable.edit_bg));
+            editText.setGravity(Gravity.TOP|Gravity.LEFT);
+            editText.setPadding(QMUIDisplayHelper.dpToPx(10),QMUIDisplayHelper.dpToPx(10),QMUIDisplayHelper.dpToPx(10),QMUIDisplayHelper.dpToPx(10));
             editText.setTextSize(14);
             editText.setTextColor(findColorById(R.color.colorContentText));
             editText.setSingleLine(false);
 
             LinearLayout layout = new LinearLayout(this);
             layout.addView(editText);
-            layout.setPadding(QMUIDisplayHelper.dpToPx(20), 0, 0, 0);
+            layout.setPadding(QMUIDisplayHelper.dpToPx(20), QMUIDisplayHelper.dpToPx(10), 0, 0);
 
             builder.setView(layout);
             builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
