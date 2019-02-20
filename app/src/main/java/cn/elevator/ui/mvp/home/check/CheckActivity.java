@@ -10,6 +10,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.InputType;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,6 +23,7 @@ import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
+import com.qmuiteam.qmui.util.QMUIResHelper;
 import com.qmuiteam.qmui.util.QMUIStatusBarHelper;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialog;
 import com.qmuiteam.qmui.widget.dialog.QMUIDialogAction;
@@ -278,8 +280,9 @@ public class CheckActivity extends AppCompatActivity implements CheckContact.Vie
             editText.setBackground(this.getResources().getDrawable(R.drawable.edit_bg));
             editText.setGravity(Gravity.TOP|Gravity.LEFT);
             editText.setPadding(QMUIDisplayHelper.dpToPx(10),QMUIDisplayHelper.dpToPx(10),QMUIDisplayHelper.dpToPx(10),QMUIDisplayHelper.dpToPx(10));
-            editText.setTextSize(14);
-            editText.setTextColor(findColorById(R.color.colorContentText));
+            editText.setTextSize(TypedValue.COMPLEX_UNIT_PX, QMUIResHelper.getAttrDimen(this, com.qmuiteam.qmui.R.attr.qmui_dialog_content_message_text_size));
+            editText.setHintTextColor(QMUIResHelper.getAttrColor(this, com.qmuiteam.qmui.R.attr.qmui_config_color_gray_3));
+            editText.setTextColor(QMUIResHelper.getAttrColor(this, com.qmuiteam.qmui.R.attr.qmui_config_color_black));
             editText.setSingleLine(false);
 
             LinearLayout layout = new LinearLayout(this);
