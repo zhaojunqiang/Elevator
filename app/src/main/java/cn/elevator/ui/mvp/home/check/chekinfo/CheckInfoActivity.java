@@ -233,7 +233,9 @@ public class CheckInfoActivity extends AppCompatActivity implements CheckInfoCon
         mStartTime.setText(mData.getCheckStartData());
         mEedTime.setText(mData.getSurveyDate());
         mNextTime.setText(mData.getNextSurveyDate());
-        mResult.setText(getResult(mData.getSurveyConclusions()));
+        if(!TextUtils.isEmpty(mData.getSurveyConclusions())){
+            mResult.setText(getResult(mData.getSurveyConclusions()));
+        }
 //        if(!TextUtils.isEmpty(mData.getChecker1()) && !TextUtils.isEmpty(mData.getChecker2())){
 //            mCheckPerson.setText(mData.getChecker1()+","+mData.getChecker2());
 //        }

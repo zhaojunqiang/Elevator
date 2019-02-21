@@ -112,7 +112,7 @@ public class FormActivity extends AppCompatActivity implements FormContact.View{
             dataBeans.addAll(formListData);
             mRecycleView.getAdapter().notifyDataSetChanged();
         }else {
-            presenter.getFormData(mUid,mId);
+            noData();
         }
     }
 

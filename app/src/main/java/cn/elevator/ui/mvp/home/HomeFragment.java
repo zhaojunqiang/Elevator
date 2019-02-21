@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -52,6 +53,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
     };
     private String mUid;
     private String dataFields;
+    private List<TaskListData> mDatas = new ArrayList<>();
 
     @Nullable
     @Override
@@ -77,6 +79,7 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         initBanners();
         initTaskData();
         initTaskCount();
+        //initFormData();
     }
 
 
@@ -160,6 +163,13 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         presenter.getTaskCount();
     }
 
+    @Override
+    public void initFormData() {
+        for(TaskListData data:mDatas){
+            presenter.getFormData(mUid,data.getCraneRecordListID());
+        }
+    }
+
     /**
      * 显示轮播 banner
      */
@@ -181,12 +191,20 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      * 显示检验任务红点个数
      */
     @Override
-    public void showTaskCount(int count) {
+    public void showTaskCount(List<TaskListData> dataList) {
+        mDatas.clear();
+        mDatas.addAll(dataList);
+        int count = dataList.size();
         menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, count,0));
         menus[1] = new Pair("报告审核", new MenuData(R.drawable.report, count,1));
         menus[2] = new Pair("报告批准", new MenuData(R.drawable.approve, count,2));
         menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, count,3));
         menuAdapter.notifyDataSetChanged();
+
+        if(mDatas.size()>0){
+            initFormData();
+        }
+
     }
 
     @Override

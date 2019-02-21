@@ -6,6 +6,7 @@ import org.json.JSONObject;
 import java.util.List;
 
 import cn.elevator.bean.BannerData;
+import cn.elevator.bean.FormData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.http.ApiService;
 import cn.elevator.http.HttpClient;
@@ -49,6 +50,21 @@ public class HomeModle implements HomeContact.Modle{
         return HttpClient.getInstance()
                 .create(ApiService.class)
                 .getTaskData(body);
+    }
+
+    @Override
+    public Observable<FormData> getHttpFormData(String userId, String checkId) {
+        JSONObject result = new JSONObject();
+        try {
+            result.put("UserId",userId);
+            result.put("CheckRecordID", checkId);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), result.toString());
+        return HttpClient.getInstance()
+                .create(ApiService.class)
+                .getFormData(body);
     }
 
 }

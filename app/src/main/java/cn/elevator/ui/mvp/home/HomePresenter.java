@@ -4,6 +4,8 @@ import java.util.List;
 
 import cn.elevator.app.App;
 import cn.elevator.bean.BannerData;
+import cn.elevator.bean.FormData;
+import cn.elevator.bean.FormListData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import io.objectbox.Box;
@@ -95,9 +97,36 @@ public class HomePresenter implements HomeContact.Presenter {
         Query<TaskListData> query = listDataBox.query().build();
         query.subscribe().on(AndroidScheduler.mainThread()).observer(data -> {
             if (mView.isActive()){
-                mView.showTaskCount(data.size());
+                mView.showTaskCount(data);
             }
         });
+    }
+
+    @Override
+    public void getFormData(String userId, String checkId) {
+        Disposable disposableTask = mModle.getHttpFormData(userId,checkId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<FormData>() {
+                    @Override
+                    public void onNext(FormData formData) {
+                        if (mView.isActive()){
+                            if(formData.getData()!=null && formData.getData().size()>0){
+                                Box<FormListData> listDataBox = App.getInstance().getBoxStore().boxFor(FormListData.class);
+                                listDataBox.put(formData.getData());
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
+        compositeDisposable.add(disposableTask);
     }
 
     @Override

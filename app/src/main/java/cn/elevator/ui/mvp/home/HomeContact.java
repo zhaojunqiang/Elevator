@@ -5,7 +5,9 @@ import java.util.List;
 import cn.elevator.base.BasePresenter;
 import cn.elevator.base.BaseView;
 import cn.elevator.bean.BannerData;
+import cn.elevator.bean.FormData;
 import cn.elevator.bean.TaskData;
+import cn.elevator.bean.TaskListData;
 import io.reactivex.Observable;
 
 /**
@@ -18,6 +20,8 @@ public class HomeContact {
         Observable<BannerData> getHttpBannersData();
 
         Observable<TaskData> getHttpTaskData(String userId, String dataFields);
+
+        Observable<FormData> getHttpFormData(String userId, String checkId);
     }
 
     interface Presenter extends BasePresenter {
@@ -26,6 +30,8 @@ public class HomeContact {
         void getTaskData(String userId,String dataFields);
 
         void getTaskCount();
+
+        void getFormData(String userId,String checkId);
     }
 
     interface View extends BaseView{
@@ -38,9 +44,11 @@ public class HomeContact {
 
         void initTaskCount();
 
+        void initFormData();
+
         void showBanners(BannerData bannerData);
 
-        void showTaskCount(int count);
+        void showTaskCount(List<TaskListData> dataList);
 
         void showNetWorkError();
     }
