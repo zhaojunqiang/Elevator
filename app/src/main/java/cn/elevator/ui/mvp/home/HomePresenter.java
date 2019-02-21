@@ -7,6 +7,8 @@ import cn.elevator.bean.BannerData;
 import cn.elevator.bean.TaskData;
 import cn.elevator.bean.TaskListData;
 import io.objectbox.Box;
+import io.objectbox.android.AndroidScheduler;
+import io.objectbox.query.Query;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -67,7 +69,7 @@ public class HomePresenter implements HomeContact.Presenter {
                     @Override
                     public void onNext(TaskData taskData) {
                         if (mView.isActive()){
-                            mView.showTaskCount(taskData);
+                            //mView.showTaskCount(taskData);
                             Box<TaskListData> listDataBox = App.getInstance().getBoxStore().boxFor(TaskListData.class);
                             listDataBox.put(taskData.getData());
                         }
@@ -84,6 +86,18 @@ public class HomePresenter implements HomeContact.Presenter {
                     }
                 });
         compositeDisposable.add(disposableTask);
+    }
+
+    @Override
+    public void getTaskCount() {
+        Box<TaskListData> listDataBox = App.getInstance().
+                getBoxStore().boxFor(TaskListData.class);
+        Query<TaskListData> query = listDataBox.query().build();
+        query.subscribe().on(AndroidScheduler.mainThread()).observer(data -> {
+            if (mView.isActive()){
+                mView.showTaskCount(data.size());
+            }
+        });
     }
 
     @Override

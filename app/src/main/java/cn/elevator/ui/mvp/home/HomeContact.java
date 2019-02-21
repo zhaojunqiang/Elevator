@@ -24,6 +24,8 @@ public class HomeContact {
         void getBannersData();
 
         void getTaskData(String userId,String dataFields);
+
+        void getTaskCount();
     }
 
     interface View extends BaseView{
@@ -32,11 +34,13 @@ public class HomeContact {
 
         void initBanners();
 
+        void initTaskData();
+
         void initTaskCount();
 
         void showBanners(BannerData bannerData);
 
-        void showTaskCount(TaskData taskData);
+        void showTaskCount(int count);
 
         void showNetWorkError();
     }

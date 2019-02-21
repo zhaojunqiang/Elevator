@@ -75,8 +75,10 @@ public class HomeFragment extends Fragment implements HomeContact.View {
         initMenuRecycler();
         initDatas();
         initBanners();
+        initTaskData();
         initTaskCount();
     }
+
 
     private void initDatas() {
         menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, 0,0));
@@ -138,11 +140,8 @@ public class HomeFragment extends Fragment implements HomeContact.View {
 //        showBanners();
     }
 
-    /**
-     * 加载检验任务红点个数数据
-     */
     @Override
-    public void initTaskCount() {
+    public void initTaskData() {
         mUid = SharedPrefUtils.getObj(Constant.USERID);
         dataFields = "CraneRecordListID,CraneRecordCode,CheckRecordID,ReportClassID,CheckYear,ReportID," +
                 "CheckType,APPRecordState,RecordTime,RecordState,SurveyConclusions,CheckStartData,SurveyDate," +
@@ -152,6 +151,13 @@ public class HomeFragment extends Fragment implements HomeContact.View {
                 "RatedLoad,RatedSpeed,LayerStations,Ladderwidth,Angle,TransmissionCapacity,LiftingHeight,SegmentLength,Instrument,InstallationSite,"+
                 "Control,RecordRemark";
         presenter.getTaskData(mUid, dataFields);
+    }
+    /**
+     * 加载检验任务红点个数数据
+     */
+    @Override
+    public void initTaskCount() {
+        presenter.getTaskCount();
     }
 
     /**
@@ -175,11 +181,11 @@ public class HomeFragment extends Fragment implements HomeContact.View {
      * 显示检验任务红点个数
      */
     @Override
-    public void showTaskCount(TaskData taskData) {
-        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, taskData.getCount(),0));
-        menus[1] = new Pair("报告审核", new MenuData(R.drawable.report, taskData.getCount(),1));
-        menus[2] = new Pair("报告批准", new MenuData(R.drawable.approve, taskData.getCount(),2));
-        menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, taskData.getCount(),3));
+    public void showTaskCount(int count) {
+        menus[0] = new Pair("检验任务", new MenuData(R.drawable.test, count,0));
+        menus[1] = new Pair("报告审核", new MenuData(R.drawable.report, count,1));
+        menus[2] = new Pair("报告批准", new MenuData(R.drawable.approve, count,2));
+        menus[3] = new Pair("数据查询", new MenuData(R.drawable.data, count,3));
         menuAdapter.notifyDataSetChanged();
     }
 
